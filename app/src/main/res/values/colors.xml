@@ -12,4 +12,10 @@
     <!-- Gradient Colors -->
     <color name="gradient_start">#C51162</color> <!-- Pinkish -->
     <color name="gradient_end">#6200EA</color>   <!-- Deep Purple -->
+
+    <color name="dark_bg">#100C25</color>
+    <color name="input_bg">#292639</color>
+    <color name="accent_pink">#C2007C</color>
+    <color name="white">#FFFFFF</color>
+    <color name="hint_text">#80FFFFFF</color>
 </resources>
