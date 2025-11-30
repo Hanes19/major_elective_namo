@@ -43,8 +43,8 @@
         android:layout_height="wrap_content"
         android:text="Create an"
         android:textColor="@color/white"
-        android:textSize="32sp"
-        android:fontFamily="sans-serif-light"
+        android:textSize="64dp"
+        android:fontFamily="@font/raleway_light"
         android:layout_marginTop="24dp"
         android:layout_marginStart="48dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,7 +57,8 @@
         android:layout_height="wrap_content"
         android:text="Account!"
         android:textColor="@color/accent_pink"
-        android:textSize="32sp"
+        android:fontFamily="@font/raleway_semibold"
+        android:textSize="64dp"
         android:textStyle="bold"
         android:layout_marginStart="48dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -90,7 +91,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_person"
+                android:src="@drawable/username_txtbox_icon"
                 app:tint="@color/white"
                 android:contentDescription="User Icon" />
 
@@ -121,7 +122,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_email"
+                android:src="@drawable/email_txtbox_icon"
                 app:tint="@color/white"
                 android:contentDescription="Email Icon" />
 
@@ -152,7 +153,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_lock"
+                android:src="@drawable/password_txtbox_icon"
                 app:tint="@color/white"
                 android:contentDescription="Lock Icon" />
 
@@ -169,14 +170,13 @@
                 android:paddingStart="12dp"
                 android:maxLines="1" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/btnTogglePass"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_visibility"
+                android:scrollbarSize="@android:dimen/app_icon_size"
+                android:src="@drawable/password_view_txtbox_icon"
                 app:tint="@color/hint_text"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="10dp"
+                android:padding="15dp"
                 android:clickable="true"
                 android:focusable="true"/>
         </LinearLayout>
@@ -194,7 +194,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_lock"
+                android:src="@drawable/password_txtbox_icon"
                 app:tint="@color/white"
                 android:contentDescription="Lock Icon" />
 
@@ -215,7 +215,7 @@
                 android:id="@+id/btnToggleConfirmPass"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_visibility"
+                android:src="@drawable/password_view_txtbox_icon"
                 app:tint="@color/hint_text"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="10dp"
