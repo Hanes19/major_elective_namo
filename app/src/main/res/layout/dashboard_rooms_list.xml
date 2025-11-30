@@ -72,7 +72,8 @@
                 android:text="List"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:fontFamily="@font/raleway_bold"/>
         </LinearLayout>
 
         <!-- Map Tab (Inactive) -->
@@ -90,7 +91,8 @@
                 android:text="Map"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:fontFamily="@font/raleway_bold"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -123,9 +125,16 @@
             android:textColor="#FFFFFF"
             android:textColorHint="#ffff"
             android:textSize="14sp"
-            android:inputType="text" />
+            android:inputType="text"
+            />
     </LinearLayout>
 
+    <View
+        android:id="@+id/nav_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#33FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_bar" />
     <!-- Bottom Navigation Bar (Simulated structure) -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -158,14 +167,16 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/dashboard_home_icon"
-                app:tint="#FFFFFF"/>
+                app:tint="#FFFFFF"
+                android:padding="3dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Home"
                 android:textSize="12sp"
-                android:textColor="#FFFFFF"/>
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/raleway_regular"/>
         </LinearLayout>
 
         <!-- Navigation Tab -->
@@ -179,14 +190,16 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/dashboard_navigation_icon"
-                app:tint="#FFFFFF"/>
+                app:tint="#FFFFFF"
+                android:padding="3dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Navigation"
                 android:textSize="12sp"
-                android:textColor="#ffff"/>
+                android:textColor="#ffff"
+                android:fontFamily="@font/raleway_regular"/>
         </LinearLayout>
 
         <!-- Profile Tab -->
@@ -200,14 +213,16 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/dashboard_profile_icon"
-                app:tint="#FFFFFF"/>
+                app:tint="#FFFFFF"
+                android:padding="3dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Profile"
                 android:textSize="12sp"
-                android:textColor="#ffff"/>
+                android:textColor="#ffff"
+                android:fontFamily="@font/raleway_regular"/>
         </LinearLayout>
     </LinearLayout>
 
