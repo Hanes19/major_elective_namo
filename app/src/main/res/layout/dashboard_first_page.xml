@@ -67,7 +67,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/dashboard_search_icon"
-                    app:tint="#B0BEC5"/>
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -75,7 +75,7 @@
                     android:layout_marginStart="12dp"
                     android:fontFamily="@font/raleway_light"
                     android:text="Search Room or Instructor"
-                    android:textColor="#B0BEC5"
+                    android:textColor="#ffff"
                     android:textSize="14sp"/>
             </LinearLayout>
 
@@ -339,7 +339,7 @@
                 android:layout_marginTop="4dp"
                 android:text="Navigation"
                 android:textSize="12sp"
-                android:textColor="#B0BEC5"/>
+                android:textColor="#ffff"/>
         </LinearLayout>
 
         <!-- Profile Tab -->
@@ -360,7 +360,7 @@
                 android:layout_marginTop="4dp"
                 android:text="Profile"
                 android:textSize="12sp"
-                android:textColor="#B0BEC5"/>
+                android:textColor="#ffff"/>
         </LinearLayout>
     </LinearLayout>
 
