@@ -172,11 +172,14 @@
 
             <ImageButton
                 android:id="@+id/btnTogglePass"
-                android:scrollbarSize="@android:dimen/app_icon_size"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:src="@drawable/password_view_txtbox_icon"
                 app:tint="@color/hint_text"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="15dp"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:contentDescription="Toggle password visibility"
                 android:clickable="true"
                 android:focusable="true"/>
         </LinearLayout>
@@ -211,14 +214,17 @@
                 android:paddingStart="12dp"
                 android:maxLines="1" />
 
-            <ImageView
+
+            <ImageButton
                 android:id="@+id/btnToggleConfirmPass"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:src="@drawable/password_view_txtbox_icon"
                 app:tint="@color/hint_text"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="10dp"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:contentDescription="Toggle password visibility"
                 android:clickable="true"
                 android:focusable="true"/>
         </LinearLayout>
