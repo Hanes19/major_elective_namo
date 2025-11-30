@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#6200EA</color>
+    <color name="colorPrimaryDark">#050016</color>
+    <color name="colorAccent">#D500F9</color>
+
+    <!-- Image Specific Colors -->
+    <color name="login_bg_color">#080418</color> <!-- Deep Dark Purple/Black -->
+    <color name="text_white">#FFFFFF</color>
+    <color name="text_gray">#B0BEC5</color>
+
+    <!-- Gradient Colors -->
+    <color name="gradient_start">#C51162</color> <!-- Pinkish -->
+    <color name="gradient_end">#6200EA</color>   <!-- Deep Purple -->
 </resources>
