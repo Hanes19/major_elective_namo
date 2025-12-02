@@ -34,6 +34,7 @@
             android:layout_height="wrap_content"
             android:text="Rooms"
             android:textColor="@android:color/white"
+            android:fontFamily="@font/raleway_bold"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -59,6 +60,7 @@
         <!-- Uses the gradient drawable created previously -->
         <TextView
             android:id="@+id/tabList"
+            android:fontFamily="@font/raleway_bold"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -81,6 +83,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="Map"
+            android:fontFamily="@font/raleway_bold"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -107,6 +110,7 @@
 
         <EditText
             android:layout_width="match_parent"
+            android:fontFamily="@font/raleway_light"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:background="@null"
