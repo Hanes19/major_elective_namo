@@ -126,7 +126,9 @@
         android:layout_marginBottom="32dp"
         android:background="@drawable/dup_btn_gradient"
         android:text="Start Navigation"
+        android:fontFamily="@font/raleway_bold"
         android:textAllCaps="false"
+        android:gravity="center"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -161,6 +163,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:fontFamily="@font/raleway_regular"
                 android:text="Home"
                 android:textSize="12sp"
                 android:textColor="#FFFFFF"/>
@@ -183,6 +186,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:fontFamily="@font/raleway_regular"
                 android:text="Navigation"
                 android:textSize="12sp"
                 android:textColor="#ffff"/>
@@ -205,6 +209,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:fontFamily="@font/raleway_regular"
                 android:text="Profile"
                 android:textSize="12sp"
                 android:textColor="#ffff"/>
