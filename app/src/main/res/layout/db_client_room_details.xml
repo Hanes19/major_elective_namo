@@ -158,15 +158,16 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/dashboard_home_icon"
-                app:tint="#FFFFFF"/>
+                app:tint="#FFFFFF"
+                android:padding="3dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:fontFamily="@font/raleway_regular"
                 android:text="Home"
                 android:textSize="12sp"
-                android:textColor="#FFFFFF"/>
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/raleway_regular"/>
         </LinearLayout>
 
         <!-- Navigation Item (Active) -->
@@ -181,15 +182,16 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/dashboard_navigation_icon"
-                app:tint="#FFFFFF"/>
+                app:tint="#FFFFFF"
+                android:padding="3dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:fontFamily="@font/raleway_regular"
                 android:text="Navigation"
                 android:textSize="12sp"
-                android:textColor="#ffff"/>
+                android:textColor="#ffff"
+                android:fontFamily="@font/raleway_regular"/>
         </LinearLayout>
 
         <!-- Profile Item -->
@@ -197,22 +199,23 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
             android:background="#363250"
+            android:gravity="center"
             android:orientation="vertical">
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/dashboard_profile_icon"
-                app:tint="#FFFFFF"/>
+                app:tint="#FFFFFF"
+                android:padding="3dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:fontFamily="@font/raleway_regular"
                 android:text="Profile"
                 android:textSize="12sp"
-                android:textColor="#ffff"/>
+                android:textColor="#ffff"
+                android:fontFamily="@font/raleway_regular"/>
         </LinearLayout>
 
     </LinearLayout>

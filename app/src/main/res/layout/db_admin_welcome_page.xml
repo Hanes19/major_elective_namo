@@ -113,6 +113,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/dashboard_button_background"
                 android:orientation="vertical"
                 android:paddingBottom="24dp">
 
@@ -120,31 +121,32 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="180dp"
-                    android:scaleType="centerCrop"
                     android:background="#DDDDDD"
-                    android:src="@drawable/Classroom"/>
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/Classroom" />
 
                 <!-- Card Content -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:background="@drawable/dashboard_button_background"
                     android:paddingHorizontal="20dp"
                     android:paddingTop="16dp">
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:fontFamily="@font/raleway_light"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/raleway_light"
                         android:text="Upcoming Class"
                         android:textColor="#A0A0A0"
                         android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:fontFamily="@font/raleway_bold"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
+                        android:fontFamily="@font/raleway_bold"
                         android:text="IT101: Major Elective 1"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"
@@ -167,8 +169,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/raleway_light"
                             android:layout_marginStart="8dp"
+                            android:fontFamily="@font/raleway_light"
                             android:text="Computer Lab 1, Main Building"
                             android:textColor="#D0D0D0"
                             android:textSize="14sp" />
@@ -191,8 +193,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/raleway_light"
                             android:layout_marginStart="8dp"
+                            android:fontFamily="@font/raleway_light"
                             android:text="9:00 AM - 12:00 PM"
                             android:textColor="#D0D0D0"
                             android:textSize="14sp" />
@@ -217,7 +219,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="8dp"
-                android:background="@drawable/bg_dashboard_card"
+                android:background="@drawable/dashboard_button_background"
                 android:orientation="vertical"
                 android:padding="16dp">
 
@@ -262,7 +264,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="8dp"
-                android:background="@drawable/bg_dashboard_card"
+                android:background="@drawable/dashboard_button_background"
                 android:orientation="vertical"
                 android:padding="16dp">
 
