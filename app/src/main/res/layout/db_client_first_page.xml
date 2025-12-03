@@ -45,7 +45,7 @@
                 android:id="@+id/img_settings"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:src="@drawable/dashboard_settings_icon"
+                android:src="@drawable/db_settings_ic"
                 app:tint="#FFFFFF"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/img_logo"
@@ -66,7 +66,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/dashboard_search_icon"
+                    android:src="@drawable/db_search_ic"
                     />
 
                 <TextView
@@ -97,7 +97,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/dashboard_rooms_icon"
+                    android:src="@drawable/db_rooms_ic"
                     app:tint="#FFFFFF"/>
 
                 <TextView
@@ -127,7 +127,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/dashboard_instructors_icon"
+                    android:src="@drawable/db_instructors_Ic"
                     app:tint="#FFFFFF"/>
 
                 <TextView
@@ -157,7 +157,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/dashboard_navigation_icon"
+                    android:src="@drawable/db_nav_icon"
                     app:tint="#FFFFFF"/>
 
                 <TextView
@@ -187,7 +187,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/dashboard_profile_icon"
+                    android:src="@drawable/db_profile_ic"
                     app:tint="#FFFFFF"/>
 
                 <TextView
@@ -318,7 +318,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/dashboard_home_icon"
+                android:src="@drawable/db_home_ic"
                 app:tint="#FFFFFF"
                 android:padding="3dp"/>
             <TextView
@@ -341,7 +341,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/dashboard_navigation_icon"
+                android:src="@drawable/db_nav_icon"
                 app:tint="#FFFFFF"
                 android:padding="3dp"/>
             <TextView
@@ -364,7 +364,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/dashboard_profile_icon"
+                android:src="@drawable/db_profile_ic"
                 app:tint="#FFFFFF"
                 android:padding="3dp"/>
             <TextView

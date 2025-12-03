@@ -133,7 +133,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/dashboard_home_icon"
+                android:src="@drawable/db_home_ic"
                 app:tint="#FFFFFF"
                 android:padding="3dp"/>
             <TextView
@@ -157,7 +157,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/dashboard_navigation_icon"
+                android:src="@drawable/db_nav_icon"
                 app:tint="#FFFFFF"
                 android:padding="3dp"/>
             <TextView
@@ -181,7 +181,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/dashboard_profile_icon"
+                android:src="@drawable/db_profile_ic"
                 app:tint="#FFFFFF"
                 android:padding="3dp"/>
             <TextView
