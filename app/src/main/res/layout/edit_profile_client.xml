@@ -156,7 +156,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="45dp"
                     android:layout_marginTop="20dp"
-                    app:srcCompat="@drawable/edit_pic_icon" />
+                    app:srcCompat="@drawable/edit_pic_ic" />
             </FrameLayout>
 
             <!-- User Details Table -->

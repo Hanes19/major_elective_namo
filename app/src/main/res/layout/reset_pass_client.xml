@@ -118,7 +118,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_weight="1"
-                        android:background="@drawable/card_background"
+                        android:background="@drawable/card_bg"
                         android:ems="10"
                         android:inputType="text" />
 
@@ -128,7 +128,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginEnd="10dp"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/password_view_txtbox_icon" />
+                        app:srcCompat="@drawable/pswrd_view_txtbox_ic" />
                 </LinearLayout>
 
                 <Space
@@ -155,7 +155,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_weight="1"
-                        android:background="@drawable/card_background"
+                        android:background="@drawable/card_bg"
                         android:ems="10"
                         android:inputType="text" />
 
@@ -165,7 +165,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginEnd="10dp"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/password_view_txtbox_icon" />
+                        app:srcCompat="@drawable/pswrd_view_txtbox_ic" />
                 </LinearLayout>
 
                 <TextView
@@ -188,7 +188,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_weight="1"
-                        android:background="@drawable/card_background"
+                        android:background="@drawable/card_bg"
                         android:ems="10"
                         android:inputType="text" />
 
@@ -198,7 +198,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginEnd="10dp"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/password_view_txtbox_icon" />
+                        app:srcCompat="@drawable/pswrd_view_txtbox_ic" />
                 </LinearLayout>
 
                 <TextView

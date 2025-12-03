@@ -81,7 +81,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@drawable/input_field_background"
+            android:background="@drawable/input_field_bg"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingStart="16dp"
@@ -91,7 +91,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/username_txtbox_icon"
+                android:src="@drawable/user_txtbox_ic"
                 app:tint="@color/white"
                 android:contentDescription="User Icon" />
 
@@ -112,7 +112,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@drawable/input_field_background"
+            android:background="@drawable/input_field_bg"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingStart="16dp"
@@ -122,7 +122,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/email_txtbox_icon"
+                android:src="@drawable/email_txtbox_ic"
                 app:tint="@color/white"
                 android:contentDescription="Email Icon" />
 
@@ -143,7 +143,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@drawable/input_field_background"
+            android:background="@drawable/input_field_bg"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingStart="16dp"
@@ -153,7 +153,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/password_txtbox_icon"
+                android:src="@drawable/pswrd_txbox_ic"
                 app:tint="@color/white"
                 android:contentDescription="Lock Icon" />
 
@@ -174,7 +174,7 @@
                 android:id="@+id/btnTogglePass"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:src="@drawable/password_view_txtbox_icon"
+                android:src="@drawable/pswrd_view_txtbox_ic"
                 app:tint="@color/hint_text"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="12dp"
@@ -188,7 +188,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@drawable/input_field_background"
+            android:background="@drawable/input_field_bg"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingStart="16dp"
@@ -197,7 +197,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/password_txtbox_icon"
+                android:src="@drawable/pswrd_txbox_ic"
                 app:tint="@color/white"
                 android:contentDescription="Lock Icon" />
 
@@ -219,7 +219,7 @@
                 android:id="@+id/btnToggleConfirmPass"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:src="@drawable/password_view_txtbox_icon"
+                android:src="@drawable/pswrd_view_txtbox_ic"
                 app:tint="@color/hint_text"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="12dp"
