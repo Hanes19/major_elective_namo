@@ -79,6 +79,8 @@
         android:background="@drawable/btn_gradient"
         app:backgroundTint="@null"
         android:text="SIGN IN"
+        android:textSize="15dp"
+        android:gravity="center"
         android:textColor="@color/text_white"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/tvTitle"
