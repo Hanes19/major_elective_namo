@@ -124,7 +124,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_marker"
+                android:background=""
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="4dp"
                 android:text="101"
@@ -141,7 +141,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_marker_white"
+                android:background=""
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="4dp"
                 android:text="102"
@@ -158,7 +158,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_marker_white"
+                android:background=""
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="4dp"
                 android:text="103"
@@ -175,7 +175,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_marker_white"
+                android:background=""
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="4dp"
                 android:text="201"
@@ -192,7 +192,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_marker_white"
+                android:background=""
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="4dp"
                 android:text="202"
@@ -217,7 +217,7 @@
                 <TextView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/bg_zoom_button"
+                    android:background=""
                     android:gravity="center"
                     android:text="+"
                     android:textSize="24sp"
@@ -227,7 +227,7 @@
                 <TextView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/bg_zoom_button"
+                    android:background=""
                     android:gravity="center"
                     android:text="-"
                     android:textSize="24sp"

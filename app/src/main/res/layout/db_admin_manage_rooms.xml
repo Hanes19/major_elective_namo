@@ -50,18 +50,19 @@
         android:layout_height="50dp"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="24dp"
-        android:gravity=""
-        android:fontFamily="@font/raleway_light"
-        android:textSize="15dp"
-        android:background="@drawable/dashboard_button_background"
+        android:background="@drawable/db_btn_bg"
         android:drawableStart="@android:drawable/ic_menu_search"
         android:drawablePadding="12dp"
+        android:fontFamily="@font/raleway_light"
+        android:gravity=""
         android:hint="Search Rooms"
         android:paddingHorizontal="16dp"
         android:textColor="@color/text_white"
+        android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dividerHeader" />
+        app:layout_constraintTop_toBottomOf="@id/dividerHeader"
+        tools:ignore="TextSizeCheck" />
 
 
     <!-- ROOM LIST -->
@@ -71,7 +72,8 @@
         android:background=""
         android:layout_marginTop="24dp"
         app:layout_constraintBottom_toTopOf="@id/bottomNav"
-        app:layout_constraintTop_toBottomOf="@id/etSearch">
+        app:layout_constraintTop_toBottomOf="@id/etSearch"
+        tools:ignore="UnknownId">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -214,13 +216,14 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/btn_gradient"
-        android:padding="12dp"
         android:elevation="6dp"
-        android:src="@drawable/add"
-        app:tint="@color/text_white"
+        android:padding="12dp"
         android:scaleType="fitCenter"
+        android:src="@drawable/add"
         app:layout_constraintBottom_toTopOf="@id/bottomNavDivider"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/text_white"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <View
         android:id="@+id/bottomNavDivider"

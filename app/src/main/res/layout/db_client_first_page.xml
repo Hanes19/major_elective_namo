@@ -127,7 +127,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/db_instructors_Ic"
+                    android:src="@drawable/db_instruct_ic"
                     app:tint="#FFFFFF"/>
 
                 <TextView
@@ -234,7 +234,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_alignParentEnd="true"
-                    android:src="@drawable/dashboard_arrowRight_icon"
+                    android:src="@drawable/db_rightarrow_ic"
                     android:rotation="0"
                     app:tint="#FFFFFF"/>
             </RelativeLayout>
@@ -259,7 +259,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_alignParentEnd="true"
-                    android:src="@drawable/dashboard_arrowRight_icon"
+                    android:src="@drawable/db_rightarrow_ic"
                     app:tint="#FFFFFF"/>
             </RelativeLayout>
 
@@ -284,7 +284,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_alignParentEnd="true"
-                    android:src="@drawable/dashboard_arrowRight_icon"
+                    android:src="@drawable/db_rightarrow_ic"
                     app:tint="#FFFFFF"/>
             </RelativeLayout>
 
