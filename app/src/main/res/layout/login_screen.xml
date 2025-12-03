@@ -14,7 +14,7 @@
         android:alpha="0.5"
         android:contentDescription="Background Map"
         android:src="@drawable/splash_screen_bg"
-        tools:ignore="MissingConstraints"
+        tools:ignore="HardcodedText,MissingConstraints"
         tools:layout_editor_absoluteX="-163dp"
         tools:layout_editor_absoluteY="-354dp" />
 
@@ -31,7 +31,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="40dp"
-        android:layout_marginStart="24dp"/>
+        android:layout_marginStart="24dp"
+        tools:ignore="HardcodedText" />
 
     <!-- Title Section -->
     <TextView
@@ -45,7 +46,8 @@
         android:layout_marginTop="24dp"
         android:layout_marginStart="48dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnBack" />
+        app:layout_constraintTop_toBottomOf="@id/btnBack"
+        tools:ignore="HardcodedText,SpUsage" />
 
     <TextView
         android:id="@+id/tvBack"
@@ -58,7 +60,8 @@
         android:textSize="64dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvWelcome" />
+        app:layout_constraintTop_toBottomOf="@id/tvWelcome"
+        tools:ignore="HardcodedText,SpUsage" />
 
     <LinearLayout
         android:id="@+id/inputContainer"
@@ -89,7 +92,9 @@
                 android:layout_height="24dp"
                 android:src="@drawable/email_txtbox_ic"
                 app:tint="@color/white"
-                android:contentDescription="Email Icon" />
+                android:contentDescription="Email Icon"
+                android:padding="3dp"
+                tools:ignore="HardcodedText" />
 
             <EditText
                 android:id="@+id/etEmail"
@@ -97,11 +102,15 @@
                 android:layout_height="match_parent"
                 android:background="@null"
                 android:hint="Email Address"
+                android:importantForAutofill="no"
                 android:textColorHint="@color/hint_text"
                 android:textColor="@color/white"
                 android:inputType="textEmailAddress"
                 android:paddingStart="12dp"
-                android:maxLines="1" />
+                android:maxLines="1"
+                android:gravity="center_vertical"
+                android:textSize="15sp"
+                tools:ignore="HardcodedText,RtlSymmetry" />
         </LinearLayout>
 
         <!-- Password Input Row -->
@@ -120,7 +129,9 @@
                 android:layout_height="24dp"
                 android:src="@drawable/pswrd_txbox_ic"
                 app:tint="@color/white"
-                android:contentDescription="Lock Icon" />
+                android:contentDescription="Lock Icon"
+                android:padding="3dp"
+                tools:ignore="HardcodedText" />
 
             <EditText
                 android:id="@+id/etPassword"
@@ -133,19 +144,23 @@
                 android:textColor="@color/white"
                 android:inputType="textPassword"
                 android:paddingStart="12dp"
-                android:maxLines="1" />
+                android:maxLines="1"
+                android:gravity="center_vertical"
+                android:textSize="15sp"
+                tools:ignore="Autofill,HardcodedText,RtlSymmetry" />
 
             <!-- Toggle Button -->
-            <ImageView
+            <ImageButton
                 android:id="@+id/btnTogglePass"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="10dp"
                 android:src="@drawable/pswrd_view_txtbox_ic"
                 app:tint="@color/hint_text"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="10dp"
-                android:clickable="true"
-                android:focusable="true"/>
+                tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
         </LinearLayout>
 
     </LinearLayout>
@@ -164,21 +179,28 @@
         android:layout_marginEnd="48dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/inputContainer" />
+        app:layout_constraintTop_toBottomOf="@id/inputContainer"
+        android:gravity="center"
+        android:textSize="15sp"
+        tools:ignore="HardcodedText" />
 
     <!-- Forgot Password -->
     <TextView
         android:id="@+id/tvForgotPass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Forgot Password?"
-        android:textColor="@color/hint_text"
         android:layout_marginTop="16dp"
         android:clickable="true"
         android:focusable="true"
-        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center_vertical"
+        android:minHeight="48dp"
+        android:text="Forgot Password?"
+        android:textColor="@color/hint_text"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnLogin" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnLogin"
+        tools:ignore="HardcodedText" />
 
     <!-- Sign Up Link -->
     <LinearLayout
@@ -194,7 +216,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Don't have an account? "
-            android:textColor="@color/hint_text" />
+            android:textColor="@color/hint_text"
+            android:gravity="center_vertical"
+            android:textSize="15sp"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/tvSignUp"
@@ -202,7 +227,10 @@
             android:layout_height="wrap_content"
             android:text="Sign up"
             android:textStyle="bold"
-            android:textColor="@color/accent_pink" />
+            android:textColor="@color/accent_pink"
+            android:gravity="center_vertical"
+            android:textSize="15sp"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 
 
