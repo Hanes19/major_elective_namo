@@ -35,17 +35,30 @@
                 android:fontFamily="@font/raleway_bold"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp">
+        <RelativeLayout
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center">
+
             <ImageView
-                android:layout_width="110dp"
-                android:layout_height="110dp"
+                android:id="@+id/profileImage"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:src="@drawable/profile"
-                android:layout_gravity="center"/>
+                android:padding="10dp" />
+
+            <ImageView
+                android:id="@+id/editIcon"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/prof"
+
+                android:layout_alignBottom="@id/profileImage"
+                android:layout_alignEnd="@id/profileImage"
+                android:layout_margin="8dp" />
+        </RelativeLayout>
+
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -163,8 +176,6 @@
 
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
