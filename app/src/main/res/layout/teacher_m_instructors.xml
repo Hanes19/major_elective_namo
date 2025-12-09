@@ -280,6 +280,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Maps"
+                android:fontFamily="@font/raleway_light"
                 android:textColor="#ffff"
                 android:textSize="12sp"/>
         </LinearLayout>
@@ -298,6 +299,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:fontFamily="@font/raleway_light"
                 android:text="Dashboard"
                 android:textColor="@android:color/white"
                 android:textSize="12sp"/>
@@ -319,6 +321,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Updates"
+                android:fontFamily="@font/raleway_light"
                 android:textColor="@color/white"
                 android:textSize="12sp"/>
         </LinearLayout>

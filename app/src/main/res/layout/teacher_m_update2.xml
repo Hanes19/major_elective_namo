@@ -131,13 +131,14 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/map"
+                android:src="@drawable/maps"
                 app:tint="#ffff"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Maps"
+                android:fontFamily="@font/raleway_light"
                 android:textColor="#ffff"
                 android:textSize="12sp"/>
         </LinearLayout>
@@ -156,6 +157,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:fontFamily="@font/raleway_light"
                 android:text="Dashboard"
                 android:textColor="@android:color/white"
                 android:textSize="12sp"/>
@@ -170,15 +172,15 @@
             <ImageView
                 android:layout_width="21dp"
                 android:layout_height="21dp"
-                android:src="@drawable/bell"
-                app:tint="@color/white"/>
+                android:src="@drawable/updates"
+                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Updates"
+                android:fontFamily="@font/raleway_light"
                 android:textColor="@color/white"
-                android:textStyle="bold"
                 android:textSize="12sp"/>
         </LinearLayout>
     </LinearLayout>
