@@ -1,201 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3E3851">
+    android:background="#363250">
 
-    <!-- Top Toolbar (From Reference) -->
-    <RelativeLayout
-        android:id="@+id/topBar"
+    <!-- HEADER -->
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="12dp"
+        android:src="@drawable/back_btn"
+        app:tint="@color/text_white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/tvHeaderTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Profile"
+        android:fontFamily="@font/raleway_bold"
+        android:textColor="@color/text_white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btnBack"
+        app:layout_constraintBottom_toBottomOf="@id/btnBack"/>
+
+    <View
+        android:id="@+id/dividerHeader"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp">
+        android:layout_height="1dp"
+        android:background="#3F3B52"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/btnBack"/>
 
-        <ImageButton
-            android:id="@+id/btnBack"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Back"
-            android:padding="4dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_arrow_back"
-            app:tint="@color/white"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Edit Profile"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_centerInParent="true"
-            android:textColor="@color/white"
-            android:fontFamily="@font/raleway_bold" />
-
-    </RelativeLayout>
-
-    <!-- Bottom Navigation Bar (From Reference) -->
-    <LinearLayout
-        android:id="@+id/bottomNav"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:weightSum="3"
-        android:background="#3E3851">
-
-        <!-- Home Item -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_home"
-                android:padding="3dp"
-                app:tint="@color/grey_text"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Home"
-                android:textColor="@color/grey_text"
-                android:textSize="12sp"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/raleway_light"/>
-        </LinearLayout>
-
-        <!-- Navigation Item -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_navigation"
-                android:padding="3dp"
-                app:tint="@color/grey_text"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Navigation"
-                android:textColor="@color/grey_text"
-                android:textSize="12sp"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/raleway_light"/>
-        </LinearLayout>
-
-        <!-- Profile Item (Active) -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/profile"
-                android:padding="3dp"
-                app:tint="@color/white"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Profile"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/raleway_light"/>
-        </LinearLayout>
-    </LinearLayout>
-
-    <!-- Main Content Scroll -->
+    <!-- SCROLLABLE CONTENT -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/topBar"
-        android:layout_above="@id/bottomNav"
-        android:fillViewport="true">
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/dividerHeader"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavDivider">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="24dp">
+            android:paddingHorizontal="24dp"
+            android:paddingBottom="40dp">
 
             <!-- Profile Image Section -->
-            <RelativeLayout
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="24dp">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardProfile"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
                     app:cardCornerRadius="60dp"
-                    android:background="@drawable/circle_bg">
+                    app:cardBackgroundColor="#D1E4FA"
+                    app:cardElevation="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
 
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/circle_bg"
-                        tools:src="@tools:sample/avatars" />
+                        android:src="@drawable/profile"
+                        android:scaleType="centerCrop"/>
                 </androidx.cardview.widget.CardView>
 
-                <!-- Edit Icon Overlay -->
+                <!-- Edit Icon Badge -->
                 <ImageView
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:background="@drawable/bg_rounded_input"
+                    android:src="@drawable/pen"
+                    android:background="@drawable/circle_bg"
+                    android:backgroundTint="#363250"
                     android:padding="8dp"
-                    android:src="@drawable/p_profile_edit_btn"
-                    app:tint="@color/white" />
-            </RelativeLayout>
+                    app:tint="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@id/cardProfile"
+                    app:layout_constraintEnd_toEndOf="@id/cardProfile"
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginBottom="6dp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Name Field -->
+            <!-- Name -->
             <TextView
-                style="@style/LabelText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Name"
+                android:textColor="#B0B0B0"
+                android:textSize="12sp"
+                android:layout_marginBottom="6dp"
                 android:fontFamily="@font/raleway_regular"/>
-
             <EditText
-                android:id="@+id/etName"
-                style="@style/InputField"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/border"
+                android:backgroundTint="#45405A"
+                android:fontFamily="@font/raleway_bold"
                 android:text="Juan Tamad"
-                android:fontFamily="@font/raleway_bold"/>
+                android:textColor="@color/white"
+                android:paddingHorizontal="16dp"
+                android:textSize="16sp"
+                android:inputType="textPersonName"/>
 
-            <!-- Course Field -->
+            <!-- Course -->
             <TextView
-                style="@style/LabelText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Course"
+                android:textColor="#B0B0B0"
+                android:textSize="12sp"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="6dp"
                 android:fontFamily="@font/raleway_regular"/>
-
             <EditText
-                android:id="@+id/etCourse"
-                style="@style/InputField"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/border"
+                android:backgroundTint="#45405A"
+                android:fontFamily="@font/raleway_bold"
                 android:text="BSIT"
-                android:fontFamily="@font/raleway_bold"/>
+                android:textColor="@color/white"
+                android:paddingHorizontal="16dp"
+                android:textSize="16sp"
+                android:inputType="textCapCharacters"/>
 
-            <!-- Year and Section Row -->
+            <!-- Year & Section Row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -208,20 +155,27 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
-
+                    android:orientation="vertical"
+                    android:layout_marginEnd="8dp">
                     <TextView
-                        style="@style/LabelText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="Year"
+                        android:textColor="#B0B0B0"
+                        android:textSize="12sp"
+                        android:layout_marginBottom="6dp"
                         android:fontFamily="@font/raleway_regular"/>
-
                     <EditText
-                        android:id="@+id/etYear"
-                        style="@style/InputField"
-                        android:layout_marginHorizontal="24dp"
-                        android:layout_marginEnd="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@drawable/border"
+                        android:backgroundTint="#45405A"
+                        android:fontFamily="@font/raleway_bold"
                         android:text="3"
-                        android:fontFamily="@font/raleway_bold"/>
+                        android:textColor="@color/white"
+                        android:paddingHorizontal="16dp"
+                        android:textSize="16sp"
+                        android:inputType="number"/>
                 </LinearLayout>
 
                 <!-- Section -->
@@ -229,106 +183,208 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
-
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp">
                     <TextView
-                        style="@style/LabelText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="Section"
+                        android:textColor="#B0B0B0"
+                        android:textSize="12sp"
+                        android:layout_marginBottom="6dp"
                         android:fontFamily="@font/raleway_regular"/>
-
                     <EditText
-                        android:id="@+id/etSection"
-                        style="@style/InputField"
-                        android:layout_marginHorizontal="24dp"
-                        android:layout_marginStart="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@drawable/border"
+                        android:backgroundTint="#45405A"
+                        android:fontFamily="@font/raleway_bold"
                         android:text="A"
-                        android:fontFamily="@font/raleway_bold"/>
+                        android:textColor="@color/white"
+                        android:paddingHorizontal="16dp"
+                        android:textSize="16sp"
+                        android:inputType="textCapCharacters"/>
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Email Field -->
+            <!-- Email -->
             <TextView
-                style="@style/LabelText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Email"
+                android:textColor="#B0B0B0"
+                android:textSize="12sp"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="6dp"
                 android:fontFamily="@font/raleway_regular"/>
-
             <EditText
-                android:id="@+id/etEmail"
-                style="@style/InputField"
-                android:inputType="textEmailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/border"
+                android:backgroundTint="#45405A"
+                android:fontFamily="@font/raleway_bold"
                 android:text="JTamad@gmail.com"
-                android:fontFamily="@font/raleway_bold"/>
+                android:textColor="@color/white"
+                android:paddingHorizontal="16dp"
+                android:textSize="16sp"
+                android:inputType="textEmailAddress"/>
 
-            <!-- Phone Field -->
+            <!-- Phone -->
             <TextView
-                style="@style/LabelText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Phone"
+                android:textColor="#B0B0B0"
+                android:textSize="12sp"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="6dp"
                 android:fontFamily="@font/raleway_regular"/>
-
             <EditText
-                android:id="@+id/etPhone"
-                style="@style/InputField"
-                android:inputType="phone"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/border"
+                android:backgroundTint="#45405A"
+                android:fontFamily="@font/raleway_bold"
                 android:text="+6391231231231"
-                android:fontFamily="@font/raleway_bold"/>
+                android:textColor="@color/white"
+                android:paddingHorizontal="16dp"
+                android:textSize="16sp"
+                android:inputType="phone"/>
 
-            <!-- Action Buttons Row -->
+            <!-- Action Buttons (Reset / Forgot) -->
             <LinearLayout
-                android:id="@+id/layoutActions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="24dp"
-                android:layout_marginHorizontal="24dp"
-                android:background="@drawable/bg_rounded_input">
+                android:layout_marginTop="24dp">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_weight="1"
-                    android:padding="12dp"
-                    android:gravity="center"
-                    android:text="Reset\nPassword"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/btn_gradient"
+                    android:backgroundTint="#9C0086"
+                    android:text="Reset Password"
+                    android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textStyle="bold"
+                    android:textSize="13sp"
                     android:fontFamily="@font/raleway_bold"/>
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="#80FFFFFF"
-                    android:layout_marginVertical="8dp"/>
-
-                <TextView
+                <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_weight="1"
-                    android:padding="12dp"
-                    android:gravity="center"
-                    android:text="Forgot\nPassword"
+                    android:layout_marginStart="6dp"
+                    android:background="@drawable/btn_gradient"
+                    android:backgroundTint="#9C0086"
+                    android:text="Forgot Password"
+                    android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textStyle="bold"
+                    android:textSize="13sp"
                     android:fontFamily="@font/raleway_bold"/>
             </LinearLayout>
 
-            <!-- Save Button -->
-            <Button
+            <!-- Main Save Button -->
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnSave"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Save Changes"
-                android:backgroundTint="@color/magenta_accent"
-                android:textColor="@color/white"
-                android:textAllCaps="false"
-                android:textSize="16sp"
+                android:layout_height="50dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginHorizontal="24dp"
-                android:paddingVertical="12dp"
+                android:background="@drawable/btn_gradient"
+                android:text="Save Changes"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
                 android:fontFamily="@font/raleway_bold"/>
 
         </LinearLayout>
     </ScrollView>
 
-</RelativeLayout>
+    <View
+        android:id="@+id/bottomNavDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#3F3B52"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"/>
+
+    <!-- BOTTOM NAV -->
+    <LinearLayout
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="#363250"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="#363250"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/db_home_ic"
+                app:tint="#FFFFFF"
+                android:padding="3dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Home"
+                android:textSize="12sp"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/raleway_regular"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="#363250"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/db_nav_icon"
+                app:tint="#FFFFFF"
+                android:padding="3dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Navigation"
+                android:textSize="12sp"
+                android:textColor="#ffff"
+                android:fontFamily="@font/raleway_regular"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#363250"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/db_profile_ic"
+                app:tint="#FFFFFF"
+                android:padding="3dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Profile"
+                android:textSize="12sp"
+                android:textColor="#ffff"
+                android:fontFamily="@font/raleway_regular"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
