@@ -67,12 +67,17 @@ public class f_login extends AppCompatActivity {
             // startActivity(intent);
         });
 
-        // --- Sign Up Navigation ---
+        // --- Sign Up Navigation (UPDATED) ---
         tvSignUp.setOnClickListener(v -> {
-            Toast.makeText(f_login.this, "Navigate to Sign Up", Toast.LENGTH_SHORT).show();
-            // TODO: Uncomment and update class name when created
-            // Intent intent = new Intent(f_login.this, RegisterActivity.class);
-            // startActivity(intent);
+            // Navigate to the new RegisterActivity
+            Intent intent = new Intent(f_login.this, RegisterActivity.class);
+            startActivity(intent);
+        });
+        // --- Forgot Password Navigation (UPDATED) ---
+        tvForgotPass.setOnClickListener(v -> {
+            // Navigate to the newly created ForgotPasswordActivity
+            Intent intent = new Intent(f_login.this, ForgotPasswordActivity.class);
+            startActivity(intent);
         });
     }
 
