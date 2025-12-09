@@ -57,23 +57,32 @@
         app:layout_constraintTop_toBottomOf="@id/header">
 
         <!-- List Option (Active) -->
-        <!-- Uses the gradient drawable created previously -->
-        <TextView
+        <!-- Changed to LinearLayout to perfectly center Icon + Text -->
+        <LinearLayout
             android:id="@+id/tabList"
-            android:fontFamily="@font/raleway_bold"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/button_background"
+            android:background="@drawable/btn_gradient"
             android:gravity="center"
-            android:text="List"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:drawableStartCompat="@android:drawable/ic_menu_sort_by_size"
-            app:drawableTint="@android:color/white"
-            android:paddingStart="24dp"
-            android:paddingEnd="24dp"/>
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/list_icon"
+                app:tint="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/raleway_bold"
+                android:text="List"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <!-- Map Option (Inactive) -->
         <TextView
@@ -114,7 +123,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:background="@null"
-
             android:hint="Search Room or Instructor"
             android:inputType="text"
             android:maxLines="1"
@@ -126,16 +134,114 @@
 
     <!-- EMPTY CONTENT AREA / RECYCLERVIEW PLACEHOLDER -->
     <!-- This space would normally hold your RecyclerView list -->
-
-    <!-- BOTTOM NAVIGATION BAR -->
-    <View
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNav"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchContainer"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@id/searchContainer"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="32dp"
+            android:paddingTop="8dp">
+
+            <!-- Item 1 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingVertical="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/raleway_regular"
+                    android:text="Room 102"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="24dp"
+                    android:src="@drawable/pen"
+                    app:tint="@color/white" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/delete"
+                    app:tint="@color/white" />
+            </LinearLayout>
+
+            <!-- Item 2 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingVertical="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/raleway_regular"
+                    android:text="Room 103"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="24dp"
+                    android:src="@drawable/pen"
+                    app:tint="@color/white" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/delete"
+                    app:tint="@color/white" />
+            </LinearLayout>
+
+            <!-- Item 3 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingVertical="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/raleway_regular"
+                    android:text="Room 104"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="24dp"
+                    android:src="@drawable/pen"
+                    app:tint="@color/white" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/delete"
+                    app:tint="@color/white" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/bottomNav"
@@ -182,15 +288,14 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/db_nav_icon"
-                app:tint="#FFFFFF"
-                android:padding="3dp"/>
+                app:tint="@android:color/white"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Navigation"
                 android:textSize="12sp"
-                android:textColor="#ffff"
+                android:textColor="@android:color/white"
                 android:fontFamily="@font/raleway_regular"/>
         </LinearLayout>
 
@@ -206,16 +311,14 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/db_profile_ic"
-                app:tint="#FFFFFF"
-                android:padding="3dp"/>
+                app:tint="@color/white"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Profile"
-                android:textSize="12sp"
-                android:textColor="#ffff"
-                android:fontFamily="@font/raleway_regular"/>
+                android:textColor="@color/white"
+                android:textSize="12sp"/>
         </LinearLayout>
     </LinearLayout>
 
