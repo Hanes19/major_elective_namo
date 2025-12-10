@@ -76,8 +76,13 @@ public class ClientDashboardActivity extends AppCompatActivity {
         });
 
         cardNav.setOnClickListener(v -> {
-            Toast.makeText(this, "Start Navigation clicked (AR Mode)", Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to Navigation Activity (db_client_navscreen_armode.xml)
+            // Start the Unity AR Activity
+            Intent intent = new Intent(ClientDashboardActivity.this, com.unity3d.player.UnityPlayerActivity.class);
+
+            // Optional: Pass the room name to Unity (so your script knows where to point)
+            intent.putExtra("destination", "Room 101");
+
+            startActivity(intent);
         });
 
         cardProfile.setOnClickListener(v -> {
