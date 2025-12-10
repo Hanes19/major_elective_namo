@@ -5,10 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#363250"
-    >
+    android:background="#363250">
 
-    <!-- TOP HEADER -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -44,7 +42,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- LIST / MAP TOGGLE SWITCH -->
     <LinearLayout
         android:id="@+id/toggleContainer"
         android:layout_width="match_parent"
@@ -56,8 +53,6 @@
         android:padding="4dp"
         app:layout_constraintTop_toBottomOf="@id/header">
 
-        <!-- List Option (Active) -->
-        <!-- Changed to LinearLayout to perfectly center Icon + Text -->
         <LinearLayout
             android:id="@+id/tabList"
             android:layout_width="0dp"
@@ -84,7 +79,6 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Map Option (Inactive) -->
         <TextView
             android:id="@+id/tabMap"
             android:layout_width="0dp"
@@ -99,7 +93,6 @@
 
     </LinearLayout>
 
-    <!-- SEARCH BAR -->
     <LinearLayout
         android:id="@+id/searchContainer"
         android:layout_width="match_parent"
@@ -114,7 +107,7 @@
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@android:drawable/ic_menu_search"
+            android:src="@drawable/db_search_ic"
             app:tint="#C0C0C0" />
 
         <EditText
@@ -132,8 +125,6 @@
 
     </LinearLayout>
 
-    <!-- EMPTY CONTENT AREA / RECYCLERVIEW PLACEHOLDER -->
-    <!-- This space would normally hold your RecyclerView list -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -147,12 +138,15 @@
             android:paddingHorizontal="32dp"
             android:paddingTop="8dp">
 
-            <!-- Item 1 -->
             <LinearLayout
+                android:id="@+id/item_room_102"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground"
                 android:paddingVertical="16dp">
 
                 <TextView
@@ -161,7 +155,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/raleway_regular"
                     android:text="Room 102"
-                    android:textColor="@color/white"
+                    android:textColor="@android:color/white"
                     android:textSize="16sp" />
 
                 <ImageView
@@ -169,21 +163,24 @@
                     android:layout_height="20dp"
                     android:layout_marginEnd="24dp"
                     android:src="@drawable/pen"
-                    app:tint="@color/white" />
+                    app:tint="@android:color/white" />
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/delete"
-                    app:tint="@color/white" />
+                    app:tint="@android:color/white" />
             </LinearLayout>
 
-            <!-- Item 2 -->
             <LinearLayout
+                android:id="@+id/item_room_103"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground"
                 android:paddingVertical="16dp">
 
                 <TextView
@@ -192,7 +189,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/raleway_regular"
                     android:text="Room 103"
-                    android:textColor="@color/white"
+                    android:textColor="@android:color/white"
                     android:textSize="16sp" />
 
                 <ImageView
@@ -200,21 +197,24 @@
                     android:layout_height="20dp"
                     android:layout_marginEnd="24dp"
                     android:src="@drawable/pen"
-                    app:tint="@color/white" />
+                    app:tint="@android:color/white" />
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/delete"
-                    app:tint="@color/white" />
+                    app:tint="@android:color/white" />
             </LinearLayout>
 
-            <!-- Item 3 -->
             <LinearLayout
+                android:id="@+id/item_room_104"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground"
                 android:paddingVertical="16dp">
 
                 <TextView
@@ -223,7 +223,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/raleway_regular"
                     android:text="Room 104"
-                    android:textColor="@color/white"
+                    android:textColor="@android:color/white"
                     android:textSize="16sp" />
 
                 <ImageView
@@ -231,13 +231,13 @@
                     android:layout_height="20dp"
                     android:layout_marginEnd="24dp"
                     android:src="@drawable/pen"
-                    app:tint="@color/white" />
+                    app:tint="@android:color/white" />
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/delete"
-                    app:tint="@color/white" />
+                    app:tint="@android:color/white" />
             </LinearLayout>
 
         </LinearLayout>
@@ -252,37 +252,30 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <!-- Home Item -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:background="#363250"
             android:orientation="vertical">
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/db_home_ic"
-                app:tint="#FFFFFF"
-                android:padding="3dp"/>
+                app:tint="#FFFFFF"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:text="Home"
                 android:textSize="12sp"
-                android:textColor="#FFFFFF"
-                android:fontFamily="@font/raleway_regular"/>
+                android:textColor="#FFFFFF"/>
         </LinearLayout>
 
-        <!-- Navigation Item -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:background="#363250"
             android:orientation="vertical">
             <ImageView
                 android:layout_width="24dp"
@@ -292,33 +285,28 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:text="Navigation"
                 android:textSize="12sp"
-                android:textColor="@android:color/white"
-                android:fontFamily="@font/raleway_regular"/>
+                android:textColor="@android:color/white"/>
         </LinearLayout>
 
-        <!-- Profile Item -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#363250"
             android:gravity="center"
             android:orientation="vertical">
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/db_profile_ic"
-                app:tint="@color/white"/>
+                app:tint="@android:color/white"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:text="Profile"
-                android:textColor="@color/white"
-                android:textSize="12sp"/>
+                android:textSize="12sp"
+                android:textColor="@android:color/white"/>
         </LinearLayout>
     </LinearLayout>
 
