@@ -1,0 +1,20 @@
+@echo off
+"D:\\Downloads\\android-studio-2025.1.3.7-windows\\android-studio\\jbr\\bin\\java" ^
+  --class-path ^
+  "D:\\GithubD\\SchoolManagementSystem\\jdk-24\\caches\\modules-2\\files-2.1\\com.google.prefab\\cli\\2.1.0\\aa32fec809c44fa531f01dcfb739b5b3304d3050\\cli-2.1.0-all.jar" ^
+  com.google.prefab.cli.AppKt ^
+  --build-system ^
+  cmake ^
+  --platform ^
+  android ^
+  --abi ^
+  arm64-v8a ^
+  --os-version ^
+  24 ^
+  --stl ^
+  c++_shared ^
+  --ndk-version ^
+  27 ^
+  --output ^
+  "C:\\Users\\SPAREU~1\\AppData\\Local\\Temp\\agp-prefab-staging9083546969658283097\\staged-cli-output" ^
+  "D:\\GithubD\\SchoolManagementSystem\\jdk-24\\caches\\9.0-milestone-1\\transforms\\09159da8fb67289889772dce2963c5a3\\transformed\\games-activity-3.0.5\\prefab"

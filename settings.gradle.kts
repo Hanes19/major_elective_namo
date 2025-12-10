@@ -22,3 +22,6 @@ dependencyResolutionManagement {
 rootProject.name = "School_Management_System"
 include(":app")
 include(":camera_AR_school_nav")
+include(":unityLibrary")
+project(":unityLibrary").projectDir = file("./unityLibrary")
+include(":unityLibrary:xrmanifest.androidlib")

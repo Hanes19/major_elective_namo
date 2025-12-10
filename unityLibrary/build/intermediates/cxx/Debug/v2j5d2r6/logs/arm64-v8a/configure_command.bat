@@ -1,0 +1,21 @@
+@echo off
+"D:\\allfiles\\3\\Android\\android-sdk\\cmake\\3.22.1\\bin\\cmake.exe" ^
+  "-HD:\\GithubD\\major_elective_namo\\unityLibrary\\src\\main\\cpp" ^
+  "-DCMAKE_SYSTEM_NAME=Android" ^
+  "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON" ^
+  "-DCMAKE_SYSTEM_VERSION=24" ^
+  "-DANDROID_PLATFORM=android-24" ^
+  "-DANDROID_ABI=arm64-v8a" ^
+  "-DCMAKE_ANDROID_ARCH_ABI=arm64-v8a" ^
+  "-DANDROID_NDK=D:\\VR\\6000.3.0f1\\Editor\\Data\\PlaybackEngines\\AndroidPlayer\\NDK" ^
+  "-DCMAKE_ANDROID_NDK=D:\\VR\\6000.3.0f1\\Editor\\Data\\PlaybackEngines\\AndroidPlayer\\NDK" ^
+  "-DCMAKE_TOOLCHAIN_FILE=D:\\VR\\6000.3.0f1\\Editor\\Data\\PlaybackEngines\\AndroidPlayer\\NDK\\build\\cmake\\android.toolchain.cmake" ^
+  "-DCMAKE_MAKE_PROGRAM=D:\\allfiles\\3\\Android\\android-sdk\\cmake\\3.22.1\\bin\\ninja.exe" ^
+  "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=D:\\GithubD\\major_elective_namo\\unityLibrary\\build\\intermediates\\cxx\\Debug\\v2j5d2r6\\obj\\arm64-v8a" ^
+  "-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=D:\\GithubD\\major_elective_namo\\unityLibrary\\build\\intermediates\\cxx\\Debug\\v2j5d2r6\\obj\\arm64-v8a" ^
+  "-DCMAKE_BUILD_TYPE=Debug" ^
+  "-DCMAKE_FIND_ROOT_PATH=D:\\GithubD\\major_elective_namo\\unityLibrary\\.cxx\\Debug\\v2j5d2r6\\prefab\\arm64-v8a\\prefab" ^
+  "-BD:\\GithubD\\major_elective_namo\\unityLibrary\\.cxx\\Debug\\v2j5d2r6\\arm64-v8a" ^
+  -GNinja ^
+  "-DANDROID_STL=c++_shared" ^
+  "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON"
