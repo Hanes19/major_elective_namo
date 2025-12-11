@@ -30,13 +30,10 @@ public class ClientProfileActivity extends AppCompatActivity {
     private void initViews() {
         btnBack = findViewById(R.id.btnBack);
         btnEdit = findViewById(R.id.btnEdit);
+        btnLogout = findViewById(R.id.btnLogout); // Matches XML
 
-        // Make sure you have a Logout button in your XML with id: btnLogout
-        // If not, add one.
-        btnLogout = findViewById(R.id.btnLogout);
-
-        tvName = findViewById(R.id.tvProfileName);
-        tvEmail = findViewById(R.id.tvProfileEmail);
+        tvName = findViewById(R.id.tvProfileName); // Matches XML
+        tvEmail = findViewById(R.id.tvProfileEmail); // Matches XML
     }
 
     private void loadUserProfile() {
@@ -56,20 +53,16 @@ public class ClientProfileActivity extends AppCompatActivity {
                 Toast.makeText(this, "Edit feature coming soon", Toast.LENGTH_SHORT).show()
         );
 
-        if (btnLogout != null) {
-            btnLogout.setOnClickListener(v -> {
-                // 1. Clear Session
-                SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.clear();
-                editor.apply();
+        btnLogout.setOnClickListener(v -> {
+            SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.clear();
+            editor.apply();
 
-                // 2. Redirect to Login
-                Intent intent = new Intent(ClientProfileActivity.this, f_login.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Clear back stack
-                startActivity(intent);
-                finish();
-            });
-        }
+            Intent intent = new Intent(ClientProfileActivity.this, f_login.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
     }
 }

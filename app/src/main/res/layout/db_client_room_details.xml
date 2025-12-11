@@ -5,10 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#363250"
-    tools:context=".MainActivity">
+    android:background="#363250">
 
-    <!-- TOP HEADER -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -26,8 +24,7 @@
             android:layout_marginStart="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="Back" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -41,19 +38,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- SEPARATOR LINE -->
-    <View
-        android:id="@+id/separator"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#4F4C60"
-        app:layout_constraintTop_toBottomOf="@id/header"/>
-
-    <!-- MAIN CARD -->
-    <!-- Using CardView for the rounded container -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
@@ -71,8 +57,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <!-- Room Image (Top Half) -->
-            <!-- Placeholder color used, replace src with your actual image drawable -->
             <ImageView
                 android:id="@+id/imgRoom"
                 android:layout_width="match_parent"
@@ -83,7 +67,6 @@
                 app:layout_constraintHeight_percent="0.60"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Room Text Info (Bottom Half) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -94,30 +77,29 @@
                 app:layout_constraintTop_toBottomOf="@id/imgRoom">
 
                 <TextView
+                    android:id="@+id/tvRoomTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/raleway_bold"
-                    android:text="Room 101"
+                    android:text="Loading..."
                     android:textColor="@android:color/white"
                     android:textSize="28sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvRoomDesc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/raleway_bold"
                     android:layout_marginTop="12dp"
-                    android:text="General Education Lecture Room"
+                    android:text="Please wait..."
                     android:textColor="#E0E0E0"
                     android:textSize="18sp" />
 
             </LinearLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- START NAVIGATION BUTTON -->
-    <!-- Uses the custom drawable created below for the gradient -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnStartNav"
         android:layout_width="match_parent"
@@ -134,7 +116,6 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/bottomNav" />
 
-    <!-- BOTTOM NAVIGATION BAR -->
     <LinearLayout
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
@@ -142,81 +123,9 @@
         android:background="#36334D"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <!-- Home Item -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:background="#363250"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/db_home_ic"
-                app:tint="#FFFFFF"
-                android:padding="3dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Home"
-                android:textSize="12sp"
-                android:textColor="#FFFFFF"
-                android:fontFamily="@font/raleway_regular"/>
-        </LinearLayout>
-
-        <!-- Navigation Item (Active) -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:background="#363250"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/db_nav_icon"
-                app:tint="#FFFFFF"
-                android:padding="3dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Navigation"
-                android:textSize="12sp"
-                android:textColor="#ffff"
-                android:fontFamily="@font/raleway_regular"/>
-        </LinearLayout>
-
-        <!-- Profile Item -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#363250"
-            android:gravity="center"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/db_profile_ic"
-                app:tint="#FFFFFF"
-                android:padding="3dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Profile"
-                android:textSize="12sp"
-                android:textColor="#ffff"
-                android:fontFamily="@font/raleway_regular"/>
-        </LinearLayout>
+        <include layout="@layout/db_client_navscreen_armode" />
 
     </LinearLayout>
 

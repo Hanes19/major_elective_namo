@@ -12,7 +12,7 @@ public class RoomDetailsActivity extends AppCompatActivity {
 
     private ImageView btnBack;
     private AppCompatButton btnStartNav;
-    private TextView tvTitle, tvDesc;
+    private TextView tvTitle, tvDesc; // These will match tvRoomTitle and tvRoomDesc
 
     private DatabaseHelper dbHelper;
     private Room currentRoom;
@@ -24,20 +24,18 @@ public class RoomDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.db_client_room_details);
 
         dbHelper = new DatabaseHelper(this);
+        initViews();
+        loadRoomDetails();
+        setupListeners();
+    }
 
-        // Find Views (Ensure your XML has IDs: tvRoomTitle and tvRoomDesc)
-        // I'm assuming you will add android:id="@+id/tvRoomTitle" to the Room Name TextView
-        // and android:id="@+id/tvRoomDesc" to the Description TextView in your XML.
+    private void initViews() {
         btnBack = findViewById(R.id.btnBack);
         btnStartNav = findViewById(R.id.btnStartNav);
 
-        // You MUST update your XML to include these IDs, or find them by hierarchy
-        // Ideally, update db_client_room_details.xml TextViews with IDs:
-        tvTitle = findViewById(R.id.tvRoomTitle); // Placeholder ID
-        tvDesc = findViewById(R.id.tvRoomDesc);   // Placeholder ID
-
-        loadRoomDetails();
-        setupListeners();
+        // Connect to the new IDs in the XML
+        tvTitle = findViewById(R.id.tvRoomTitle);
+        tvDesc = findViewById(R.id.tvRoomDesc);
     }
 
     private void loadRoomDetails() {
@@ -46,12 +44,8 @@ public class RoomDetailsActivity extends AppCompatActivity {
             currentRoom = dbHelper.getRoomById(roomId);
 
             if (currentRoom != null) {
-                // If you updated XML with IDs, uncomment these:
-                // tvTitle.setText(currentRoom.getRoomName());
-                // tvDesc.setText(currentRoom.getDescription());
-
-                // Temporary fix if you haven't updated XML IDs yet:
-                TextView titleInLayout = findViewById(R.id.cardView).findViewById(android.R.id.text1); // Requires correct ID
+                tvTitle.setText(currentRoom.getRoomName());
+                tvDesc.setText(currentRoom.getDescription());
             }
         }
     }
@@ -62,10 +56,8 @@ public class RoomDetailsActivity extends AppCompatActivity {
         btnStartNav.setOnClickListener(v -> {
             if (currentRoom != null) {
                 Toast.makeText(this, "Starting AR for: " + currentRoom.getRoomName(), Toast.LENGTH_SHORT).show();
-
                 try {
                     Intent intent = new Intent(RoomDetailsActivity.this, com.unity3d.player.UnityPlayerActivity.class);
-                    // Pass the technical ID (e.g., "room_101") that Unity understands
                     intent.putExtra("destination", currentRoom.getArDestinationId());
                     startActivity(intent);
                 } catch (ClassNotFoundException e) {

@@ -6,7 +6,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,6 +35,8 @@ public class ClientRoomsListActivity extends AppCompatActivity {
     private void initViews() {
         btnBack = findViewById(R.id.btnBack);
         tabMap = findViewById(R.id.tabMap);
+
+        // These IDs must match the XML provided above
         etSearch = findViewById(R.id.etSearch);
         recyclerView = findViewById(R.id.recyclerViewRooms);
     }
