@@ -5,105 +5,95 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-// Note: You will need to register this activity in your AndroidManifest.xml
 public class ClientDashboardActivity extends AppCompatActivity {
 
-    // 1. Declare UI Components (matching IDs from db_client_first_page.xml)
     private ImageView imgSettings;
     private LinearLayout searchContainer;
     private LinearLayout cardRooms, cardInstructors, cardNav, cardProfile;
-    private View item1, item2, item3; // The suggestion items in the ScrollView
+    private View item1, item2, item3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Link to the XML layout file
         setContentView(R.layout.db_client_first_page);
 
-        // 2. Initialize Views
         initViews();
-
-        // 3. Set up Click Listeners
         setupListeners();
     }
 
     private void initViews() {
-        // Header
         imgSettings = findViewById(R.id.img_settings);
-
-        // Main Sections
         searchContainer = findViewById(R.id.search_container);
         cardRooms = findViewById(R.id.card_rooms);
         cardInstructors = findViewById(R.id.card_instructors);
         cardNav = findViewById(R.id.card_nav);
         cardProfile = findViewById(R.id.card_profile);
-
-        // Suggestions List Items (using their container IDs)
         item1 = findViewById(R.id.item_1);
         item2 = findViewById(R.id.item_2);
         item3 = findViewById(R.id.item_3);
-
-        // Note: The bottom navigation bar is present in the XML but usually managed
-        // via fragments or dedicated handling logic, which is beyond this boilerplate setup.
     }
 
     private void setupListeners() {
-        // Handle Clicks for Header and Search
         imgSettings.setOnClickListener(v -> {
-            Toast.makeText(this, "Settings clicked", Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to Settings Activity
+            Toast.makeText(this, "Settings feature coming soon", Toast.LENGTH_SHORT).show();
         });
 
         searchContainer.setOnClickListener(v -> {
-            Toast.makeText(this, "Open Search Screen", Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to a dedicated Search/Map Screen
-        });
-
-        cardRooms.setOnClickListener(v -> {
-            // Navigate to the Rooms List Activity (ClientRoomsListActivity)
+            // Using existing Rooms List as a search entry point for now
             Intent intent = new Intent(ClientDashboardActivity.this, ClientRoomsListActivity.class);
             startActivity(intent);
         });
 
-        cardInstructors.setOnClickListener(v -> {
-            Toast.makeText(this, "Instructors clicked", Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to Instructors List Activity
-        });
-
-        cardNav.setOnClickListener(v -> {
-            // Start the Unity AR Activity
-            Intent intent = new Intent(ClientDashboardActivity.this, com.unity3d.player.UnityPlayerActivity.class);
-
-            // Optional: Pass the room name to Unity (so your script knows where to point)
-            intent.putExtra("destination", "Room 101");
-
+        // 1. Navigate to Rooms List
+        cardRooms.setOnClickListener(v -> {
+            Intent intent = new Intent(ClientDashboardActivity.this, ClientRoomsListActivity.class);
             startActivity(intent);
         });
 
-        cardProfile.setOnClickListener(v -> {
-            Toast.makeText(this, "Profile clicked", Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to Profile Activity (p_profile_screen.xml)
+        // 2. Navigate to Instructors (Using Admin Activity for demo purposes)
+        cardInstructors.setOnClickListener(v -> {
+            Intent intent = new Intent(ClientDashboardActivity.this, AdminManageInstructorsActivity.class);
+            startActivity(intent);
         });
 
-        // Handle Clicks for Suggested Items
+        // 3. Navigate to AR/Unity
+        cardNav.setOnClickListener(v -> {
+            try {
+                // Ensure the Class exists, otherwise catch error
+                Intent intent = new Intent(ClientDashboardActivity.this, com.unity3d.player.UnityPlayerActivity.class);
+                intent.putExtra("destination", "Room 101"); // Default
+                startActivity(intent);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "AR Module not found", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // 4. Navigate to Profile
+        cardProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(ClientDashboardActivity.this, ClientProfileActivity.class);
+            startActivity(intent);
+        });
+
+        // Shortcuts
         item1.setOnClickListener(v -> {
-            Toast.makeText(this, "Computer Lab 3 Details clicked", Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to Room Details (db_client_room_details.xml)
+            Intent intent = new Intent(ClientDashboardActivity.this, RoomDetailsActivity.class);
+            intent.putExtra("ROOM_NAME", "Computer Lab 3");
+            startActivity(intent);
         });
 
         item2.setOnClickListener(v -> {
-            Toast.makeText(this, "Professor Marcelo Dupalco Details clicked", Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to Instructor Profile Details
+            Toast.makeText(this, "Instructor Details coming soon", Toast.LENGTH_SHORT).show();
         });
 
         item3.setOnClickListener(v -> {
-            Toast.makeText(this, "Room 103 Details clicked", Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to Room Details (db_client_room_details.xml)
+            Intent intent = new Intent(ClientDashboardActivity.this, RoomDetailsActivity.class);
+            intent.putExtra("ROOM_NAME", "Room 103");
+            startActivity(intent);
         });
     }
 }

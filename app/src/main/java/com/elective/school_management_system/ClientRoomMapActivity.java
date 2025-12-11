@@ -26,7 +26,6 @@ public class ClientRoomMapActivity extends AppCompatActivity {
     private void initViews() {
         btnBack = findViewById(R.id.btnBack);
         tabList = findViewById(R.id.tabList);
-
         btnZoomIn = findViewById(R.id.btnZoomIn);
         btnZoomOut = findViewById(R.id.btnZoomOut);
 
@@ -38,37 +37,32 @@ public class ClientRoomMapActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        // Close activity (Go back)
         btnBack.setOnClickListener(v -> finish());
 
         // Switch back to List View
         tabList.setOnClickListener(v -> {
-            // Intent intent = new Intent(ClientRoomMapActivity.this, ClientRoomsListActivity.class);
-            // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            // startActivity(intent);
-            finish(); // Since we usually come from List, finish() acts as "Back to List"
+            Intent intent = new Intent(ClientRoomMapActivity.this, ClientRoomsListActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         });
 
-        // --- MAP MARKER CLICKS ---
+        // Marker Logic
         View.OnClickListener markerListener = v -> {
             TextView tv = (TextView) v;
-            String roomNumber = tv.getText().toString();
-            String roomName = "Room " + roomNumber;
+            String roomNumber = tv.getText().toString(); // e.g., "101"
 
-            // Navigate to Details Page
             Intent intent = new Intent(ClientRoomMapActivity.this, RoomDetailsActivity.class);
-            intent.putExtra("ROOM_NAME", roomName);
+            intent.putExtra("ROOM_NAME", "Room " + roomNumber);
             startActivity(intent);
         };
 
-        marker101.setOnClickListener(markerListener);
-        marker102.setOnClickListener(markerListener);
-        marker103.setOnClickListener(markerListener);
-        marker201.setOnClickListener(markerListener);
-        marker202.setOnClickListener(markerListener);
+        if(marker101 != null) marker101.setOnClickListener(markerListener);
+        if(marker102 != null) marker102.setOnClickListener(markerListener);
+        if(marker103 != null) marker103.setOnClickListener(markerListener);
+        if(marker201 != null) marker201.setOnClickListener(markerListener);
+        if(marker202 != null) marker202.setOnClickListener(markerListener);
 
-        // Zoom Controls (Mock)
-        btnZoomIn.setOnClickListener(v -> Toast.makeText(this, "Zooming In...", Toast.LENGTH_SHORT).show());
-        btnZoomOut.setOnClickListener(v -> Toast.makeText(this, "Zooming Out...", Toast.LENGTH_SHORT).show());
+        btnZoomIn.setOnClickListener(v -> Toast.makeText(this, "Zoom In", Toast.LENGTH_SHORT).show());
+        btnZoomOut.setOnClickListener(v -> Toast.makeText(this, "Zoom Out", Toast.LENGTH_SHORT).show());
     }
 }
