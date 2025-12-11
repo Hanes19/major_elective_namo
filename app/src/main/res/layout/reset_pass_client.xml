@@ -96,7 +96,6 @@
                     android:textColorHint="#80FFFFFF"
                     android:paddingStart="16dp"
                     android:paddingEnd="48dp"
-                    android:drawableStart="@drawable/ic_lock_prefix"
                     android:drawablePadding="12dp"
                     android:textColor="@color/white"
                     android:textSize="16sp"/>
@@ -130,7 +129,6 @@
                     android:textColorHint="#80FFFFFF"
                     android:paddingStart="16dp"
                     android:paddingEnd="48dp"
-                    android:drawableStart="@drawable/ic_lock_prefix"
                     android:drawablePadding="12dp"
                     android:textColor="@color/white"
                     android:textSize="16sp"/>
@@ -164,7 +162,6 @@
                     android:textColorHint="#80FFFFFF"
                     android:paddingStart="16dp"
                     android:paddingEnd="48dp"
-                    android:drawableStart="@drawable/ic_lock_prefix"
                     android:drawablePadding="12dp"
                     android:textColor="@color/white"
                     android:textSize="16sp"/>

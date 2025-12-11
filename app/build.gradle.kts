@@ -2,13 +2,23 @@ plugins {
     alias(libs.plugins.android.application)
 }
 
+// Required because settings.gradle is set to PREFER_PROJECT
+repositories {
+    google()
+    mavenCentral()
+    flatDir {
+        // Points to the libs folder inside unityLibrary
+        dirs("../unityLibrary/libs")
+    }
+}
+
 android {
     namespace = "com.elective.school_management_system"
     compileSdk = 36
 
     defaultConfig {
         applicationId = "com.elective.school_management_system"
-        minSdk = 21
+        minSdk = 25  // Must match unityLibrary
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -25,13 +35,17 @@ android {
             )
         }
     }
+
+    // Updated to Java 17 to match UnityLibrary
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
 dependencies {
+    // Links the Unity Library Module
+    implementation(project(":unityLibrary"))
 
     implementation(libs.appcompat)
     implementation(libs.material)

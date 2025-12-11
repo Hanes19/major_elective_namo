@@ -12,11 +12,12 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT) // <--- UPDATED
     repositories {
         google()
         mavenCentral()
     }
+
 }
 
 rootProject.name = "School_Management_System"

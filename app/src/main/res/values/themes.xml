@@ -52,4 +52,10 @@
     <color name="teal_200" />
     <color name="purple_700" />
     <color name="purple_500" />
+
+    <style name="UnityThemeSelector" parent="Theme.School_Management_System">
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
 </resources>
