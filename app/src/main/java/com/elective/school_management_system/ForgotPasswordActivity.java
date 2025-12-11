@@ -1,50 +1,64 @@
 package com.elective.school_management_system;
 
 import android.os.Bundle;
-import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-import android.widget.Toast;
 
-// Note: The original f_login.java referenced a "ForgotPasswordActivity.class"
 public class ForgotPasswordActivity extends AppCompatActivity {
 
-    // 1. Declare UI Components (matching IDs from fogot_password_screen.xml)
     private ImageButton btnBack;
-    private AppCompatButton btnGoBack;
+    private AppCompatButton btnReset;
+    private EditText etEmail, etNewPassword;
+    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Ensure this matches your XML filename
         setContentView(R.layout.fogot_password_screen);
 
-        // 2. Initialize Views
+        dbHelper = new DatabaseHelper(this);
         initViews();
-
-        // 3. Set up Click Listeners
         setupListeners();
     }
 
     private void initViews() {
-        // The back arrow at the top
         btnBack = findViewById(R.id.btnBack);
-        // The large button at the bottom
-        btnGoBack = findViewById(R.id.btnGoBack);
+        // Rename ID in XML or match here: assuming btnGoBack is the submit button
+        btnReset = findViewById(R.id.btnGoBack);
+
+        // Make sure these IDs exist in your XML
+        etEmail = findViewById(R.id.etEmail);
+        etNewPassword = findViewById(R.id.etPassword); // Using etPassword or create a new one
     }
 
     private void setupListeners() {
-        // Define a listener for returning to the previous screen (f_login)
-        View.OnClickListener goBackListener = v -> {
-            // Closes the current activity and returns to the previous one
-            finish();
-        };
+        btnBack.setOnClickListener(v -> finish());
 
-        // --- Back Arrow Functionality ---
-        btnBack.setOnClickListener(goBackListener);
+        btnReset.setOnClickListener(v -> {
+            String email = etEmail.getText().toString().trim();
+            // If you don't have a new password field, you can generate a temp one,
+            // but here we assume the user enters it.
+            String newPass = (etNewPassword != null) ? etNewPassword.getText().toString().trim() : "123456";
 
-        // --- Go Back Button Logic ---
-        btnGoBack.setOnClickListener(goBackListener);
+            if(email.isEmpty()) {
+                Toast.makeText(this, "Please enter your email", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if(dbHelper.checkEmailExists(email)) {
+                boolean success = dbHelper.updatePassword(email, newPass);
+                if(success) {
+                    Toast.makeText(this, "Password Reset Successful! Please Login.", Toast.LENGTH_LONG).show();
+                    finish();
+                } else {
+                    Toast.makeText(this, "Database Error.", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, "Email not found registered.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

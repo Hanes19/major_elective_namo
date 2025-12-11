@@ -160,4 +160,64 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.insert(TABLE_INSTRUCTORS, null, values);
         return result != -1;
     }
+
+    // --- INSTRUCTOR FUNCTIONS (Add these below addInstructor) ---
+
+    public List<Instructor> getAllInstructors() {
+        List<Instructor> instructorList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_INSTRUCTORS, null, null, null, null, null, KEY_INST_NAME + " ASC");
+
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(KEY_INST_NAME));
+                String dept = cursor.getString(cursor.getColumnIndexOrThrow(KEY_INST_DEPT));
+                instructorList.add(new Instructor(id, name, dept));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return instructorList;
+    }
+
+    public boolean updateInstructor(int id, String name, String department) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_INST_NAME, name);
+        values.put(KEY_INST_DEPT, department);
+        return db.update(TABLE_INSTRUCTORS, values, KEY_ID + "=?", new String[]{String.valueOf(id)}) > 0;
+    }
+
+    public boolean deleteInstructor(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_INSTRUCTORS, KEY_ID + "=?", new String[]{String.valueOf(id)}) > 0;
+    }
+
+// --- USER PROFILE FUNCTIONS (Add these below getUsername) ---
+
+    public boolean updateUser(String currentEmail, String newName, String newEmail) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_USER_NAME, newName);
+        values.put(KEY_USER_EMAIL, newEmail);
+        // return true if update is successful
+        return db.update(TABLE_USERS, values, KEY_USER_EMAIL + "=?", new String[]{currentEmail}) > 0;
+    }
+
+    public boolean updatePassword(String email, String newPassword) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_USER_PASSWORD, newPassword);
+        return db.update(TABLE_USERS, values, KEY_USER_EMAIL + "=?", new String[]{email}) > 0;
+    }
+
+    public boolean checkEmailExists(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_USERS, new String[]{KEY_ID}, KEY_USER_EMAIL + "=?", new String[]{email}, null, null, null);
+        boolean exists = (cursor.getCount() > 0);
+        cursor.close();
+        return exists;
+    }
+
+
 }
