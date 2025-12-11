@@ -12,8 +12,8 @@ import androidx.appcompat.widget.AppCompatButton;
 public class ClientProfileActivity extends AppCompatActivity {
 
     private ImageView btnBack;
-    private AppCompatButton btnEdit, btnLogout; // Assumes you might add a logout button later
-    private TextView tvName, tvEmail; // You need to add IDs to your XML textviews for this to work
+    private AppCompatButton btnEdit, btnLogout;
+    private TextView tvName, tvEmail;
     private DatabaseHelper dbHelper;
 
     @Override
@@ -31,9 +31,10 @@ public class ClientProfileActivity extends AppCompatActivity {
         btnBack = findViewById(R.id.btnBack);
         btnEdit = findViewById(R.id.btnEdit);
 
-        // IMPORTANT: In your XML (p_profile_screen.xml), give IDs to the TextViews
-        // that hold the Name and Email. For example: android:id="@+id/tvProfileName"
-        // Since I don't see the XML IDs, I am assuming standard names:
+        // Make sure you have a Logout button in your XML with id: btnLogout
+        // If not, add one.
+        btnLogout = findViewById(R.id.btnLogout);
+
         tvName = findViewById(R.id.tvProfileName);
         tvEmail = findViewById(R.id.tvProfileEmail);
     }
@@ -44,7 +45,6 @@ public class ClientProfileActivity extends AppCompatActivity {
 
         if (tvEmail != null) tvEmail.setText(email);
 
-        // Fetch Name from DB
         String name = dbHelper.getUsername(email);
         if (tvName != null) tvName.setText(name);
     }
@@ -52,21 +52,24 @@ public class ClientProfileActivity extends AppCompatActivity {
     private void setupListeners() {
         btnBack.setOnClickListener(v -> finish());
 
-        btnEdit.setOnClickListener(v -> {
-            Toast.makeText(this, "Edit feature coming soon", Toast.LENGTH_SHORT).show();
-            // Intent intent = new Intent(ClientProfileActivity.this, ClientEditProfileActivity.class);
-            // startActivity(intent);
-        });
+        btnEdit.setOnClickListener(v ->
+                Toast.makeText(this, "Edit feature coming soon", Toast.LENGTH_SHORT).show()
+        );
 
-        // If you have a logout button:
-        /*
-        btnLogout.setOnClickListener(v -> {
-            SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
-            prefs.edit().clear().apply();
-            Intent intent = new Intent(this, f_login.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        });
-        */
+        if (btnLogout != null) {
+            btnLogout.setOnClickListener(v -> {
+                // 1. Clear Session
+                SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.clear();
+                editor.apply();
+
+                // 2. Redirect to Login
+                Intent intent = new Intent(ClientProfileActivity.this, f_login.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Clear back stack
+                startActivity(intent);
+                finish();
+            });
+        }
     }
 }

@@ -22,10 +22,9 @@
             android:src="@drawable/back_btn"
             app:tint="@android:color/white"
             android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="Back" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -39,7 +38,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
@@ -90,7 +88,6 @@
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:textStyle="bold" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -111,137 +108,29 @@
             app:tint="#C0C0C0" />
 
         <EditText
+            android:id="@+id/etSearch"
             android:layout_width="match_parent"
-            android:fontFamily="@font/raleway_light"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:background="@null"
-            android:hint="Search Room or Instructor"
+            android:hint="Search Room..."
+            android:fontFamily="@font/raleway_light"
             android:inputType="text"
             android:maxLines="1"
             android:textColor="@android:color/white"
             android:textColorHint="#C0C0C0"
             android:textSize="16sp" />
-
     </LinearLayout>
 
-    <ScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewRooms"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="16dp"
+        android:clipToPadding="false"
         app:layout_constraintTop_toBottomOf="@id/searchContainer"
-        app:layout_constraintBottom_toTopOf="@id/bottomNav">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="32dp"
-            android:paddingTop="8dp">
-
-            <LinearLayout
-                android:id="@+id/item_room_102"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground"
-                android:paddingVertical="16dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/raleway_regular"
-                    android:text="Room 102"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginEnd="24dp"
-                    android:src="@drawable/pen"
-                    app:tint="@android:color/white" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/delete"
-                    app:tint="@android:color/white" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/item_room_103"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground"
-                android:paddingVertical="16dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/raleway_regular"
-                    android:text="Room 103"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginEnd="24dp"
-                    android:src="@drawable/pen"
-                    app:tint="@android:color/white" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/delete"
-                    app:tint="@android:color/white" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/item_room_104"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground"
-                android:paddingVertical="16dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/raleway_regular"
-                    android:text="Room 104"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginEnd="24dp"
-                    android:src="@drawable/pen"
-                    app:tint="@android:color/white" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/delete"
-                    app:tint="@android:color/white" />
-            </LinearLayout>
-
-        </LinearLayout>
-    </ScrollView>
+        app:layout_constraintBottom_toTopOf="@id/bottomNav" />
 
     <LinearLayout
         android:id="@+id/bottomNav"
@@ -252,62 +141,7 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/db_home_ic"
-                app:tint="#FFFFFF"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Home"
-                android:textSize="12sp"
-                android:textColor="#FFFFFF"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/db_nav_icon"
-                app:tint="@android:color/white"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Navigation"
-                android:textSize="12sp"
-                android:textColor="@android:color/white"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/db_profile_ic"
-                app:tint="@android:color/white"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Profile"
-                android:textSize="12sp"
-                android:textColor="@android:color/white"/>
-        </LinearLayout>
+        <include layout="@layout/db_client_navscreen_armode" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
