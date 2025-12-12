@@ -1,6 +1,7 @@
 package com.elective.school_management_system;
 
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +16,7 @@ public class ClientEditProfileActivity extends AppCompatActivity {
     private Button btnSaveChanges;
     private DatabaseHelper dbHelper;
     private String currentEmail;
+    private int currentUserId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +32,6 @@ public class ClientEditProfileActivity extends AppCompatActivity {
     private void initViews() {
         btnBack = findViewById(R.id.btnBack);
 
-        // Map the IDs from your XML file
         etName = findViewById(R.id.editTextText6);    // Name
         etCourse = findViewById(R.id.editTextText5);  // Course
         etYear = findViewById(R.id.editTextText9);    // Year
@@ -38,7 +39,7 @@ public class ClientEditProfileActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.editTextText4);   // Email
         etPhone = findViewById(R.id.editTextText3);   // Phone
 
-        btnSaveChanges = findViewById(R.id.btnSaveChanges); // Ensure you added this ID in XML
+        btnSaveChanges = findViewById(R.id.btnSaveChanges);
     }
 
     private void loadUserData() {
@@ -46,20 +47,29 @@ public class ClientEditProfileActivity extends AppCompatActivity {
         currentEmail = prefs.getString("email", "");
 
         if (currentEmail.isEmpty()) {
-            Toast.makeText(this, "Session Error", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Session Error. Please Login Again.", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
-        // Load data from DB
+        // 1. Get Main User Data
         String name = dbHelper.getUsername(currentEmail);
+        currentUserId = dbHelper.getUserId(currentEmail);
 
-        // Set text
         etName.setText(name);
         etEmail.setText(currentEmail);
 
-        // Note: Course, Year, Section, Phone are not in your DatabaseHelper yet,
-        // so they are just empty fields for now.
+        // 2. Get Extended Profile Data from new Table
+        if (currentUserId != -1) {
+            Cursor cursor = dbHelper.getUserProfile(currentUserId);
+            if (cursor != null && cursor.moveToFirst()) {
+                etCourse.setText(cursor.getString(cursor.getColumnIndexOrThrow("course")));
+                etYear.setText(cursor.getString(cursor.getColumnIndexOrThrow("year_level")));
+                etSection.setText(cursor.getString(cursor.getColumnIndexOrThrow("section")));
+                etPhone.setText(cursor.getString(cursor.getColumnIndexOrThrow("phone")));
+                cursor.close();
+            }
+        }
     }
 
     private void setupListeners() {
@@ -68,29 +78,41 @@ public class ClientEditProfileActivity extends AppCompatActivity {
         btnSaveChanges.setOnClickListener(v -> {
             String newName = etName.getText().toString().trim();
             String newEmail = etEmail.getText().toString().trim();
+            String course = etCourse.getText().toString().trim();
+            String year = etYear.getText().toString().trim();
+            String section = etSection.getText().toString().trim();
+            String phone = etPhone.getText().toString().trim();
 
             if (newName.isEmpty() || newEmail.isEmpty()) {
                 Toast.makeText(this, "Name and Email are required", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Check if email changed and if it's taken
+            // Check if email changed
             if (!newEmail.equals(currentEmail) && dbHelper.checkEmailExists(newEmail)) {
                 Toast.makeText(this, "Email already exists", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Update Database
-            boolean success = dbHelper.updateUser(currentEmail, newName, newEmail);
-            if (success) {
-                // Update Session
+            // 1. Update Basic Info (Users Table)
+            boolean userUpdated = dbHelper.updateUser(currentEmail, newName, newEmail);
+
+            // 2. Update Extended Info (Profiles Table)
+            // If userUpdated failed, we shouldn't proceed, but for safety we check userId
+            boolean profileUpdated = false;
+            if (currentUserId != -1) {
+                profileUpdated = dbHelper.saveUserProfile(currentUserId, course, year, section, phone);
+            }
+
+            if (userUpdated || profileUpdated) {
+                // Update Session if email changed
                 if (!currentEmail.equals(newEmail)) {
                     getSharedPreferences("UserSession", MODE_PRIVATE)
                             .edit().putString("email", newEmail).apply();
                 }
 
-                Toast.makeText(this, "Profile Saved!", Toast.LENGTH_SHORT).show();
-                finish(); // Close this screen and go back
+                Toast.makeText(this, "Profile Saved Successfully!", Toast.LENGTH_SHORT).show();
+                finish();
             } else {
                 Toast.makeText(this, "Update Failed", Toast.LENGTH_SHORT).show();
             }
