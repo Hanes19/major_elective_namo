@@ -41,7 +41,14 @@ public class ClientProfileActivity extends AppCompatActivity {
 
     private void loadUserProfile() {
         SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
+        // Default to empty string if not found, but we should handle it if it is empty
         currentEmail = prefs.getString("email", "");
+
+        if (currentEmail.isEmpty()) {
+            Toast.makeText(this, "Session Expired. Please Login Again.", Toast.LENGTH_SHORT).show();
+            logout();
+            return;
+        }
 
         if (tvEmail != null) tvEmail.setText(currentEmail);
 
@@ -52,7 +59,12 @@ public class ClientProfileActivity extends AppCompatActivity {
     private void setupListeners() {
         btnBack.setOnClickListener(v -> finish());
         btnLogout.setOnClickListener(v -> logout());
-        btnEdit.setOnClickListener(v -> showEditProfileDialog());
+
+        // UPDATED: Open the new full-screen activity
+        btnEdit.setOnClickListener(v -> {
+            Intent intent = new Intent(ClientProfileActivity.this, ClientEditProfileActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void showEditProfileDialog() {
@@ -64,6 +76,7 @@ public class ClientProfileActivity extends AppCompatActivity {
         layout.setPadding(50, 20, 50, 20);
 
         final EditText etName = new EditText(this);
+        // Ensure we don't pass "Loading Name..." if fetching failed, just pass current text
         etName.setText(tvName.getText().toString());
         etName.setHint("Full Name");
         layout.addView(etName);
@@ -79,20 +92,31 @@ public class ClientProfileActivity extends AppCompatActivity {
             String newName = etName.getText().toString().trim();
             String newEmail = etNewEmail.getText().toString().trim();
 
-            if (!newName.isEmpty() && !newEmail.isEmpty()) {
-                boolean success = dbHelper.updateUser(currentEmail, newName, newEmail);
-                if (success) {
-                    // Update Session if email changed
-                    if(!currentEmail.equals(newEmail)) {
-                        SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
-                        prefs.edit().putString("email", newEmail).apply();
-                        currentEmail = newEmail;
-                    }
-                    loadUserProfile();
-                    Toast.makeText(this, "Profile Updated", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, "Update Failed", Toast.LENGTH_SHORT).show();
+            if (newName.isEmpty() || newEmail.isEmpty()) {
+                Toast.makeText(this, "Fields cannot be empty", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Check if email is being changed and if the new email already exists
+            if (!newEmail.equals(currentEmail) && dbHelper.checkEmailExists(newEmail)) {
+                Toast.makeText(this, "Email already exists!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            boolean success = dbHelper.updateUser(currentEmail, newName, newEmail);
+            if (success) {
+                // Update Session if email changed
+                if(!currentEmail.equals(newEmail)) {
+                    SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
+                    prefs.edit().putString("email", newEmail).apply();
+                    currentEmail = newEmail;
                 }
+
+                // Refresh UI
+                loadUserProfile();
+                Toast.makeText(this, "Profile Updated Successfully", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Update Failed. User not found.", Toast.LENGTH_SHORT).show();
             }
         });
         builder.setNegativeButton("Cancel", null);

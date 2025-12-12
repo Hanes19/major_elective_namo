@@ -26,26 +26,15 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".RegisterActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".ForgotPasswordActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ClientDashboardActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ClientRoomsListActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".RoomDetailsActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"/>
-
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
+        <activity android:name=".RegisterActivity" android:exported="false" android:screenOrientation="portrait"/>
+        <activity android:name=".ForgotPasswordActivity" android:exported="false" android:screenOrientation="portrait"/>
+        <activity android:name=".ClientDashboardActivity" android:exported="false" android:screenOrientation="portrait"/>
+        <activity android:name=".ClientRoomsListActivity" android:exported="false" android:screenOrientation="portrait"/>
+        <activity android:name=".RoomDetailsActivity" android:exported="false" android:screenOrientation="portrait"/>
+        <activity android:name=".ClientEditProfileActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ClientInstructorsListActivity" android:exported="false" android:screenOrientation="portrait"/>
+        <activity android:name=".ClientProfileActivity" android:exported="false" android:screenOrientation="portrait"/>
+        <activity android:name=".MainActivity" android:exported="false" />
 
     </application>
 

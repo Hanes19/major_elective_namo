@@ -2,7 +2,7 @@ package com.elective.school_management_system;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore; // Imported for Camera intent
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -44,7 +44,6 @@ public class ClientDashboardActivity extends AppCompatActivity {
         });
 
         searchContainer.setOnClickListener(v -> {
-            // Using existing Rooms List as a search entry point for now
             Intent intent = new Intent(ClientDashboardActivity.this, ClientRoomsListActivity.class);
             startActivity(intent);
         });
@@ -55,15 +54,14 @@ public class ClientDashboardActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // 2. Navigate to Instructors (Using Admin Activity for demo purposes)
+        // 2. Navigate to Instructors (FIXED: Links to Client List)
         cardInstructors.setOnClickListener(v -> {
-            Intent intent = new Intent(ClientDashboardActivity.this, AdminManageInstructorsActivity.class);
+            Intent intent = new Intent(ClientDashboardActivity.this, ClientInstructorsListActivity.class);
             startActivity(intent);
         });
 
-        // 3. Navigate to Camera (Replaced AR/Unity)
+        // 3. Navigate to Camera
         cardNav.setOnClickListener(v -> {
-            // UPDATED: Opens the system camera instead of Unity AR
             try {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivity(intent);
@@ -87,7 +85,9 @@ public class ClientDashboardActivity extends AppCompatActivity {
         });
 
         item2.setOnClickListener(v -> {
-            Toast.makeText(this, "Instructor Details coming soon", Toast.LENGTH_SHORT).show();
+            // Updated to link to Instructors list
+            Intent intent = new Intent(ClientDashboardActivity.this, ClientInstructorsListActivity.class);
+            startActivity(intent);
         });
 
         item3.setOnClickListener(v -> {
