@@ -14,6 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 public class ClientDashboardActivity extends AppCompatActivity {
 
@@ -21,7 +24,6 @@ public class ClientDashboardActivity extends AppCompatActivity {
     private ImageView imgSettings;
     private LinearLayout searchContainer;
     private LinearLayout cardRooms, cardInstructors, cardNav, cardProfile;
-    private View item1, item2, item3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,9 @@ public class ClientDashboardActivity extends AppCompatActivity {
 
         initViews();
         setupListeners();
+
+        // Default Load: Show Rooms when dashboard opens
+        replaceFragment(new RoomsFragment());
     }
 
     private void initViews() {
@@ -39,9 +44,6 @@ public class ClientDashboardActivity extends AppCompatActivity {
         cardInstructors = findViewById(R.id.card_instructors);
         cardNav = findViewById(R.id.card_nav);
         cardProfile = findViewById(R.id.card_profile);
-        item1 = findViewById(R.id.item_1);
-        item2 = findViewById(R.id.item_2);
-        item3 = findViewById(R.id.item_3);
     }
 
     private void setupListeners() {
@@ -50,59 +52,40 @@ public class ClientDashboardActivity extends AppCompatActivity {
         });
 
         searchContainer.setOnClickListener(v -> {
-            Intent intent = new Intent(ClientDashboardActivity.this, ClientRoomsListActivity.class);
-            startActivity(intent);
+            // Optional: You can make this open the Rooms fragment or a specific search fragment
+            replaceFragment(new RoomsFragment());
         });
 
-        // 1. Navigate to Rooms List
-        cardRooms.setOnClickListener(v -> {
-            Intent intent = new Intent(ClientDashboardActivity.this, ClientRoomsListActivity.class);
-            startActivity(intent);
-        });
+        // 1. Rooms Click: Switch bottom part to Rooms layout
+        cardRooms.setOnClickListener(v -> replaceFragment(new RoomsFragment()));
 
-        // 2. Navigate to Instructors
-        cardInstructors.setOnClickListener(v -> {
-            Intent intent = new Intent(ClientDashboardActivity.this, ClientInstructorsListActivity.class);
-            startActivity(intent);
-        });
+        // 2. Instructors Click: Switch bottom part to Instructors layout
+        cardInstructors.setOnClickListener(v -> replaceFragment(new InstructorsFragment()));
 
-        // 3. Navigate to Camera (FIXED: Checks permission first)
+        // 3. Navigation Click: Keep existing behavior (Goes to Camera/Nav Activity)
         cardNav.setOnClickListener(v -> checkCameraPermissionAndOpen());
 
-        // 4. Navigate to Profile
+        // 4. Profile Click: Navigate to Profile Activity
         cardProfile.setOnClickListener(v -> {
             Intent intent = new Intent(ClientDashboardActivity.this, ClientProfileActivity.class);
             startActivity(intent);
         });
-
-        // Shortcuts
-        item1.setOnClickListener(v -> {
-            Intent intent = new Intent(ClientDashboardActivity.this, RoomDetailsActivity.class);
-            intent.putExtra("ROOM_NAME", "Computer Lab 3");
-            startActivity(intent);
-        });
-
-        item2.setOnClickListener(v -> {
-            // Optional: Link to Instructors List
-            Intent intent = new Intent(ClientDashboardActivity.this, ClientInstructorsListActivity.class);
-            startActivity(intent);
-        });
-
-        item3.setOnClickListener(v -> {
-            Intent intent = new Intent(ClientDashboardActivity.this, RoomDetailsActivity.class);
-            intent.putExtra("ROOM_NAME", "Room 103");
-            startActivity(intent);
-        });
     }
 
-    // --- NEW: Permission Logic ---
+    // Helper method to swap fragments in the bottom container
+    private void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.commit();
+    }
+
+    // --- Permission & Camera Logic (Unchanged) ---
 
     private void checkCameraPermissionAndOpen() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            // Request Permission
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
         } else {
-            // Permission already granted
             openCamera();
         }
     }
@@ -117,7 +100,6 @@ public class ClientDashboardActivity extends AppCompatActivity {
         }
     }
 
-    // Handle the user's response to the permission dialog
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
