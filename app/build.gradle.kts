@@ -6,10 +6,10 @@ plugins {
 repositories {
     google()
     mavenCentral()
-    flatDir {
+    /*flatDir {
         // Points to the libs folder inside unityLibrary
         dirs("../unityLibrary/libs")
-    }
+    }*/
 }
 
 android {
@@ -45,7 +45,9 @@ android {
 
 dependencies {
     // Links the Unity Library Module
-    implementation(project(":unityLibrary"))
+   // implementation(project(":unityLibrary"))
+
+    //implementation(files("../unityLibrary/libs/unity-classes.jar"))
 
     implementation(libs.appcompat)
     implementation(libs.material)

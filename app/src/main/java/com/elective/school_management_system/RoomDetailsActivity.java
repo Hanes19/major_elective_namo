@@ -2,6 +2,7 @@ package com.elective.school_management_system;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore; // Import added for Camera
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,7 +13,7 @@ public class RoomDetailsActivity extends AppCompatActivity {
 
     private ImageView btnBack;
     private AppCompatButton btnStartNav;
-    private TextView tvTitle, tvDesc; // These will match tvRoomTitle and tvRoomDesc
+    private TextView tvTitle, tvDesc;
 
     private DatabaseHelper dbHelper;
     private Room currentRoom;
@@ -48,14 +49,31 @@ public class RoomDetailsActivity extends AppCompatActivity {
                 tvDesc.setText(currentRoom.getDescription());
             }
         }
+        // Fallback for intent from Map which might send "ROOM_NAME" string instead of ID
+        else if (getIntent().hasExtra("ROOM_NAME")) {
+            String roomName = getIntent().getStringExtra("ROOM_NAME");
+            tvTitle.setText(roomName);
+            // Ideally fetch details by name from DB here if needed
+        }
     }
 
     private void setupListeners() {
         btnBack.setOnClickListener(v -> finish());
 
         btnStartNav.setOnClickListener(v -> {
-            if (currentRoom != null) {
-                Toast.makeText(this, "Starting AR for: " + currentRoom.getRoomName(), Toast.LENGTH_SHORT).show();
+            if (currentRoom != null || tvTitle.getText().length() > 0) {
+                String roomName = (currentRoom != null) ? currentRoom.getRoomName() : tvTitle.getText().toString();
+
+                // TEMPORARY: Replaced Unity AR with Camera
+                try {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivity(intent);
+                    Toast.makeText(RoomDetailsActivity.this, "Opening Camera for: " + roomName, Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(RoomDetailsActivity.this, "Unable to open camera", Toast.LENGTH_SHORT).show();
+                }
+
+                /* // ORIGINAL CODE (Commented out to fix "Cannot resolve symbol unity3d")
                 try {
                     Intent intent = new Intent(RoomDetailsActivity.this, com.unity3d.player.UnityPlayerActivity.class);
                     intent.putExtra("destination", currentRoom.getArDestinationId());
@@ -63,6 +81,7 @@ public class RoomDetailsActivity extends AppCompatActivity {
                 } catch (ClassNotFoundException e) {
                     Toast.makeText(this, "AR Module not installed.", Toast.LENGTH_SHORT).show();
                 }
+                */
             }
         });
     }

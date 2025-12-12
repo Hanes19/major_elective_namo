@@ -2,6 +2,7 @@ package com.elective.school_management_system;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore; // Imported for Camera intent
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -60,16 +61,15 @@ public class ClientDashboardActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // 3. Navigate to AR/Unity
+        // 3. Navigate to Camera (Replaced AR/Unity)
         cardNav.setOnClickListener(v -> {
+            // UPDATED: Opens the system camera instead of Unity AR
             try {
-                // Ensure the Class exists, otherwise catch error
-                Intent intent = new Intent(ClientDashboardActivity.this, com.unity3d.player.UnityPlayerActivity.class);
-                intent.putExtra("destination", "Room 101"); // Default
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivity(intent);
-            } catch (ClassNotFoundException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(this, "AR Module not found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Unable to open camera", Toast.LENGTH_SHORT).show();
             }
         });
 

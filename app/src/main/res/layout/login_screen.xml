@@ -34,7 +34,6 @@
         android:layout_marginStart="24dp"
         tools:ignore="HardcodedText" />
 
-    <!-- Title Section -->
     <TextView
         android:id="@+id/tvWelcome"
         android:layout_width="wrap_content"
@@ -75,7 +74,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Email Input Row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -86,7 +84,6 @@
             android:paddingEnd="16dp"
             android:layout_marginBottom="16dp">
 
-            <!-- Fixed size icon (24dp) to prevent it from being "too big" -->
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -113,7 +110,6 @@
                 tools:ignore="HardcodedText,RtlSymmetry" />
         </LinearLayout>
 
-        <!-- Password Input Row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -123,7 +119,6 @@
             android:paddingStart="16dp"
             android:paddingEnd="8dp">
 
-            <!-- Fixed size icon (24dp) -->
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -149,7 +144,6 @@
                 android:textSize="15sp"
                 tools:ignore="Autofill,HardcodedText,RtlSymmetry" />
 
-            <!-- Toggle Button -->
             <ImageButton
                 android:id="@+id/btnTogglePass"
                 android:layout_width="40dp"
@@ -157,7 +151,8 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
-                android:padding="10dp"
+                android:padding="4dp"
+                android:scaleType="fitCenter"
                 android:src="@drawable/pswrd_view_txtbox_ic"
                 app:tint="@color/hint_text"
                 tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
@@ -165,7 +160,6 @@
 
     </LinearLayout>
 
-    <!-- Login Button -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
@@ -184,7 +178,6 @@
         android:textSize="15sp"
         tools:ignore="HardcodedText" />
 
-    <!-- Forgot Password -->
     <TextView
         android:id="@+id/tvForgotPass"
         android:layout_width="wrap_content"
@@ -202,7 +195,6 @@
         app:layout_constraintTop_toBottomOf="@id/btnLogin"
         tools:ignore="HardcodedText" />
 
-    <!-- Sign Up Link -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -232,7 +224,5 @@
             android:textSize="15sp"
             tools:ignore="HardcodedText" />
     </LinearLayout>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
