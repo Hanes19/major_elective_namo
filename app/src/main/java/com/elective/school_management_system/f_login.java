@@ -58,6 +58,7 @@ public class f_login extends AppCompatActivity {
         tvForgotPass.setOnClickListener(v -> startActivity(new Intent(f_login.this, ForgotPasswordActivity.class)));
         tvSignUp.setOnClickListener(v -> startActivity(new Intent(f_login.this, RegisterActivity.class)));
         btnLogin.setOnClickListener(v -> performLogin());
+        tvForgotPass.setOnClickListener(v -> startActivity(new Intent(f_login.this, ForgotPasswordActivity.class)));
     }
 
     private void performLogin() {

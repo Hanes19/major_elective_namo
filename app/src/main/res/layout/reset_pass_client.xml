@@ -192,6 +192,7 @@
 
             <!-- Save Button -->
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSavePassword"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/dup_btn_gradient"

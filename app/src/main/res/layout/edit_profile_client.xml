@@ -7,7 +7,6 @@
     android:background="#3E3851"
     >
 
-    <!-- Top Toolbar -->
     <RelativeLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
@@ -26,7 +25,7 @@
             android:padding="4dp"
             android:scaleType="fitCenter"
             android:src="@drawable/back_btn"
-            />
+            app:tint="@android:color/white" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -40,7 +39,6 @@
 
     </RelativeLayout>
 
-    <!-- Bottom Navigation Bar -->
     <LinearLayout
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
@@ -48,9 +46,9 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:weightSum="3">
+        android:weightSum="3"
+        android:background="#363250">
 
-        <!-- Home Item -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -61,18 +59,18 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/db_home_ic"
-                android:padding="3dp"/>
+                android:padding="3dp"
+                app:tint="#FFFFFF"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Home"
-                android:textColor="@color/text_white"
+                android:textColor="@color/white"
                 android:textSize="12sp"
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/raleway_light"/>
         </LinearLayout>
 
-        <!-- Navigation Item -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -83,18 +81,18 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/db_nav_icon"
-                android:padding="3dp"/>
+                android:padding="3dp"
+                app:tint="#FFFFFF"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Navigation"
-                android:textColor="@color/text_white"
+                android:textColor="@color/white"
                 android:textSize="12sp"
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/raleway_light"/>
         </LinearLayout>
 
-        <!-- Profile Item (Active) -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -106,20 +104,19 @@
                 android:layout_height="24dp"
                 android:src="@drawable/db_profile_ic"
                 android:padding="3dp"
-                />
+                app:tint="@color/accent_pink"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Profile"
-                android:textColor="@color/text_white"
+                android:textColor="@color/accent_pink"
                 android:textSize="12sp"
                 android:layout_marginTop="4dp"
-                android:fontFamily="@font/raleway_light"/>
+                android:fontFamily="@font/raleway_bold"/>
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Main Content Scroll -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -133,8 +130,6 @@
             android:padding="24dp"
             android:gravity="center_horizontal">
 
-            <!-- Profile Image Placeholder -->
-            <!-- In a real app, use CircleImageView library or CardView with radius -->
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -159,13 +154,9 @@
                     app:srcCompat="@drawable/edit_pic_ic" />
             </FrameLayout>
 
-            <!-- User Details Table -->
-
-            <!-- Edit Button -->
-
             <LinearLayout
-                android:layout_width="280dp"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
@@ -182,7 +173,9 @@
                     android:layout_height="40dp"
                     android:background="@drawable/btn_design"
                     android:ems="10"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:textColor="#FFFFFF"
+                    android:paddingStart="12dp"/>
 
                 <TextView
                     android:id="@+id/textView3"
@@ -199,17 +192,20 @@
                     android:layout_height="40dp"
                     android:background="@drawable/btn_design"
                     android:ems="10"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:textColor="#FFFFFF"
+                    android:paddingStart="12dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="130dp"
-                        android:layout_height="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:orientation="vertical">
 
                         <TextView
@@ -217,7 +213,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:layout_weight="1"
                             android:text="Year"
                             android:textColor="@color/white" />
 
@@ -225,21 +220,22 @@
                             android:id="@+id/editTextText9"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
-                            android:layout_weight="1"
                             android:background="@drawable/btn_design"
                             android:ems="10"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:textColor="#FFFFFF"
+                            android:paddingStart="12dp"/>
 
                     </LinearLayout>
 
                     <Space
-                        android:layout_width="20dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0" />
+                        android:layout_width="16dp"
+                        android:layout_height="match_parent" />
 
                     <LinearLayout
-                        android:layout_width="130dp"
-                        android:layout_height="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:orientation="vertical">
 
                         <TextView
@@ -247,7 +243,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:layout_weight="1"
                             android:text="Section"
                             android:textColor="@color/white" />
 
@@ -255,10 +250,11 @@
                             android:id="@+id/editTextText8"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
-                            android:layout_weight="1"
                             android:background="@drawable/btn_design"
                             android:ems="10"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:textColor="#FFFFFF"
+                            android:paddingStart="12dp"/>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -278,7 +274,9 @@
                     android:layout_height="40dp"
                     android:background="@drawable/btn_design"
                     android:ems="10"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:textColor="#FFFFFF"
+                    android:paddingStart="12dp"/>
 
                 <TextView
                     android:id="@+id/textView5"
@@ -295,18 +293,20 @@
                     android:layout_height="40dp"
                     android:background="@drawable/btn_design"
                     android:ems="10"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:textColor="#FFFFFF"
+                    android:paddingStart="12dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="16dp"
                     android:orientation="horizontal">
 
-                    <Button
+                    <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/button5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:background="@drawable/reset_pass_btn"
                         android:text="Reset Password"
@@ -314,12 +314,12 @@
                         android:textColor="@android:color/white"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        app:backgroundTint="@null" />
+                        android:layout_marginEnd="8dp"/>
 
-                    <Button
+                    <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/button6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:background="@drawable/forgot_pass_btn"
                         android:text="Forgot Password"
@@ -327,23 +327,23 @@
                         android:textColor="@android:color/white"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        app:backgroundTint="@null" />
+                        android:layout_marginStart="8dp"/>
 
                 </LinearLayout>
 
             </LinearLayout>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnSaveChanges"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="32dp"
                 android:background="@drawable/btn_gradient"
                 android:text="Save Changes"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
-                android:textStyle="bold"
-                app:backgroundTint="@null" />
+                android:textStyle="bold" />
 
         </LinearLayout>
     </ScrollView>
