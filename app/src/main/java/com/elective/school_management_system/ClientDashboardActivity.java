@@ -4,12 +4,11 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView; // Added
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -24,6 +23,9 @@ public class ClientDashboardActivity extends AppCompatActivity {
     private ImageView imgSettings;
     private LinearLayout searchContainer;
     private LinearLayout cardRooms, cardInstructors, cardNav, cardProfile;
+
+    // NEW: Add Bottom Nav variables to match your XML IDs
+    private LinearLayout navHome, navNav, navProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,17 @@ public class ClientDashboardActivity extends AppCompatActivity {
         cardInstructors = findViewById(R.id.card_instructors);
         cardNav = findViewById(R.id.card_nav);
         cardProfile = findViewById(R.id.card_profile);
+<<<<<<< Updated upstream
+=======
+        item1 = findViewById(R.id.item_1);
+        item2 = findViewById(R.id.item_2);
+        item3 = findViewById(R.id.item_3);
+
+        // NEW: Initialize Bottom Nav
+        navHome = findViewById(R.id.navHome);
+        navNav = findViewById(R.id.navNav);
+        navProfile = findViewById(R.id.navProfile);
+>>>>>>> Stashed changes
     }
 
     private void setupListeners() {
@@ -56,6 +69,7 @@ public class ClientDashboardActivity extends AppCompatActivity {
             replaceFragment(new RoomsFragment());
         });
 
+<<<<<<< Updated upstream
         // 1. Rooms Click: Switch bottom part to Rooms layout
         cardRooms.setOnClickListener(v -> replaceFragment(new RoomsFragment()));
 
@@ -66,10 +80,26 @@ public class ClientDashboardActivity extends AppCompatActivity {
         cardNav.setOnClickListener(v -> checkCameraPermissionAndOpen());
 
         // 4. Profile Click: Navigate to Profile Activity
+=======
+        cardRooms.setOnClickListener(v -> {
+            Intent intent = new Intent(ClientDashboardActivity.this, ClientRoomsListActivity.class);
+            startActivity(intent);
+        });
+
+        cardInstructors.setOnClickListener(v -> {
+            Intent intent = new Intent(ClientDashboardActivity.this, ClientInstructorsListActivity.class);
+            startActivity(intent);
+        });
+
+        // This checks permission, then calls openCamera()
+        cardNav.setOnClickListener(v -> checkCameraPermissionAndOpen());
+
+>>>>>>> Stashed changes
         cardProfile.setOnClickListener(v -> {
             Intent intent = new Intent(ClientDashboardActivity.this, ClientProfileActivity.class);
             startActivity(intent);
         });
+<<<<<<< Updated upstream
     }
 
     // Helper method to swap fragments in the bottom container
@@ -82,6 +112,26 @@ public class ClientDashboardActivity extends AppCompatActivity {
 
     // --- Permission & Camera Logic (Unchanged) ---
 
+=======
+
+        // --- NEW BOTTOM NAV LISTENERS ---
+        // Home (already here, just refresh or do nothing)
+        navHome.setOnClickListener(v -> {});
+
+        // Navigation Button -> Open Nav Screen
+        navNav.setOnClickListener(v -> {
+            checkCameraPermissionAndOpen();
+        });
+
+        // Profile Button -> Open Profile
+        navProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(ClientDashboardActivity.this, ClientProfileActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        });
+    }
+
+>>>>>>> Stashed changes
     private void checkCameraPermissionAndOpen() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
@@ -91,13 +141,13 @@ public class ClientDashboardActivity extends AppCompatActivity {
     }
 
     private void openCamera() {
-        try {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivity(intent);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Unable to open camera", Toast.LENGTH_SHORT).show();
-        }
+        // --- UPDATED LOGIC ---
+        // Instead of opening the system camera, open your custom Navigation Activity
+        Intent intent = new Intent(ClientDashboardActivity.this, ClientNavigationActivity.class);
+        intent.putExtra("ROOM_NAME", "Navigation Mode"); // Optional title
+        startActivity(intent);
+        // Optional: Slide animation
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     @Override
