@@ -46,9 +46,5 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    // --- AR Dependencies (DOWNGRADED TO 0.10.2 TO FIX ERRORS) ---
-    implementation("com.google.ar:core:1.46.0")
-
-    // IMPORTANT: Use version 0.10.2 to match your Java code!
-    implementation("io.github.sceneview:arsceneview:0.10.2")
+    // NO AR LIBRARIES HERE. JUST STANDARD ANDROID.
 }

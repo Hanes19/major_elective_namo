@@ -1,36 +1,49 @@
 package com.elective.school_management_system;
 
+import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.SurfaceTexture;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCaptureSession;
+import android.hardware.camera2.CameraDevice;
+import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CameraMetadata;
+import android.hardware.camera2.CaptureRequest;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.view.Surface;
+import android.view.TextureView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.ActivityCompat;
 
-// IMPORTS FOR VERSION 0.10.2
-import io.github.sceneview.ar.ArSceneView;
-import io.github.sceneview.ar.node.ArModelNode;
-import io.github.sceneview.ar.node.PlacementMode;
-import dev.romainguy.kotlin.math.Float3;
-import kotlin.Unit;
+import java.util.Collections;
 
 public class ClientNavigationActivity extends AppCompatActivity implements SensorEventListener {
 
-    private ArSceneView arSceneView;
-    private ArModelNode arrowNode;
+    private TextureView cameraPreview;
+    private ImageView ivArrow;
     private TextView tvNavTarget;
     private AppCompatButton btnCancelNav;
-    private ImageView btnBack;
-    private LinearLayout navMaps, navDashboard, navUpdates;
 
+    // Camera Variables
+    private CameraManager cameraManager;
+    private CameraCaptureSession cameraCaptureSession;
+    private HandlerThread backgroundThread;
+    private Handler backgroundHandler;
+
+    // Sensors
     private SensorManager sensorManager;
     private Sensor accelerometer;
     private Sensor magnetometer;
@@ -41,102 +54,34 @@ public class ClientNavigationActivity extends AppCompatActivity implements Senso
     private float[] r = new float[9];
     private float[] orientation = new float[3];
 
+    // Bearing (0 = North, 90 = East, 180 = South, 270 = West)
+    // You can set this dynamically based on the Room passed in the Intent
+    private float targetBearing = 0f;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.db_client_navscreen_armode);
 
-        initViews();
-        setupData();
-        setupListeners();
-        setupSensors();
-        setupAR();
-    }
-
-    private void initViews() {
-        arSceneView = findViewById(R.id.arSceneView);
+        cameraPreview = findViewById(R.id.cameraPreview);
+        ivArrow = findViewById(R.id.ivArrow);
         tvNavTarget = findViewById(R.id.tvNavTarget);
         btnCancelNav = findViewById(R.id.btnCancelNav);
-        btnBack = findViewById(R.id.btnBack);
-        navMaps = findViewById(R.id.navMaps);
-        navDashboard = findViewById(R.id.navDashboard);
-        navUpdates = findViewById(R.id.navUpdates);
-    }
 
-    private void setupData() {
         if (getIntent().hasExtra("ROOM_NAME")) {
-            String roomName = getIntent().getStringExtra("ROOM_NAME");
-            tvNavTarget.setText("Navigating to " + roomName);
-        } else {
-            tvNavTarget.setText("Navigating...");
+            String room = getIntent().getStringExtra("ROOM_NAME");
+            tvNavTarget.setText("To: " + room);
+            // Logic to set targetBearing based on room name could go here
         }
-    }
 
-    private void setupListeners() {
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
         btnCancelNav.setOnClickListener(v -> finish());
-        btnBack.setOnClickListener(v -> finish());
-
-        navMaps.setOnClickListener(v -> {
-            startActivity(new Intent(ClientNavigationActivity.this, ClientRoomMapActivity.class));
-            finish();
-        });
-        navDashboard.setOnClickListener(v -> {
-            startActivity(new Intent(ClientNavigationActivity.this, ClientDashboardActivity.class));
-            finish();
-        });
-        navUpdates.setOnClickListener(v -> {
-            startActivity(new Intent(ClientNavigationActivity.this, ClientProfileActivity.class));
-            finish();
-        });
     }
 
-    private void setupSensors() {
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        if (sensorManager != null) {
-            accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-            magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-        }
-    }
-
-    private void setupAR() {
-        // v0.10.2 Syntax
-        arrowNode = new ArModelNode(PlacementMode.BEST_AVAILABLE);
-
-        arrowNode.loadModelGlbAsync(
-                "arrow.glb",
-                true,
-                0.5f,
-                null,
-                (throwable) -> {
-                    Toast.makeText(this, "Error loading arrow", Toast.LENGTH_SHORT).show();
-                    return Unit.INSTANCE;
-                },
-                (instance) -> {
-                    return Unit.INSTANCE;
-                }
-        );
-
-        arrowNode.setPosition(new Float3(0.0f, -0.5f, -2.0f));
-        arSceneView.addChild(arrowNode);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (sensorManager != null) {
-            sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
-            sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_UI);
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (sensorManager != null) {
-            sensorManager.unregisterListener(this);
-        }
-    }
-
+    // --- SENSOR LOGIC ---
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
@@ -148,18 +93,135 @@ public class ClientNavigationActivity extends AppCompatActivity implements Senso
         }
 
         if (lastAccelerometerSet && lastMagnetometerSet) {
-            if (SensorManager.getRotationMatrix(r, null, lastAccelerometer, lastMagnetometer)) {
-                SensorManager.getOrientation(r, orientation);
-                float azimuthInDegrees = (float) (Math.toDegrees(orientation[0]) + 360) % 360;
+            SensorManager.getRotationMatrix(r, null, lastAccelerometer, lastMagnetometer);
+            SensorManager.getOrientation(r, orientation);
 
-                if (arrowNode != null) {
-                    // v0.10.2 Syntax
-                    arrowNode.setRotation(new Float3(0.0f, -azimuthInDegrees, 0.0f));
-                }
-            }
+            float azimuthInDegrees = (float) (Math.toDegrees(orientation[0]) + 360) % 360;
+
+            // Calculate rotation needed for arrow
+            // Example: If Target is North (0) and Phone faces East (90), Arrow must rotate -90 (Left)
+            float rotateAngle = targetBearing - azimuthInDegrees;
+
+            ivArrow.setRotation(rotateAngle);
         }
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+
+    // --- CAMERA LIFECYCLE ---
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startBackgroundThread();
+
+        if (cameraPreview.isAvailable()) {
+            openCamera();
+        } else {
+            cameraPreview.setSurfaceTextureListener(textureListener);
+        }
+
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
+        sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_UI);
+    }
+
+    @Override
+    protected void onPause() {
+        stopBackgroundThread();
+        if (cameraCaptureSession != null) {
+            cameraCaptureSession.close();
+            cameraCaptureSession = null;
+        }
+        sensorManager.unregisterListener(this);
+        super.onPause();
+    }
+
+    // --- CAMERA SETUP ---
+    TextureView.SurfaceTextureListener textureListener = new TextureView.SurfaceTextureListener() {
+        @Override
+        public void onSurfaceTextureAvailable(@NonNull SurfaceTexture surface, int width, int height) {
+            openCamera();
+        }
+        @Override
+        public void onSurfaceTextureSizeChanged(@NonNull SurfaceTexture surface, int width, int height) {}
+        @Override
+        public boolean onSurfaceTextureDestroyed(@NonNull SurfaceTexture surface) { return false; }
+        @Override
+        public void onSurfaceTextureUpdated(@NonNull SurfaceTexture surface) {}
+    };
+
+    private void openCamera() {
+        CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+        try {
+            String cameraId = manager.getCameraIdList()[0];
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 101);
+                return;
+            }
+            manager.openCamera(cameraId, stateCallback, backgroundHandler);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private final CameraDevice.StateCallback stateCallback = new CameraDevice.StateCallback() {
+        @Override
+        public void onOpened(@NonNull CameraDevice camera) {
+            createCameraPreview(camera);
+        }
+        @Override
+        public void onDisconnected(@NonNull CameraDevice camera) { camera.close(); }
+        @Override
+        public void onError(@NonNull CameraDevice camera, int error) { camera.close(); }
+    };
+
+    private void createCameraPreview(CameraDevice camera) {
+        try {
+            SurfaceTexture texture = cameraPreview.getSurfaceTexture();
+            texture.setDefaultBufferSize(1920, 1080);
+            Surface surface = new Surface(texture);
+
+            final CaptureRequest.Builder captureRequestBuilder = camera.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+            captureRequestBuilder.addTarget(surface);
+
+            camera.createCaptureSession(Collections.singletonList(surface), new CameraCaptureSession.StateCallback() {
+                @Override
+                public void onConfigured(@NonNull CameraCaptureSession session) {
+                    if (camera == null) return;
+                    cameraCaptureSession = session;
+                    captureRequestBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
+                    try {
+                        cameraCaptureSession.setRepeatingRequest(captureRequestBuilder.build(), null, backgroundHandler);
+                    } catch (CameraAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+                @Override
+                public void onConfigureFailed(@NonNull CameraCaptureSession session) {
+                    Toast.makeText(ClientNavigationActivity.this, "Camera Config Failed", Toast.LENGTH_SHORT).show();
+                }
+            }, null);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void startBackgroundThread() {
+        backgroundThread = new HandlerThread("CameraBackground");
+        backgroundThread.start();
+        backgroundHandler = new Handler(backgroundThread.getLooper());
+    }
+
+    private void stopBackgroundThread() {
+        if (backgroundThread != null) {
+            backgroundThread.quitSafely();
+            try {
+                backgroundThread.join();
+                backgroundThread = null;
+                backgroundHandler = null;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
