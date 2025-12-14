@@ -22,4 +22,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "School_Management_System"
 include(":app")
-include(":camera_AR_school_nav")
+//include(":camera_AR_school_nav")

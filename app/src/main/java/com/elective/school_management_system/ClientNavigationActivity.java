@@ -15,24 +15,20 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
-// --- Imports for Sceneview 0.10.2 ---
+// IMPORTS FOR VERSION 0.10.2
 import io.github.sceneview.ar.ArSceneView;
 import io.github.sceneview.ar.node.ArModelNode;
 import io.github.sceneview.ar.node.PlacementMode;
-// We use Float3 for Position/Rotation in 0.10.2
 import dev.romainguy.kotlin.math.Float3;
-
 import kotlin.Unit;
 
 public class ClientNavigationActivity extends AppCompatActivity implements SensorEventListener {
 
     private ArSceneView arSceneView;
     private ArModelNode arrowNode;
-
     private TextView tvNavTarget;
     private AppCompatButton btnCancelNav;
     private ImageView btnBack;
-
     private LinearLayout navMaps, navDashboard, navUpdates;
 
     private SensorManager sensorManager;
@@ -62,7 +58,6 @@ public class ClientNavigationActivity extends AppCompatActivity implements Senso
         tvNavTarget = findViewById(R.id.tvNavTarget);
         btnCancelNav = findViewById(R.id.btnCancelNav);
         btnBack = findViewById(R.id.btnBack);
-
         navMaps = findViewById(R.id.navMaps);
         navDashboard = findViewById(R.id.navDashboard);
         navUpdates = findViewById(R.id.navUpdates);
@@ -85,12 +80,10 @@ public class ClientNavigationActivity extends AppCompatActivity implements Senso
             startActivity(new Intent(ClientNavigationActivity.this, ClientRoomMapActivity.class));
             finish();
         });
-
         navDashboard.setOnClickListener(v -> {
             startActivity(new Intent(ClientNavigationActivity.this, ClientDashboardActivity.class));
             finish();
         });
-
         navUpdates.setOnClickListener(v -> {
             startActivity(new Intent(ClientNavigationActivity.this, ClientProfileActivity.class));
             finish();
@@ -106,37 +99,24 @@ public class ClientNavigationActivity extends AppCompatActivity implements Senso
     }
 
     private void setupAR() {
-        // v0.10.2: Constructor takes PlacementMode only (No Engine)
+        // v0.10.2 Syntax
         arrowNode = new ArModelNode(PlacementMode.BEST_AVAILABLE);
-
-        // v0.10.2: loadModelGlbAsync Arguments:
-        // 1. glbFileLocation (String)
-        // 2. autoAnimate (Boolean)
-        // 3. scaleToUnits (Float - nullable)
-        // 4. centerOrigin (Float3 - nullable)
-        // 5. onError (Lambda)
-        // 6. onLoaded (Lambda)
 
         arrowNode.loadModelGlbAsync(
                 "arrow.glb",
                 true,
-                0.5f, // Scale
-                null, // Center origin
+                0.5f,
+                null,
                 (throwable) -> {
                     Toast.makeText(this, "Error loading arrow", Toast.LENGTH_SHORT).show();
                     return Unit.INSTANCE;
                 },
                 (instance) -> {
-                    // Model Loaded Successfully
                     return Unit.INSTANCE;
                 }
         );
 
-        // v0.10.2: Set Position using Float3
-        // x=0 (center), y=-0.5 (below eye level), z=-2.0 (2 meters forward)
         arrowNode.setPosition(new Float3(0.0f, -0.5f, -2.0f));
-
-        // v0.10.2: Add child directly to arSceneView
         arSceneView.addChild(arrowNode);
     }
 
@@ -170,13 +150,10 @@ public class ClientNavigationActivity extends AppCompatActivity implements Senso
         if (lastAccelerometerSet && lastMagnetometerSet) {
             if (SensorManager.getRotationMatrix(r, null, lastAccelerometer, lastMagnetometer)) {
                 SensorManager.getOrientation(r, orientation);
-
-                // Convert azimuth to degrees
                 float azimuthInDegrees = (float) (Math.toDegrees(orientation[0]) + 360) % 360;
 
                 if (arrowNode != null) {
-                    // v0.10.2: Set Rotation using Float3 (x, y, z)
-                    // Rotate around Y axis to point North
+                    // v0.10.2 Syntax
                     arrowNode.setRotation(new Float3(0.0f, -azimuthInDegrees, 0.0f));
                 }
             }
