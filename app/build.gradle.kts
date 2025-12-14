@@ -45,7 +45,4 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-
-    implementation("com.google.ar:core:1.46.0")
-    implementation("io.github.sceneview:arsceneview:2.0.3")
 }
