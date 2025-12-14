@@ -5,7 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_gradient_palette">
+    android:background="#0A0322">
+
+    <View
+        android:id="@+id/glowEffect"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_marginTop="-50dp"
+        android:background="@drawable/bg_purple_glow"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -29,8 +39,8 @@
                 android:fontFamily="@font/raleway_bold"
                 android:text="Your Agenda For Today"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:letterSpacing="0.02"
+                android:textSize="16sp"
+                android:letterSpacing="0.05"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -60,7 +70,7 @@
                 android:fontFamily="@font/raleway_regular"
                 android:text="Welcome!"
                 android:textColor="#E0E0E0"
-                android:textSize="28sp"
+                android:textSize="32sp"
                 android:textStyle="normal"
                 app:layout_constraintStart_toStartOf="@+id/tvHeader"
                 app:layout_constraintTop_toBottomOf="@+id/tvHeader" />
@@ -110,7 +120,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="24dp"
-                android:background="@drawable/glass_card_dark"
+                android:background="@drawable/bg_login_glass_card"
                 android:padding="16dp"
                 app:layout_constraintTop_toBottomOf="@+id/tabContainer">
 
@@ -251,7 +261,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_margin="8dp"
-                    android:background="@drawable/glass_card_dark"
+                    android:background="@drawable/bg_login_glass_card"
                     android:orientation="vertical"
                     android:padding="20dp">
 
@@ -292,7 +302,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_margin="8dp"
-                    android:background="@drawable/glass_card_dark"
+                    android:background="@drawable/bg_login_glass_card"
                     android:orientation="vertical"
                     android:padding="20dp">
 
@@ -336,7 +346,7 @@
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="#F2363250"
+        android:background="#F20A0322"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">

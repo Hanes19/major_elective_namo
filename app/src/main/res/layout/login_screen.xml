@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
-        android:fontFamily="sans-serif-thin"
+        android:fontFamily="@font/raleway_light"
         android:text="Welcome"
         android:textColor="@android:color/white"
         android:textSize="60sp"
@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="-24dp"
-        android:fontFamily="sans-serif-light"
+        android:fontFamily="@font/raleway_bold"
         android:text="Back!"
         android:textColor="#A9016D"
         android:textSize="60sp"
@@ -194,7 +194,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/raleway_light"
             android:text="Don't have an account? "
