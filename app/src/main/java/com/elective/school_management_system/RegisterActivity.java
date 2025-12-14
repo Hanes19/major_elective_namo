@@ -60,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(v -> performRegistration());
 
         tvSignIn.setOnClickListener(v -> {
-            Intent intent = new Intent(RegisterActivity.this, f_login.class);
+            Intent intent = new Intent(RegisterActivity.this, Login_Activity.class);
             startActivity(intent);
             finish();
         });
@@ -110,7 +110,7 @@ public class RegisterActivity extends AppCompatActivity {
         if (isInserted) {
             Toast.makeText(this, "Registration Successful!", Toast.LENGTH_SHORT).show();
             // Go to Login
-            Intent intent = new Intent(RegisterActivity.this, f_login.class);
+            Intent intent = new Intent(RegisterActivity.this, Login_Activity.class);
             startActivity(intent);
             finish();
         } else {

@@ -7,14 +7,13 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-public class ClientDashboardActivity extends AppCompatActivity {
+public class StudentDashboardActivity extends AppCompatActivity {
 
     private static final int CAMERA_PERMISSION_CODE = 100;
 
@@ -64,18 +63,18 @@ public class ClientDashboardActivity extends AppCompatActivity {
         });
 
         searchContainer.setOnClickListener(v -> {
-            Intent intent = new Intent(ClientDashboardActivity.this, ClientRoomsListActivity.class);
+            Intent intent = new Intent(StudentDashboardActivity.this, StudentRoomsListActivity.class);
             startActivity(intent);
         });
 
         // --- Main Grid Cards ---
         cardRooms.setOnClickListener(v -> {
-            Intent intent = new Intent(ClientDashboardActivity.this, ClientRoomsListActivity.class);
+            Intent intent = new Intent(StudentDashboardActivity.this, StudentRoomsListActivity.class);
             startActivity(intent);
         });
 
         cardInstructors.setOnClickListener(v -> {
-            Intent intent = new Intent(ClientDashboardActivity.this, ClientInstructorsListActivity.class);
+            Intent intent = new Intent(StudentDashboardActivity.this, StudentInstructorsListActivity.class);
             startActivity(intent);
         });
 
@@ -83,7 +82,7 @@ public class ClientDashboardActivity extends AppCompatActivity {
         cardNav.setOnClickListener(v -> checkCameraPermissionAndOpen());
 
         cardProfile.setOnClickListener(v -> {
-            Intent intent = new Intent(ClientDashboardActivity.this, ClientProfileActivity.class);
+            Intent intent = new Intent(StudentDashboardActivity.this, StudentProfileActivity.class);
             startActivity(intent);
         });
 
@@ -96,7 +95,7 @@ public class ClientDashboardActivity extends AppCompatActivity {
 
         // Profile Button
         navProfile.setOnClickListener(v -> {
-            Intent intent = new Intent(ClientDashboardActivity.this, ClientProfileActivity.class);
+            Intent intent = new Intent(StudentDashboardActivity.this, StudentProfileActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
@@ -117,7 +116,7 @@ public class ClientDashboardActivity extends AppCompatActivity {
 
     private void openCamera() {
         // Launches the "AR" screen (which is now just a camera preview)
-        Intent intent = new Intent(ClientDashboardActivity.this, ClientNavigationActivity.class);
+        Intent intent = new Intent(StudentDashboardActivity.this, StudentNavigationActivity.class);
         intent.putExtra("ROOM_NAME", "Navigation Mode");
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);

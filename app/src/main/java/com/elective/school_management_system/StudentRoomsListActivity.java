@@ -1,33 +1,32 @@
 package com.elective.school_management_system;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
 import java.util.List;
 
-public class ClientInstructorsListActivity extends AppCompatActivity {
+public class StudentRoomsListActivity extends AppCompatActivity {
 
     private ImageView btnBack;
+    private TextView tabMap;
     private EditText etSearch;
     private RecyclerView recyclerView;
+    private RoomAdapter adapter;
     private DatabaseHelper dbHelper;
-    private ClientInstructorAdapter adapter;
-    private List<Instructor> fullInstructorList; // Stores the original list
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_client_instructors_list);
+        setContentView(R.layout.db_client_rooms_list);
 
         dbHelper = new DatabaseHelper(this);
-
         initViews();
         setupRecyclerView();
         setupListeners();
@@ -35,55 +34,43 @@ public class ClientInstructorsListActivity extends AppCompatActivity {
 
     private void initViews() {
         btnBack = findViewById(R.id.btnBack);
+        tabMap = findViewById(R.id.tabMap);
+
+        // These IDs must match the XML provided above
         etSearch = findViewById(R.id.etSearch);
-        recyclerView = findViewById(R.id.recyclerViewInstructors);
+        recyclerView = findViewById(R.id.recyclerViewRooms);
     }
 
     private void setupRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // Fetch all data from DB
-        fullInstructorList = dbHelper.getAllInstructors();
-
-        // Initialize adapter with the full list
-        adapter = new ClientInstructorAdapter(this, fullInstructorList);
+        List<Room> allRooms = dbHelper.getAllRooms();
+        adapter = new RoomAdapter(this, allRooms);
         recyclerView.setAdapter(adapter);
     }
 
     private void setupListeners() {
-        // 1. Back Button Logic
         btnBack.setOnClickListener(v -> finish());
 
-        // 2. Search Logic
+        tabMap.setOnClickListener(v -> {
+            Intent intent = new Intent(StudentRoomsListActivity.this, StudentRoomMapActivity.class);
+            startActivity(intent);
+        });
+
+        // Search Logic
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                filter(s.toString());
+                if (adapter != null) {
+                    List<Room> filteredList = dbHelper.searchRooms(s.toString());
+                    adapter.updateList(filteredList);
+                }
             }
 
             @Override
             public void afterTextChanged(Editable s) {}
         });
-    }
-
-    // Helper method to filter the list
-    private void filter(String text) {
-        List<Instructor> filteredList = new ArrayList<>();
-
-        for (Instructor item : fullInstructorList) {
-            // Check if name OR department matches the search text
-            if (item.getName().toLowerCase().contains(text.toLowerCase()) ||
-                    item.getDepartment().toLowerCase().contains(text.toLowerCase())) {
-                filteredList.add(item);
-            }
-        }
-
-        // Update the adapter with the new filtered list
-        if (adapter != null) {
-            adapter.filterList(filteredList);
-        }
     }
 }

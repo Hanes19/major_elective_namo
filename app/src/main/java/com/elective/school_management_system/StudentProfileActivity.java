@@ -9,7 +9,7 @@ import android.widget.Toast; // Import Toast
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
-public class ClientProfileActivity extends AppCompatActivity {
+public class StudentProfileActivity extends AppCompatActivity {
 
     private ImageView btnBack;
     private AppCompatButton btnEdit, btnLogout;
@@ -62,9 +62,9 @@ public class ClientProfileActivity extends AppCompatActivity {
         // EDIT BUTTON LOGIC
         btnEdit.setOnClickListener(v -> {
             // Debug Toast: If you don't see this, the button isn't clicking.
-            Toast.makeText(ClientProfileActivity.this, "Opening Edit Profile...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(StudentProfileActivity.this, "Opening Edit Profile...", Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(ClientProfileActivity.this, ClientEditProfileActivity.class);
+            Intent intent = new Intent(StudentProfileActivity.this, StudentEditProfileActivity.class);
             startActivity(intent);
         });
     }
@@ -75,7 +75,7 @@ public class ClientProfileActivity extends AppCompatActivity {
         editor.clear();
         editor.apply();
 
-        Intent intent = new Intent(ClientProfileActivity.this, f_login.class);
+        Intent intent = new Intent(StudentProfileActivity.this, Login_Activity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
