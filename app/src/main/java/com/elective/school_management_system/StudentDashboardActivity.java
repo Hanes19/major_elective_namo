@@ -4,10 +4,9 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.widget.FrameLayout; // Import added for FrameLayout
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -20,11 +19,13 @@ public class StudentDashboardActivity extends AppCompatActivity {
     private static final int CAMERA_PERMISSION_CODE = 100;
 
     // UI Components
-    // FIX: Changed from ImageView to FrameLayout to match the XML
+    // FIXED: Changed from ImageView to FrameLayout to match the XML
     private FrameLayout imgSettings;
     private LinearLayout searchContainer;
     private LinearLayout cardRooms, cardInstructors, cardNav, cardProfile;
-    private RelativeLayout item1, item2, item3;
+
+    // FIXED: Changed from RelativeLayout to LinearLayout to match the XML
+    private LinearLayout item1, item2, item3;
 
     // Bottom Navigation
     private LinearLayout navHome, navNav, navProfile;
@@ -50,6 +51,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
         cardProfile = findViewById(R.id.card_profile);
 
         // Suggestions (Items)
+        // These are LinearLayouts in your XML, so casting them to LinearLayout here prevents a ClassCastException
         item1 = findViewById(R.id.item_1);
         item2 = findViewById(R.id.item_2);
         item3 = findViewById(R.id.item_3);
