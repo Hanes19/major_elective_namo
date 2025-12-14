@@ -25,7 +25,7 @@ public class AdminManageInstructorsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.t_manage_instructors);
+        setContentView(R.layout.ad_manage_instructors);
 
         dbHelper = new DatabaseHelper(this);
 
