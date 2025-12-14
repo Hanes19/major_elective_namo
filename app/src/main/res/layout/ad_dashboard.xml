@@ -78,7 +78,7 @@
                 <FrameLayout
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:background="@drawable/btn_glass_circle"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="10dp">
                     <ImageView
                         android:layout_width="match_parent"
@@ -277,11 +277,12 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent">
+
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/prof"
+                        android:src="@drawable/user_txtbox_ic"
                         app:tint="@android:color/white"/>
                 </FrameLayout>
 
