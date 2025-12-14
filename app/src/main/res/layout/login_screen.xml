@@ -26,14 +26,14 @@
         android:layout_height="48dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="40dp"
-        android:background="@drawable/btn_glass_circle"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="Back"
         android:padding="12dp"
         android:scaleType="fitCenter"
         android:src="@drawable/back_btn"
+        app:tint="@android:color/white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@android:color/white" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvWelcome"
