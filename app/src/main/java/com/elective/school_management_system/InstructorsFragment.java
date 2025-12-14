@@ -13,7 +13,7 @@ public class InstructorsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.ad_instructors_list, container, false);
+        View view = inflater.inflate(R.layout.ad_manage_instructors, container, false);
 
         // Hide the back button here as well
         ImageView btnBack = view.findViewById(R.id.btnBack);

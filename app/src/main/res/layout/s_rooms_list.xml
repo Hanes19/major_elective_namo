@@ -117,14 +117,16 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
 
-
         <LinearLayout
+            android:id="@+id/navMap"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:alpha="0.6"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="true">
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -141,11 +143,14 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/navDashboard"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="true">
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -162,12 +167,15 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/navUpdates"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:alpha="0.6"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="true">
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"

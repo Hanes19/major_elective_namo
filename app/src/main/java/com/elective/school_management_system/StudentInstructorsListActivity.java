@@ -3,7 +3,9 @@ package com.elective.school_management_system;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,17 +16,18 @@ import java.util.List;
 
 public class StudentInstructorsListActivity extends AppCompatActivity {
 
-    private ImageView btnBack;
+    private ImageButton btnBack; // Changed to ImageButton to match typical usage
+    private View btnAddInstructor; // The admin button we want to hide
     private EditText etSearch;
     private RecyclerView recyclerView;
     private DatabaseHelper dbHelper;
     private StudentInstructorAdapter adapter;
-    private List<Instructor> fullInstructorList; // Stores the original list
+    private List<Instructor> fullInstructorList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ad_instructors_list);
+        setContentView(R.layout.ad_instructors_list); // Uses the shared layout
 
         dbHelper = new DatabaseHelper(this);
 
@@ -34,27 +37,29 @@ public class StudentInstructorsListActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        // Cast to ImageButton as per typical XML, though View works too
         btnBack = findViewById(R.id.btnBack);
+
+        // Find the Admin "Add" button and hide it
+        btnAddInstructor = findViewById(R.id.btnAddInstructor);
+        if (btnAddInstructor != null) {
+            btnAddInstructor.setVisibility(View.GONE);
+        }
+
         etSearch = findViewById(R.id.etSearch);
         recyclerView = findViewById(R.id.recyclerViewInstructors);
     }
 
     private void setupRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // Fetch all data from DB
         fullInstructorList = dbHelper.getAllInstructors();
-
-        // Initialize adapter with the full list
         adapter = new StudentInstructorAdapter(this, fullInstructorList);
         recyclerView.setAdapter(adapter);
     }
 
     private void setupListeners() {
-        // 1. Back Button Logic
         btnBack.setOnClickListener(v -> finish());
 
-        // 2. Search Logic
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -69,19 +74,14 @@ public class StudentInstructorsListActivity extends AppCompatActivity {
         });
     }
 
-    // Helper method to filter the list
     private void filter(String text) {
         List<Instructor> filteredList = new ArrayList<>();
-
         for (Instructor item : fullInstructorList) {
-            // Check if name OR department matches the search text
             if (item.getName().toLowerCase().contains(text.toLowerCase()) ||
                     item.getDepartment().toLowerCase().contains(text.toLowerCase())) {
                 filteredList.add(item);
             }
         }
-
-        // Update the adapter with the new filtered list
         if (adapter != null) {
             adapter.filterList(filteredList);
         }
