@@ -15,11 +15,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+// --- Imports for Sceneview 0.10.2 ---
 import io.github.sceneview.ar.ArSceneView;
 import io.github.sceneview.ar.node.ArModelNode;
 import io.github.sceneview.ar.node.PlacementMode;
-import io.github.sceneview.math.Position;
-import io.github.sceneview.math.Rotation;
+// We use Float3 for Position/Rotation in 0.10.2
+import dev.romainguy.kotlin.math.Float3;
+
+import kotlin.Unit;
 
 public class ClientNavigationActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -29,9 +32,9 @@ public class ClientNavigationActivity extends AppCompatActivity implements Senso
     private TextView tvNavTarget;
     private AppCompatButton btnCancelNav;
     private ImageView btnBack;
+
     private LinearLayout navMaps, navDashboard, navUpdates;
 
-    // Compass / Sensor Variables
     private SensorManager sensorManager;
     private Sensor accelerometer;
     private Sensor magnetometer;
@@ -79,23 +82,17 @@ public class ClientNavigationActivity extends AppCompatActivity implements Senso
         btnBack.setOnClickListener(v -> finish());
 
         navMaps.setOnClickListener(v -> {
-            Intent intent = new Intent(ClientNavigationActivity.this, ClientRoomMapActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            startActivity(new Intent(ClientNavigationActivity.this, ClientRoomMapActivity.class));
             finish();
         });
 
         navDashboard.setOnClickListener(v -> {
-            Intent intent = new Intent(ClientNavigationActivity.this, ClientDashboardActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            startActivity(new Intent(ClientNavigationActivity.this, ClientDashboardActivity.class));
             finish();
         });
 
         navUpdates.setOnClickListener(v -> {
-            Intent intent = new Intent(ClientNavigationActivity.this, ClientProfileActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            startActivity(new Intent(ClientNavigationActivity.this, ClientProfileActivity.class));
             finish();
         });
     }
@@ -109,30 +106,38 @@ public class ClientNavigationActivity extends AppCompatActivity implements Senso
     }
 
     private void setupAR() {
-        // Initialize the AR Arrow Node
-        // PlacementMode.BEST_AVAILABLE means it stays stable in the world
-        arrowNode = new ArModelNode(arSceneView.getEngine(), PlacementMode.BEST_AVAILABLE);
+        // v0.10.2: Constructor takes PlacementMode only (No Engine)
+        arrowNode = new ArModelNode(PlacementMode.BEST_AVAILABLE);
 
-        // Load the 3D model "arrow.glb" from assets
+        // v0.10.2: loadModelGlbAsync Arguments:
+        // 1. glbFileLocation (String)
+        // 2. autoAnimate (Boolean)
+        // 3. scaleToUnits (Float - nullable)
+        // 4. centerOrigin (Float3 - nullable)
+        // 5. onError (Lambda)
+        // 6. onLoaded (Lambda)
+
         arrowNode.loadModelGlbAsync(
-                this,
-                "arrow.glb", // MAKE SURE YOU HAVE THIS FILE IN src/main/assets/
+                "arrow.glb",
                 true,
-                true,
-                (renderable, throwable) -> {
-                    if (throwable != null) {
-                        Toast.makeText(this, "Failed to load arrow model", Toast.LENGTH_SHORT).show();
-                    }
-                    return null;
+                0.5f, // Scale
+                null, // Center origin
+                (throwable) -> {
+                    Toast.makeText(this, "Error loading arrow", Toast.LENGTH_SHORT).show();
+                    return Unit.INSTANCE;
+                },
+                (instance) -> {
+                    // Model Loaded Successfully
+                    return Unit.INSTANCE;
                 }
         );
 
-        // Position the arrow 1.5 meters in front of the camera and slightly down
-        // x=0 (center), y=-0.5 (slightly down), z=-1.5 (forward)
-        arrowNode.setPosition(new Position(0.0f, -0.5f, -1.5f));
+        // v0.10.2: Set Position using Float3
+        // x=0 (center), y=-0.5 (below eye level), z=-2.0 (2 meters forward)
+        arrowNode.setPosition(new Float3(0.0f, -0.5f, -2.0f));
 
-        // Add to the scene
-        arSceneView.getScene().addChild(arrowNode);
+        // v0.10.2: Add child directly to arSceneView
+        arSceneView.addChild(arrowNode);
     }
 
     @Override
@@ -153,14 +158,6 @@ public class ClientNavigationActivity extends AppCompatActivity implements Senso
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        // ArSceneView handles its own cleanup
-    }
-
-    // --- Compass Logic ---
-
-    @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             System.arraycopy(event.values, 0, lastAccelerometer, 0, event.values.length);
@@ -174,15 +171,13 @@ public class ClientNavigationActivity extends AppCompatActivity implements Senso
             if (SensorManager.getRotationMatrix(r, null, lastAccelerometer, lastMagnetometer)) {
                 SensorManager.getOrientation(r, orientation);
 
-                // Convert azimuth (radians) to degrees
+                // Convert azimuth to degrees
                 float azimuthInDegrees = (float) (Math.toDegrees(orientation[0]) + 360) % 360;
 
-                // Update Arrow Rotation if the node is loaded
                 if (arrowNode != null) {
-                    // We rotate the arrow around the Y-axis to point North (or towards target)
-                    // Note: This points 'North'. If you have a target bearing, subtract it here.
-                    // Rotation(x, y, z) in degrees
-                    arrowNode.setRotation(new Rotation(0, -azimuthInDegrees, 0));
+                    // v0.10.2: Set Rotation using Float3 (x, y, z)
+                    // Rotate around Y axis to point North
+                    arrowNode.setRotation(new Float3(0.0f, -azimuthInDegrees, 0.0f));
                 }
             }
         }
