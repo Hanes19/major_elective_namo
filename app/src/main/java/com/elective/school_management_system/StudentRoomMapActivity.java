@@ -17,7 +17,7 @@ public class StudentRoomMapActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.db_client_room_map);
+        setContentView(R.layout.db_student_room_map);
 
         initViews();
         setupListeners();

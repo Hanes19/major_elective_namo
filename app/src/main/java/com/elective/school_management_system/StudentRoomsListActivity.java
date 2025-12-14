@@ -24,7 +24,7 @@ public class StudentRoomsListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.db_client_rooms_list);
+        setContentView(R.layout.db_student_rooms_list);
 
         dbHelper = new DatabaseHelper(this);
         initViews();

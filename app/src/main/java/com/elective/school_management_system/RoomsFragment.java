@@ -13,7 +13,7 @@ public class RoomsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.db_client_rooms_list, container, false);
+        View view = inflater.inflate(R.layout.db_student_rooms_list, container, false);
 
         // Hide the back button since this is now inside the dashboard
         ImageView btnBack = view.findViewById(R.id.btnBack);

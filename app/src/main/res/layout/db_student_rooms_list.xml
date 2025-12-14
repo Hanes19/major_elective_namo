@@ -92,7 +92,7 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <include layout="@layout/db_client_navscreen_armode" />
+        <include layout="@layout/db_student_navscreen_armode" />
 
     </LinearLayout>
 
