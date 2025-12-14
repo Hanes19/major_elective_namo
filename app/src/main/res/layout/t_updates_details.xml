@@ -28,7 +28,7 @@
             android:id="@+id/btnBack"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="16dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="12dp"
             android:scaleType="fitCenter"
@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/raleway_bold"
-            android:text="Rooms List"
+            android:text="Update Details"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -58,48 +58,93 @@
         android:background="@drawable/glass_divider_line"
         app:layout_constraintTop_toBottomOf="@+id/header" />
 
-    <LinearLayout
-        android:id="@+id/searchContainer"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/glass_input_field"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/headerDivider">
-
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/db_search_ic"
-            app:tint="#80FFFFFF" />
-
-        <EditText
-            android:id="@+id/etSearch"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="12dp"
-            android:background="@null"
-            android:fontFamily="@font/raleway_regular"
-            android:hint="Search Room..."
-            android:inputType="text"
-            android:maxLines="1"
-            android:textColor="@color/white"
-            android:textColorHint="#80FFFFFF"
-            android:textSize="15sp" />
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewRooms"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
         android:clipToPadding="false"
-        android:paddingBottom="80dp"
         app:layout_constraintBottom_toTopOf="@+id/navDivider"
-        app:layout_constraintTop_toBottomOf="@id/searchContainer"
-        tools:listitem="@layout/item_room_row" />
+        app:layout_constraintTop_toBottomOf="@+id/headerDivider">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/glass_card_dark"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/tvDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/glass_input_field"
+                    android:fontFamily="@font/raleway_bold"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp"
+                    android:text="Nov 27, 2025"
+                    android:textColor="#A9016D"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/raleway_bold"
+                    android:lineSpacingExtra="4dp"
+                    android:text="New Schedule for this semester just dropped"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+                    app:layout_constraintTop_toBottomOf="@+id/tvDate" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/imgCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="20dp"
+                    app:cardBackgroundColor="@android:color/transparent"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTitle">
+
+                    <ImageView
+                        android:id="@+id/imgUpdate"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/man" />
+                </androidx.cardview.widget.CardView>
+
+                <View
+                    android:id="@+id/contentDivider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="20dp"
+                    android:background="#1AFFFFFF"
+                    app:layout_constraintTop_toBottomOf="@+id/imgCard" />
+
+                <TextView
+                    android:id="@+id/tvBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/raleway_light"
+                    android:lineSpacingExtra="6dp"
+                    android:text="Studies suggest people who are always late are often more creative and optimistic, and they may have personality traits like being a Type B personality, who are relaxed and open-minded. Lateness is also linked to a different perception of time, where individuals may underestimate how long tasks will take or be constantly multitasking."
+                    android:textColor="#E0E0E0"
+                    android:textSize="15sp"
+                    app:layout_constraintTop_toBottomOf="@+id/contentDivider" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
     <View
         android:id="@+id/navDivider"
@@ -116,7 +161,6 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
-
 
         <LinearLayout
             android:layout_width="0dp"
@@ -140,11 +184,11 @@
                 android:textSize="10sp" />
         </LinearLayout>
 
-
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:alpha="0.6"
             android:gravity="center"
             android:orientation="vertical">
             <ImageView
@@ -166,7 +210,6 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:alpha="0.6"
             android:gravity="center"
             android:orientation="vertical">
             <ImageView

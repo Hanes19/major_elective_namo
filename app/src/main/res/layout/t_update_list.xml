@@ -5,253 +5,348 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#363250">
-
-    <!-- HEADER -->
-    <ImageView
-        android:id="@+id/btnBack"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:padding="12dp"
-        android:src="@drawable/back_btn"
-        app:tint="@color/text_white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"/>
-
-    <TextView
-        android:id="@+id/tvHeaderTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Updates"
-        android:fontFamily="@font/raleway_bold"
-        android:textColor="@color/text_white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/btnBack"
-        app:layout_constraintBottom_toBottomOf="@id/btnBack"/>
-
+    android:background="#0A0322">
 
     <View
-        android:id="@+id/dividerHeader"
+        android:id="@+id/glowEffect"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_marginTop="-100dp"
+        android:background="@drawable/bg_purple_glow"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:paddingTop="24dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="12dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/back_btn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@android:color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/raleway_bold"
+            android:text="Updates"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/headerDivider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#3F3B52"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/btnBack"/>
+        android:background="@drawable/glass_divider_line"
+        app:layout_constraintTop_toBottomOf="@+id/header" />
 
-    <!-- UPDATE LIST -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/dividerHeader"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavDivider">
+        android:clipToPadding="false"
+        app:layout_constraintBottom_toTopOf="@+id/navDivider"
+        app:layout_constraintTop_toBottomOf="@+id/headerDivider">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="24dp"
-            android:paddingBottom="24dp">
+            android:paddingTop="24dp"
+            android:paddingBottom="40dp">
 
-            <!-- Item 1 -->
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/stroke_box"
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/glass_card_dark"
+                android:padding="20dp">
+
+                <FrameLayout
+                    android:id="@+id/icon1"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/btn_glass_circle"
+                    android:padding="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/updates"
+                        app:tint="#A9016D"/>
+                </FrameLayout>
 
                 <TextView
+                    android:id="@+id/date1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="November 27, 2025"
-                    android:textSize="12sp"
-                    android:textColor="#B0B0B0"
-                    android:fontFamily="@font/raleway_regular"
-                    android:layout_marginBottom="8dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="New Schedule for this semester just dropped"
+                    android:layout_marginStart="12dp"
                     android:fontFamily="@font/raleway_bold"
-                    android:textSize="16sp"
-                    android:textColor="@color/white"
-                    android:layout_marginBottom="8dp"/>
+                    android:text="Nov 27, 2025"
+                    android:textColor="#A9016D"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@id/icon1"
+                    app:layout_constraintTop_toTopOf="@id/icon1"
+                    app:layout_constraintBottom_toTopOf="@id/title1"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/title1"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="string/updates"
-                    android:textSize="14sp"
-                    android:textColor="#E0E0E0"
-                    android:fontFamily="@font/raleway_light"
-                    android:maxLines="3"
-                    android:ellipsize="end"/>
-            </LinearLayout>
+                    android:layout_marginStart="12dp"
+                    android:fontFamily="@font/raleway_bold"
+                    android:text="New Semester Schedule"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/icon1"
+                    app:layout_constraintTop_toBottomOf="@id/date1"
+                    app:layout_constraintBottom_toBottomOf="@id/icon1"/>
 
-            <!-- Item 2 -->
-            <LinearLayout
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/raleway_light"
+                    android:text="The official class schedule for the upcoming semester has been released. Please check your dashboard."
+                    android:textColor="#E0E0E0"
+                    android:textSize="14sp"
+                    android:lineSpacingExtra="4dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/icon1" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/stroke_box"
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/glass_card_dark"
+                android:padding="20dp">
+
+                <FrameLayout
+                    android:id="@+id/icon2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/btn_glass_circle"
+                    android:padding="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/updates"
+                        app:tint="#A9016D"/>
+                </FrameLayout>
 
                 <TextView
+                    android:id="@+id/date2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="November 25, 2025"
-                    android:textSize="12sp"
-                    android:textColor="#B0B0B0"
-                    android:fontFamily="@font/raleway_regular"
-                    android:layout_marginBottom="8dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Campus maintenance notice"
+                    android:layout_marginStart="12dp"
                     android:fontFamily="@font/raleway_bold"
-                    android:textSize="16sp"
-                    android:textColor="@color/white"
-                    android:layout_marginBottom="8dp"/>
+                    android:text="Nov 25, 2025"
+                    android:textColor="#A9016D"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@id/icon2"
+                    app:layout_constraintTop_toTopOf="@id/icon2"
+                    app:layout_constraintBottom_toTopOf="@id/title2"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/title2"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="string/updates"
-                    android:textSize="14sp"
-                    android:textColor="#E0E0E0"
-                    android:fontFamily="@font/raleway_light"
-                    android:maxLines="3"
-                    android:ellipsize="end"/>
-            </LinearLayout>
+                    android:layout_marginStart="12dp"
+                    android:fontFamily="@font/raleway_bold"
+                    android:text="Campus Maintenance"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/icon2"
+                    app:layout_constraintTop_toBottomOf="@id/date2"
+                    app:layout_constraintBottom_toBottomOf="@id/icon2"/>
 
-            <!-- Item 3 -->
-            <LinearLayout
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/raleway_light"
+                    android:text="Scheduled maintenance for the Main Building elevators will occur this weekend. Please use the stairs."
+                    android:textColor="#E0E0E0"
+                    android:textSize="14sp"
+                    android:lineSpacingExtra="4dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/icon2" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/stroke_box"
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/glass_card_dark"
+                android:padding="20dp">
+
+                <FrameLayout
+                    android:id="@+id/icon3"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/btn_glass_circle"
+                    android:padding="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/updates"
+                        app:tint="#A9016D"/>
+                </FrameLayout>
 
                 <TextView
+                    android:id="@+id/date3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="November 20, 2025"
-                    android:textSize="12sp"
-                    android:textColor="#B0B0B0"
-                    android:fontFamily="@font/raleway_regular"
-                    android:layout_marginBottom="8dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Holiday announcement"
+                    android:layout_marginStart="12dp"
                     android:fontFamily="@font/raleway_bold"
-                    android:textSize="16sp"
-                    android:textColor="@color/white"
-                    android:layout_marginBottom="8dp"/>
+                    android:text="Nov 20, 2025"
+                    android:textColor="#A9016D"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@id/icon3"
+                    app:layout_constraintTop_toTopOf="@id/icon3"
+                    app:layout_constraintBottom_toTopOf="@id/title3"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/title3"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="string/updates"
-                    android:textSize="14sp"
-                    android:textColor="#E0E0E0"
+                    android:layout_marginStart="12dp"
+                    android:fontFamily="@font/raleway_bold"
+                    android:text="Holiday Announcement"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/icon3"
+                    app:layout_constraintTop_toBottomOf="@id/date3"
+                    app:layout_constraintBottom_toBottomOf="@id/icon3"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
                     android:fontFamily="@font/raleway_light"
-                    android:maxLines="3"
-                    android:ellipsize="end"/>
-            </LinearLayout>
+                    android:text="Classes are suspended next Monday in observance of the National Holiday. Enjoy the long weekend!"
+                    android:textColor="#E0E0E0"
+                    android:textSize="14sp"
+                    android:lineSpacingExtra="4dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/icon3" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
     </ScrollView>
 
     <View
-        android:id="@+id/bottomNavDivider"
+        android:id="@+id/navDivider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#3F3B52"
-        app:layout_constraintBottom_toTopOf="@id/bottomNav"/>
+        android:background="@drawable/glass_divider_line"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNav" />
 
-    <!-- BOTTOM NAV -->
     <LinearLayout
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="#363250"
+        android:background="#F20A0322"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:alpha="0.6"
             android:gravity="center"
             android:orientation="vertical">
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/maps"
-                app:tint="#ffff"/>
+                app:tint="#FFFFFF" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:fontFamily="@font/raleway_regular"
                 android:text="Maps"
-                android:fontFamily="@font/raleway_light"
-                android:textColor="#ffff"
-                android:textSize="12sp"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/db_ic"
-                app:tint="@android:color/white"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/raleway_light"
-                android:text="Dashboard"
-                android:textColor="@android:color/white"
-                android:textSize="12sp"/>
+                android:textColor="#FFFFFF"
+                android:textSize="10sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:alpha="0.6"
             android:gravity="center"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:src="@drawable/updates"
-                />
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/db_ic"
+                app:tint="#FFFFFF" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:fontFamily="@font/raleway_regular"
+                android:text="Dashboard"
+                android:textColor="#FFFFFF"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/updates"
+                app:tint="#FFFFFF" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/raleway_bold"
                 android:text="Updates"
-                android:fontFamily="@font/raleway_light"
-                android:textColor="@color/white"
-                android:textSize="12sp"/>
+                android:textColor="#FFFFFF"
+                android:textSize="10sp" />
         </LinearLayout>
     </LinearLayout>
 
