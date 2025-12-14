@@ -27,7 +27,7 @@ public class StudentResetPasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.reset_pass_client);
+        setContentView(R.layout.l_reset_pass);
 
         dbHelper = new DatabaseHelper(this);
         loadSession();

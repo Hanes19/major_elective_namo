@@ -20,7 +20,7 @@ public class StudentProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.p_profile_screen);
+        setContentView(R.layout.s_profile);
 
         dbHelper = new DatabaseHelper(this);
         initViews();

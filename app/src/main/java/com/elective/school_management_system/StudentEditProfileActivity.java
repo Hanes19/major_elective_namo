@@ -22,7 +22,7 @@ public class StudentEditProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_profile_client);
+        setContentView(R.layout.s_edit_profile);
 
         dbHelper = new DatabaseHelper(this);
         initViews();

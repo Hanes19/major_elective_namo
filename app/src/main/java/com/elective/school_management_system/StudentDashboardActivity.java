@@ -4,7 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.widget.ImageView;
+import android.widget.FrameLayout; // Import added
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -18,7 +18,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
     private static final int CAMERA_PERMISSION_CODE = 100;
 
     // UI Components
-    private ImageView imgSettings;
+    private FrameLayout imgSettings; // CHANGED: from ImageView to FrameLayout to match XML
     private LinearLayout searchContainer;
     private LinearLayout cardRooms, cardInstructors, cardNav, cardProfile;
     private RelativeLayout item1, item2, item3;
@@ -29,13 +29,14 @@ public class StudentDashboardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.db_student_dashboard);
+        setContentView(R.layout.s_dashboard);
 
         initViews();
         setupListeners();
     }
 
     private void initViews() {
+        // This now correctly casts the FrameLayout from your XML
         imgSettings = findViewById(R.id.img_settings);
         searchContainer = findViewById(R.id.search_container);
 

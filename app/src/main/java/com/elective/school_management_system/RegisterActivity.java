@@ -25,7 +25,7 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.register_screen);
+        setContentView(R.layout.l_register);
 
         // Initialize Database Helper
         dbHelper = new DatabaseHelper(this);

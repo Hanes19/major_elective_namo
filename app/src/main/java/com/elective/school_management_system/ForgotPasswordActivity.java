@@ -13,7 +13,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fogot_password_screen); // Ensure this matches your XML filename
+        setContentView(R.layout.l_forgot_pass); // Ensure this matches your XML filename
 
         initViews();
         setupListeners();

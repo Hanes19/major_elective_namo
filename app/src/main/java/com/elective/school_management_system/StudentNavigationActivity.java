@@ -61,7 +61,7 @@ public class StudentNavigationActivity extends AppCompatActivity implements Sens
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.db_student_navscreen_armode);
+        setContentView(R.layout.s_navscreen_armode);
 
         cameraPreview = findViewById(R.id.cameraPreview);
         ivArrow = findViewById(R.id.ivArrow);

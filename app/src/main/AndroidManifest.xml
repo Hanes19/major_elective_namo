@@ -32,14 +32,14 @@
         <activity android:name=".StudentDashboardActivity" android:exported="false" />
         <activity android:name=".StudentNavigationActivity" android:exported="false" />
         <activity android:name=".StudentRoomMapActivity" android:exported="false" />
-
         <activity android:name=".StudentRoomsListActivity" android:exported="false" />
         <activity android:name=".RoomDetailsActivity" android:exported="false" />
         <activity android:name=".StudentInstructorsListActivity" android:exported="false" />
-
         <activity android:name=".StudentEditProfileActivity" />
         <activity android:name=".StudentProfileActivity" android:exported="false" />
         <activity android:name=".StudentResetPasswordActivity" android:exported="false" />
+
+        <activity android:name=".AdminManageInstructorsActivity" android:exported="false" />
 
         <activity android:name=".MainActivity" android:exported="false" />
 

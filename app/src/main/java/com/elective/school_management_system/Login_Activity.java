@@ -31,7 +31,7 @@ public class Login_Activity extends AppCompatActivity {
             return; // Stop execution of onCreate so we don't load the login screen
         }
 
-        setContentView(R.layout.login_screen);
+        setContentView(R.layout.l_login_screen);
         dbHelper = new DatabaseHelper(this);
         initViews();
         setupListeners();
