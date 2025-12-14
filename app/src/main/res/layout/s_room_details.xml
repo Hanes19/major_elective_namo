@@ -149,8 +149,7 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
 
-<<<<<<< Updated upstream:app/src/main/res/layout/db_student_room_details.xml
-        <LinearLayout
+    <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -171,9 +170,9 @@
                 android:textColor="#FFFF"
                 android:textSize="10sp" />
         </LinearLayout>
-=======
+
         <include layout="@layout/s_navscreen_armode" />
->>>>>>> Stashed changes:app/src/main/res/layout/s_room_details.xml
+
 
         <LinearLayout
             android:layout_width="0dp"

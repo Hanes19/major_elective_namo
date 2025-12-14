@@ -1,6 +1,5 @@
 package com.elective.school_management_system;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -26,7 +25,7 @@ public class AdminManageInstructorsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.teacher_m_instructors);
+        setContentView(R.layout.t_manage_instructors);
 
         dbHelper = new DatabaseHelper(this);
 

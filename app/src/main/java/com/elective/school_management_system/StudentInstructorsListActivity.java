@@ -24,7 +24,7 @@ public class StudentInstructorsListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_client_instructors_list);
+        setContentView(R.layout.ad_instructors_list);
 
         dbHelper = new DatabaseHelper(this);
 
