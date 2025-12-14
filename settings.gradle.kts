@@ -12,7 +12,7 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT) // <--- UPDATED
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
     repositories {
         google()
         mavenCentral()
@@ -23,6 +23,3 @@ dependencyResolutionManagement {
 rootProject.name = "School_Management_System"
 include(":app")
 include(":camera_AR_school_nav")
-//(":unityLibrary")
-//project(":unityLibrary").projectDir = file("./unityLibrary")
-//include(":unityLibrary:xrmanifest.androidlib")
