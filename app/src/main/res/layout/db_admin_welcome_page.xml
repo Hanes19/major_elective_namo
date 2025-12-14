@@ -5,14 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#363250">
+    android:background="@drawable/bg_gradient_palette">
 
-    <!-- SCROLLABLE AREA -->
-    <!-- Constrained between Top of Parent and Top of Bottom Nav -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
+        android:clipToPadding="false"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/bottomNav">
 
@@ -21,37 +20,43 @@
             android:layout_height="wrap_content"
             android:paddingBottom="40dp">
 
-            <!-- HEADER SECTION -->
             <TextView
                 android:id="@+id/tvHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="32dp"
                 android:fontFamily="@font/raleway_bold"
                 android:text="Your Agenda For Today"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
+                android:letterSpacing="0.02"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- LOGO ICON (Top Right) -->
-            <ImageView
+            <FrameLayout
                 android:id="@+id/imgLogo"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
                 android:layout_marginEnd="24dp"
-                android:src="@drawable/app_logo"
-                app:layout_constraintBottom_toBottomOf="@+id/tvHeader"
+                android:background="@drawable/glass_card_dark"
+                android:padding="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tvWelcome"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tvHeader" />
+                app:layout_constraintTop_toTopOf="@+id/tvHeader">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/app_logo" />
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/tvWelcome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/raleway_regular"
                 android:text="Welcome!"
                 android:textColor="#E0E0E0"
@@ -60,25 +65,22 @@
                 app:layout_constraintStart_toStartOf="@+id/tvHeader"
                 app:layout_constraintTop_toBottomOf="@+id/tvHeader" />
 
-            <!-- TABS (My Schedule / My Profile) -->
             <LinearLayout
                 android:id="@+id/tabContainer"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="54dp"
                 android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="24dp"
-                android:background="@drawable/db_btn_bg"
+                android:background="@drawable/glass_tab_container"
                 android:orientation="horizontal"
                 android:padding="4dp"
                 app:layout_constraintTop_toBottomOf="@+id/tvWelcome">
 
-
-                <!-- My Schedule (Active) -->
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/button_background"
+                    android:background="@drawable/glass_tab_active"
                     android:fontFamily="@font/raleway_bold"
                     android:gravity="center"
                     android:paddingStart="16dp"
@@ -90,8 +92,6 @@
                     app:drawableStartCompat="@android:drawable/ic_menu_agenda"
                     app:drawableTint="@android:color/white" />
 
-
-                <!-- My Profile (Inactive) -->
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -99,118 +99,145 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="My Profile"
-                    android:textColor="@android:color/white"
+                    android:textColor="#80E0E0E0"
                     android:textSize="14sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <!-- MAIN CARD (Upcoming Class) -->
-            <androidx.cardview.widget.CardView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cardUpcoming"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="24dp"
-                app:cardBackgroundColor="#252233"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="4dp"
+                android:background="@drawable/glass_card_dark"
+                android:padding="16dp"
                 app:layout_constraintTop_toBottomOf="@+id/tabContainer">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/imgContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@android:color/transparent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#40000000"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/classroom" />
+                </androidx.cardview.widget.CardView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/db_btn_bg"
                     android:orientation="vertical"
-                    android:paddingBottom="24dp">
+                    android:paddingTop="16dp"
+                    android:paddingHorizontal="4dp"
+                    app:layout_constraintTop_toBottomOf="@+id/imgContainer">
 
-                    <!-- Class Image -->
-                    <ImageView
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/raleway_light"
+                        android:text="UPCOMING CLASS"
+                        android:letterSpacing="0.1"
+                        android:textColor="#A0A0A0"
+                        android:textSize="12sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/raleway_bold"
+                        android:text="IT101: Major Elective 1"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <View
                         android:layout_width="match_parent"
-                        android:layout_height="180dp"
-                        android:background="#DDDDDD"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/classroom" />
+                        android:layout_height="1dp"
+                        android:background="#1AFFFFFF"
+                        android:layout_marginVertical="12dp"/>
 
-                    <!-- Card Content -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:background="@drawable/db_btn_bg"
-                        android:paddingHorizontal="20dp"
-                        android:paddingTop="16dp">
+                        android:orientation="horizontal"
+                        android:baselineAligned="false">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/raleway_light"
-                            android:text="Upcoming Class"
-                            android:textColor="#A0A0A0"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:fontFamily="@font/raleway_bold"
-                            android:text="IT101: Major Elective 1"
-                            android:textColor="@android:color/white"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-
-                        <!-- Location Row -->
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/door"
-                                app:tint="@android:color/white" />
-
+                            android:orientation="vertical">
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical">
+                                <ImageView
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:src="@drawable/door"
+                                    app:tint="#A0A0A0" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="6dp"
+                                    android:text="Location"
+                                    android:textColor="#A0A0A0"
+                                    android:textSize="12sp"/>
+                            </LinearLayout>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="4dp"
                                 android:fontFamily="@font/raleway_light"
-                                android:text="Computer Lab 1, Main Building"
-                                android:textColor="#D0D0D0"
+                                android:text="Computer Lab 1"
+                                android:textColor="#E0E0E0"
                                 android:textSize="14sp" />
                         </LinearLayout>
 
-                        <!-- Time Row -->
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/clock"
-                                app:tint="@android:color/white" />
-
+                            android:orientation="vertical">
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical">
+                                <ImageView
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:src="@drawable/clock"
+                                    app:tint="#A0A0A0" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="6dp"
+                                    android:text="Time"
+                                    android:textColor="#A0A0A0"
+                                    android:textSize="12sp"/>
+                            </LinearLayout>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="4dp"
                                 android:fontFamily="@font/raleway_light"
-                                android:text="9:00 AM - 12:00 PM"
-                                android:textColor="#D0D0D0"
+                                android:text="09:00 - 12:00"
+                                android:textColor="#E0E0E0"
                                 android:textSize="14sp" />
                         </LinearLayout>
-
                     </LinearLayout>
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- BOTTOM GRID (Two Cards) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -219,17 +246,15 @@
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@+id/cardUpcoming">
 
-                <!-- Left Card: My Assigned Rooms -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_margin="8dp"
-                    android:background="@drawable/db_btn_bg"
+                    android:background="@drawable/glass_card_dark"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="20dp">
 
-                    <!-- Pink Icon Circle -->
                     <FrameLayout
                         android:layout_width="40dp"
                         android:layout_height="40dp"
@@ -245,37 +270,32 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="16dp"
                         android:fontFamily="@font/raleway_bold"
                         android:text="My Assigned\nRooms"
                         android:textColor="@android:color/white"
-                        android:textSize="16sp"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="View All"
-                        android:textColor="#E0E0E0"
+                        android:text="View All →"
+                        android:textColor="#A0A0A0"
                         android:textSize="12sp"
-                        android:fontFamily="@font/raleway_light"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:background="?attr/selectableItemBackground"/>
+                        android:fontFamily="@font/raleway_light"/>
                 </LinearLayout>
 
-                <!-- Right Card: My Schedule -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_margin="8dp"
-                    android:background="@drawable/db_btn_bg"
+                    android:background="@drawable/glass_card_dark"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="20dp">
 
-                    <!-- Pink Icon Circle -->
                     <FrameLayout
                         android:layout_width="40dp"
                         android:layout_height="40dp"
@@ -291,47 +311,42 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="16dp"
                         android:text="My\nSchedule"
                         android:fontFamily="@font/raleway_bold"
                         android:textColor="@android:color/white"
-                        android:textSize="16sp"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="View All"
-                        android:textColor="#E0E0E0"
+                        android:text="View All →"
+                        android:textColor="#A0A0A0"
                         android:fontFamily="@font/raleway_light"
-                        android:textSize="12sp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:background="?attr/selectableItemBackground"/>
+                        android:textSize="12sp"/>
                 </LinearLayout>
-
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-    <!-- BOTTOM NAVIGATION BAR (Fixed at Bottom) -->
     <LinearLayout
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="#363250"
+        android:background="#F2363250"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <!-- Maps Item -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:alpha="0.6"
             android:orientation="vertical">
             <ImageView
                 android:layout_width="24dp"
@@ -344,10 +359,9 @@
                 android:layout_marginTop="4dp"
                 android:text="Maps"
                 android:textColor="#ffff"
-                android:textSize="12sp"/>
+                android:textSize="10sp"/>
         </LinearLayout>
 
-        <!-- Dashboard Item (Active) -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -365,28 +379,28 @@
                 android:layout_marginTop="4dp"
                 android:text="Dashboard"
                 android:textColor="@android:color/white"
-                android:textSize="12sp"/>
+                android:textSize="10sp"/>
         </LinearLayout>
 
-        <!-- Updates Item -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:alpha="0.6"
             android:orientation="vertical">
             <ImageView
                 android:layout_width="21dp"
                 android:layout_height="21dp"
                 android:src="@drawable/updates"
-                />
+                app:tint="#ffff"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Updates"
                 android:textColor="#ffff"
-                android:textSize="12sp"/>
+                android:textSize="10sp"/>
         </LinearLayout>
     </LinearLayout>
 
