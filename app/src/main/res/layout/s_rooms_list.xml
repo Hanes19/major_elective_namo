@@ -140,8 +140,6 @@
                 android:textSize="10sp" />
         </LinearLayout>
 
-        <include layout="@layout/s_navscreen_armode" />
-
 
         <LinearLayout
             android:layout_width="0dp"
