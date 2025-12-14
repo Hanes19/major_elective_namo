@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.ar" android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -27,15 +28,20 @@
 
         <activity android:name=".RegisterActivity" android:exported="false" android:screenOrientation="portrait"/>
         <activity android:name=".ForgotPasswordActivity" android:exported="false" android:screenOrientation="portrait"/>
+
         <activity android:name=".ClientDashboardActivity" android:exported="false" android:screenOrientation="portrait"/>
+        <activity android:name=".ClientNavigationActivity" android:exported="false" android:screenOrientation="portrait"/>
+        <activity android:name=".ClientRoomMapActivity" android:exported="false" android:screenOrientation="portrait"/>
+
         <activity android:name=".ClientRoomsListActivity" android:exported="false" android:screenOrientation="portrait"/>
         <activity android:name=".RoomDetailsActivity" android:exported="false" android:screenOrientation="portrait"/>
-        <activity android:name=".ClientEditProfileActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ClientInstructorsListActivity" android:exported="false" android:screenOrientation="portrait"/>
+
+        <activity android:name=".ClientEditProfileActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ClientProfileActivity" android:exported="false" android:screenOrientation="portrait"/>
         <activity android:name=".ClientResetPasswordActivity" android:exported="false" android:screenOrientation="portrait"/>
+
         <activity android:name=".MainActivity" android:exported="false" />
-        <activity android:name=".ClientNavigationActivity" android:exported="false" android:screenOrientation="portrait" />
 
     </application>
 

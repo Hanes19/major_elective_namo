@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-<<<<<<< Updated upstream
     android:background="#0A0322">
 
     <View
@@ -225,8 +224,6 @@
                 android:textSize="10sp" />
         </LinearLayout>
     </LinearLayout>
-=======
-    android:background="#363250">
 
     <TextureView
         android:id="@+id/cameraPreview"
@@ -281,6 +278,6 @@
         android:textColor="#FFF"
         android:fontFamily="@font/raleway_bold"
         app:layout_constraintBottom_toBottomOf="parent" />
->>>>>>> Stashed changes
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
