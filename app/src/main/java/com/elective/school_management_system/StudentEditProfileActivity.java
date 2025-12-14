@@ -33,18 +33,19 @@ public class StudentEditProfileActivity extends AppCompatActivity {
     private void initViews() {
         btnBack = findViewById(R.id.btnBack);
 
-        etName = findViewById(R.id.editTextText6);
-        etCourse = findViewById(R.id.editTextText5);
-        etYear = findViewById(R.id.editTextText9);
-        etSection = findViewById(R.id.editTextText8);
-        etEmail = findViewById(R.id.editTextText4);
-        etPhone = findViewById(R.id.editTextText3);
+        // Updated IDs to match s_edit_profile.xml
+        etName = findViewById(R.id.etName);
+        etCourse = findViewById(R.id.etCourse);
+        etYear = findViewById(R.id.etYear);
+        etSection = findViewById(R.id.etSection);
+        etEmail = findViewById(R.id.etEmail);
+        etPhone = findViewById(R.id.etPhone);
 
         btnSaveChanges = findViewById(R.id.btnSaveChanges);
 
-        // NEW: Connect the buttons
-        btnResetPass = findViewById(R.id.button5);
-        btnForgotPass = findViewById(R.id.button6);
+        // Updated IDs to match s_edit_profile.xml
+        btnResetPass = findViewById(R.id.btnReset);
+        btnForgotPass = findViewById(R.id.btnForgot);
     }
 
     private void loadUserData() {
