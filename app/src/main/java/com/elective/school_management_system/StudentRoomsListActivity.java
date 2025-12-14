@@ -6,7 +6,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.LinearLayout; // Changed from TextView
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,7 +17,8 @@ import java.util.List;
 public class StudentRoomsListActivity extends AppCompatActivity {
 
     private ImageView btnBack;
-    private TextView tabMap;
+    // Changed type to LinearLayout to match XML
+    private LinearLayout navMap, navDashboard, navUpdates;
     private EditText etSearch;
     private RecyclerView recyclerView;
     private RoomAdapter adapter;
@@ -34,9 +37,12 @@ public class StudentRoomsListActivity extends AppCompatActivity {
 
     private void initViews() {
         btnBack = findViewById(R.id.btnBack);
-        tabMap = findViewById(R.id.tabMap);
 
-        // These IDs must match the XML provided above
+        // Fixed: Matching the IDs we added to s_rooms_list.xml
+        navMap = findViewById(R.id.navMap);
+        navDashboard = findViewById(R.id.navDashboard);
+        navUpdates = findViewById(R.id.navUpdates);
+
         etSearch = findViewById(R.id.etSearch);
         recyclerView = findViewById(R.id.recyclerViewRooms);
     }
@@ -51,10 +57,22 @@ public class StudentRoomsListActivity extends AppCompatActivity {
     private void setupListeners() {
         btnBack.setOnClickListener(v -> finish());
 
-        tabMap.setOnClickListener(v -> {
+        // Navigation Logic
+        navMap.setOnClickListener(v -> {
             Intent intent = new Intent(StudentRoomsListActivity.this, StudentRoomMapActivity.class);
             startActivity(intent);
         });
+
+        navDashboard.setOnClickListener(v -> {
+            Intent intent = new Intent(StudentRoomsListActivity.this, StudentDashboardActivity.class);
+            // Clear back stack so we don't pile up activities
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
+
+        navUpdates.setOnClickListener(v ->
+                Toast.makeText(this, "Updates coming soon...", Toast.LENGTH_SHORT).show()
+        );
 
         // Search Logic
         etSearch.addTextChangedListener(new TextWatcher() {
