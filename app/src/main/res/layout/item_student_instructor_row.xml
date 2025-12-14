@@ -1,77 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
-    app:cardBackgroundColor="#2D2B3F"> <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="16dp"
-    android:gravity="center_vertical">
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/glass_card_dark"
+    android:padding="16dp">
 
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/prof"
-        app:tint="#FFFFFF"
-        android:padding="8dp"
-        android:background="@drawable/circle_bg"/>
+    <FrameLayout
+        android:id="@+id/avatarContainer"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/btn_glass_circle"
+        android:padding="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ivProfile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:src="@drawable/profile"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:orientation="vertical"
-        android:layout_marginStart="16dp">
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnNavigate"
+        app:layout_constraintStart_toEndOf="@+id/avatarContainer"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/raleway_bold"
             android:text="Instructor Name"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textSize="16sp"
+            android:maxLines="1"
+            android:ellipsize="end"/>
 
         <TextView
             android:id="@+id/tvDept"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Department"
-            android:textColor="#B0B0B0"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp"/>
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/raleway_regular"
+            android:text="IT Department"
+            android:textColor="#B0B0C0"
+            android:textSize="12sp"
+            android:maxLines="1"
+            android:ellipsize="end"/>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/btnNavigate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:background="@drawable/glass_tab_active"
         android:gravity="center"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
         android:clickable="true"
         android:focusable="true"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:padding="8dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:src="@drawable/db_nav_icon"
-            app:tint="@color/accent_pink" />
+            app:tint="#fff" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Go"
-            android:textColor="@color/accent_pink"
-            android:textSize="12sp"
-            android:textStyle="bold"/>
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/raleway_bold"
+            android:text="GO"
+            android:textColor="#fff"
+            android:textSize="10sp"
+            android:letterSpacing="0.05"/>
     </LinearLayout>
 
-</LinearLayout>
-</androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
