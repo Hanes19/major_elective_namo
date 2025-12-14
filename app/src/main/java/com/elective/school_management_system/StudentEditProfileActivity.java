@@ -10,7 +10,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class ClientEditProfileActivity extends AppCompatActivity {
+public class StudentEditProfileActivity extends AppCompatActivity {
 
     private ImageButton btnBack;
     private EditText etName, etCourse, etYear, etSection, etEmail, etPhone;
@@ -79,13 +79,13 @@ public class ClientEditProfileActivity extends AppCompatActivity {
 
         // 1. Reset Password Button
         btnResetPass.setOnClickListener(v -> {
-            Intent intent = new Intent(ClientEditProfileActivity.this, ClientResetPasswordActivity.class);
+            Intent intent = new Intent(StudentEditProfileActivity.this, StudentResetPasswordActivity.class);
             startActivity(intent);
         });
 
         // 2. Forgot Password Button
         btnForgotPass.setOnClickListener(v -> {
-            Intent intent = new Intent(ClientEditProfileActivity.this, ForgotPasswordActivity.class);
+            Intent intent = new Intent(StudentEditProfileActivity.this, ForgotPasswordActivity.class);
             startActivity(intent);
         });
 

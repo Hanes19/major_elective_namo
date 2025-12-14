@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
@@ -20,7 +20,7 @@ public class RoomDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.db_client_room_details);
+        setContentView(R.layout.db_student_room_details);
 
         dbHelper = new DatabaseHelper(this);
         initViews();
@@ -57,7 +57,7 @@ public class RoomDetailsActivity extends AppCompatActivity {
             String roomName = (tvTitle.getText() != null) ? tvTitle.getText().toString() : "Room";
 
             // Launch the custom ClientNavigationActivity
-            Intent intent = new Intent(RoomDetailsActivity.this, ClientNavigationActivity.class);
+            Intent intent = new Intent(RoomDetailsActivity.this, StudentNavigationActivity.class);
             intent.putExtra("ROOM_NAME", roomName);
             startActivity(intent);
             // Optional animation

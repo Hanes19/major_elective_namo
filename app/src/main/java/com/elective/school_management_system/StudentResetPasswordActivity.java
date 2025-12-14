@@ -6,12 +6,11 @@ import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
-public class ClientResetPasswordActivity extends AppCompatActivity {
+public class StudentResetPasswordActivity extends AppCompatActivity {
 
     private ImageView btnBack;
     private EditText etOldPass, etNewPass, etConfirmPass;

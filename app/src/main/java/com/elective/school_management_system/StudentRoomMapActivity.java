@@ -8,7 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class ClientRoomMapActivity extends AppCompatActivity {
+public class StudentRoomMapActivity extends AppCompatActivity {
 
     private ImageView btnBack;
     private TextView tabList, btnZoomIn, btnZoomOut;
@@ -17,7 +17,7 @@ public class ClientRoomMapActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.db_client_room_map);
+        setContentView(R.layout.db_student_room_map);
 
         initViews();
         setupListeners();
@@ -41,7 +41,7 @@ public class ClientRoomMapActivity extends AppCompatActivity {
 
         // Switch back to List View
         tabList.setOnClickListener(v -> {
-            Intent intent = new Intent(ClientRoomMapActivity.this, ClientRoomsListActivity.class);
+            Intent intent = new Intent(StudentRoomMapActivity.this, StudentRoomsListActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         });
@@ -51,7 +51,7 @@ public class ClientRoomMapActivity extends AppCompatActivity {
             TextView tv = (TextView) v;
             String roomNumber = tv.getText().toString(); // e.g., "101"
 
-            Intent intent = new Intent(ClientRoomMapActivity.this, RoomDetailsActivity.class);
+            Intent intent = new Intent(StudentRoomMapActivity.this, RoomDetailsActivity.class);
             intent.putExtra("ROOM_NAME", "Room " + roomNumber);
             startActivity(intent);
         };

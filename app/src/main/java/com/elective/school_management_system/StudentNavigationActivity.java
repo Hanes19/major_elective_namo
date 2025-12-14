@@ -30,7 +30,7 @@ import androidx.core.app.ActivityCompat;
 
 import java.util.Collections;
 
-public class ClientNavigationActivity extends AppCompatActivity implements SensorEventListener {
+public class StudentNavigationActivity extends AppCompatActivity implements SensorEventListener {
 
     private TextureView cameraPreview;
     private ImageView ivArrow;
@@ -61,7 +61,7 @@ public class ClientNavigationActivity extends AppCompatActivity implements Senso
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.db_client_navscreen_armode);
+        setContentView(R.layout.db_student_navscreen_armode);
 
         cameraPreview = findViewById(R.id.cameraPreview);
         ivArrow = findViewById(R.id.ivArrow);
@@ -198,7 +198,7 @@ public class ClientNavigationActivity extends AppCompatActivity implements Senso
                 }
                 @Override
                 public void onConfigureFailed(@NonNull CameraCaptureSession session) {
-                    Toast.makeText(ClientNavigationActivity.this, "Camera Config Failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(StudentNavigationActivity.this, "Camera Config Failed", Toast.LENGTH_SHORT).show();
                 }
             }, null);
         } catch (CameraAccessException e) {

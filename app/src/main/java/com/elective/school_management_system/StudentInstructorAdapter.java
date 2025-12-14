@@ -15,12 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class ClientInstructorAdapter extends RecyclerView.Adapter<ClientInstructorAdapter.ViewHolder> {
+public class StudentInstructorAdapter extends RecyclerView.Adapter<StudentInstructorAdapter.ViewHolder> {
 
     private Context context;
     private List<Instructor> instructorList;
 
-    public ClientInstructorAdapter(Context context, List<Instructor> instructorList) {
+    public StudentInstructorAdapter(Context context, List<Instructor> instructorList) {
         this.context = context;
         this.instructorList = instructorList;
     }
@@ -34,7 +34,7 @@ public class ClientInstructorAdapter extends RecyclerView.Adapter<ClientInstruct
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_client_instructor_row, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_student_instructor_row, parent, false);
         return new ViewHolder(view);
     }
 
