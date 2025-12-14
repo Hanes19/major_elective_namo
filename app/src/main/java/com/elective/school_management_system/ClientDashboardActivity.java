@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView; // Added
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +24,9 @@ public class ClientDashboardActivity extends AppCompatActivity {
     private LinearLayout searchContainer;
     private LinearLayout cardRooms, cardInstructors, cardNav, cardProfile;
 
+    // Added to fix "Cannot find symbol" error
+    private LinearLayout item1, item2, item3;
+
     // NEW: Add Bottom Nav variables to match your XML IDs
     private LinearLayout navHome, navNav, navProfile;
 
@@ -35,8 +38,10 @@ public class ClientDashboardActivity extends AppCompatActivity {
         initViews();
         setupListeners();
 
-        // Default Load: Show Rooms when dashboard opens
-        replaceFragment(new RoomsFragment());
+        // NOTE: The line below was calling a method 'replaceFragment' that didn't exist
+        // in your new Activity-based logic. I have commented it out.
+        // If you still need a default fragment, you must uncomment the replaceFragment method below.
+        // replaceFragment(new RoomsFragment());
     }
 
     private void initViews() {
@@ -46,8 +51,8 @@ public class ClientDashboardActivity extends AppCompatActivity {
         cardInstructors = findViewById(R.id.card_instructors);
         cardNav = findViewById(R.id.card_nav);
         cardProfile = findViewById(R.id.card_profile);
-<<<<<<< Updated upstream
-=======
+
+        // Defined these variables so they don't cause errors
         item1 = findViewById(R.id.item_1);
         item2 = findViewById(R.id.item_2);
         item3 = findViewById(R.id.item_3);
@@ -56,7 +61,6 @@ public class ClientDashboardActivity extends AppCompatActivity {
         navHome = findViewById(R.id.navHome);
         navNav = findViewById(R.id.navNav);
         navProfile = findViewById(R.id.navProfile);
->>>>>>> Stashed changes
     }
 
     private void setupListeners() {
@@ -65,22 +69,13 @@ public class ClientDashboardActivity extends AppCompatActivity {
         });
 
         searchContainer.setOnClickListener(v -> {
-            // Optional: You can make this open the Rooms fragment or a specific search fragment
-            replaceFragment(new RoomsFragment());
+            // Updated to use the Activity method instead of Fragment
+            Intent intent = new Intent(ClientDashboardActivity.this, ClientRoomsListActivity.class);
+            startActivity(intent);
         });
 
-<<<<<<< Updated upstream
-        // 1. Rooms Click: Switch bottom part to Rooms layout
-        cardRooms.setOnClickListener(v -> replaceFragment(new RoomsFragment()));
+        // --- MERGE CONFLICT RESOLUTION: Using the "Stashed" changes ---
 
-        // 2. Instructors Click: Switch bottom part to Instructors layout
-        cardInstructors.setOnClickListener(v -> replaceFragment(new InstructorsFragment()));
-
-        // 3. Navigation Click: Keep existing behavior (Goes to Camera/Nav Activity)
-        cardNav.setOnClickListener(v -> checkCameraPermissionAndOpen());
-
-        // 4. Profile Click: Navigate to Profile Activity
-=======
         cardRooms.setOnClickListener(v -> {
             Intent intent = new Intent(ClientDashboardActivity.this, ClientRoomsListActivity.class);
             startActivity(intent);
@@ -94,25 +89,10 @@ public class ClientDashboardActivity extends AppCompatActivity {
         // This checks permission, then calls openCamera()
         cardNav.setOnClickListener(v -> checkCameraPermissionAndOpen());
 
->>>>>>> Stashed changes
         cardProfile.setOnClickListener(v -> {
             Intent intent = new Intent(ClientDashboardActivity.this, ClientProfileActivity.class);
             startActivity(intent);
         });
-<<<<<<< Updated upstream
-    }
-
-    // Helper method to swap fragments in the bottom container
-    private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, fragment);
-        fragmentTransaction.commit();
-    }
-
-    // --- Permission & Camera Logic (Unchanged) ---
-
-=======
 
         // --- NEW BOTTOM NAV LISTENERS ---
         // Home (already here, just refresh or do nothing)
@@ -131,7 +111,15 @@ public class ClientDashboardActivity extends AppCompatActivity {
         });
     }
 
->>>>>>> Stashed changes
+    /* // OLD METHOD: If you decide to go back to Fragments instead of Activities, uncomment this.
+    private void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.commit();
+    }
+    */
+
     private void checkCameraPermissionAndOpen() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
