@@ -12,6 +12,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+// Note: Ensure LandingPageActivity and AdminNavigationListActivity exist
+// LandingPageActivity.java (The new Admin Dashboard / Splash)
+// AdminNavigationListActivity.java (The new Student Navigation Hub)
+
 public class Login_Activity extends AppCompatActivity {
 
     private EditText etEmail, etPassword;
@@ -26,8 +30,9 @@ public class Login_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // 1. CHECK SESSION BEFORE LOADING VIEW
+        // If user is already logged in, redirect them immediately
         if (checkSession()) {
-            return; // Stop execution so we don't load the login screen
+            return; // Stop execution of onCreate so we don't load the login screen
         }
 
         setContentView(R.layout.l_login_screen);
@@ -51,9 +56,11 @@ public class Login_Activity extends AppCompatActivity {
 
         btnTogglePass.setOnClickListener(v -> {
             if (isPasswordVisible) {
+                // Set to hide password
                 etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 btnTogglePass.setAlpha(0.5f);
             } else {
+                // Set to show password
                 etPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 btnTogglePass.setAlpha(1.0f);
             }
@@ -66,25 +73,26 @@ public class Login_Activity extends AppCompatActivity {
         btnLogin.setOnClickListener(v -> performLogin());
     }
 
+    // --- REVERSED Session Check Function ---
     private boolean checkSession() {
         SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
         boolean isLoggedIn = prefs.getBoolean("isLoggedIn", false);
-        String role = prefs.getString("role", "client");
+        String role = prefs.getString("role", "client"); // Default to client
 
         if (isLoggedIn) {
             Intent intent;
             if (role.equals("admin")) {
-                // Redirect to Admin Dashboard
-                intent = new Intent(Login_Activity.this, AdminDashboardActivity.class);
+                // REVERSED: Admin goes to the New Admin Dashboard (Landing Page)
+                intent = new Intent(Login_Activity.this, LandingPageActivity.class);
                 Toast.makeText(this, "Welcome back, Admin!", Toast.LENGTH_SHORT).show();
             } else {
-                // Redirect to Student/Client Dashboard
-                intent = new Intent(Login_Activity.this, StudentDashboardActivity.class);
+                // REVERSED: Client/Student goes to the Old Admin Dashboard (AdminNavigationListActivity)
+                intent = new Intent(Login_Activity.this, AdminNavigationListActivity.class);
             }
 
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-            finish();
+            finish(); // Close login activity
             return true;
         }
         return false;
@@ -106,14 +114,14 @@ public class Login_Activity extends AppCompatActivity {
         if (email.equals("admin") && password.equals("admin123")) {
             // Save Admin Session
             editor.putString("email", email);
-            editor.putString("role", "admin");
+            editor.putString("role", "admin"); // Save role
             editor.putBoolean("isLoggedIn", true);
             editor.apply();
 
             Toast.makeText(this, "Login Successful (Admin)", Toast.LENGTH_SHORT).show();
 
-            // Redirect to Admin Dashboard
-            Intent intent = new Intent(Login_Activity.this, AdminDashboardActivity.class);
+            // REVERSED: Redirect Admin to Landing Page (New Admin Dashboard)
+            Intent intent = new Intent(Login_Activity.this, LandingPageActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
@@ -121,12 +129,13 @@ public class Login_Activity extends AppCompatActivity {
         else if (dbHelper.checkUser(email, password)) {
             // Save Client Session
             editor.putString("email", email);
-            editor.putString("role", "client");
+            editor.putString("role", "client"); // Save role
             editor.putBoolean("isLoggedIn", true);
             editor.apply();
 
             Toast.makeText(this, "Login Successful!", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(Login_Activity.this, StudentDashboardActivity.class);
+            // REVERSED: Redirect Client/Student to Admin Navigation List (Old Admin Dashboard)
+            Intent intent = new Intent(Login_Activity.this, AdminNavigationListActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         } else {
