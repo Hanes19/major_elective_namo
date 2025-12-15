@@ -49,7 +49,7 @@
                     android:layout_height="match_parent"
                     android:padding="4dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/prof" />
+                    android:src="@drawable/profile" />
             </FrameLayout>
 
             <LinearLayout
