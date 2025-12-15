@@ -58,7 +58,7 @@ public class AdminManageRoomsActivity extends AppCompatActivity {
             public void onDelete(Room room) {
                 new AlertDialog.Builder(AdminManageRoomsActivity.this)
                         .setTitle("Delete Room")
-                        .setMessage("Are you sure you want to delete " + room.getName() + "?")
+                        .setMessage("Are you sure you want to delete " + room.getRoomName() + "?")
                         .setPositiveButton("Delete", (dialog, which) -> {
                             dbHelper.deleteRoom(room.getId());
                             loadRooms();
@@ -80,7 +80,7 @@ public class AdminManageRoomsActivity extends AppCompatActivity {
 
         final EditText etName = new EditText(this);
         etName.setHint("Room Name (e.g. Room 101)");
-        if (room != null) etName.setText(room.getName());
+        if (room != null) etName.setText(room.getRoomName());
         layout.addView(etName);
 
         final EditText etDesc = new EditText(this);

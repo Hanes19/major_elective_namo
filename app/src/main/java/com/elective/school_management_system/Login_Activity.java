@@ -78,6 +78,8 @@ public class Login_Activity extends AppCompatActivity {
                 // CHANGED: Redirect Admin to AdminDashboardActivity instead of MainActivity (Splash)
                 intent = new Intent(Login_Activity.this, AdminDashboardActivity.class);
                 Toast.makeText(this, "Welcome back, Admin!", Toast.LENGTH_SHORT).show();
+            } else if (role.equals("teacher")) { // Add this condition
+                intent = new Intent(Login_Activity.this, TeacherDashboardActivity.class);
             } else {
                 intent = new Intent(Login_Activity.this, StudentDashboardActivity.class);
             }

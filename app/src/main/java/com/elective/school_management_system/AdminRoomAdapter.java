@@ -37,7 +37,7 @@ public class AdminRoomAdapter extends RecyclerView.Adapter<AdminRoomAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Room room = rooms.get(position);
-        holder.tvName.setText(room.getName());
+        holder.tvName.setText(room.getRoomName() );
 
         holder.btnEdit.setOnClickListener(v -> listener.onEdit(room));
         holder.btnDelete.setOnClickListener(v -> listener.onDelete(room));

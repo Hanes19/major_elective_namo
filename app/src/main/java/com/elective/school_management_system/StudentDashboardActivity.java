@@ -9,8 +9,10 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,6 +38,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
     private ViewPager2 viewPagerCarousel;
     private TabLayout dotsIndicator;
     private LinearLayout navHome, navNav, navProfile;
+    private ImageView btnSettings; // New Settings Button
 
     // Carousel Data
     private Handler sliderHandler = new Handler(Looper.getMainLooper());
@@ -49,6 +52,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
         initViews();
         setupCarousel();
         setupBottomNav();
+        setupHeaderListeners(); // Initialize header buttons
     }
 
     private void initViews() {
@@ -58,17 +62,54 @@ public class StudentDashboardActivity extends AppCompatActivity {
         navHome = findViewById(R.id.navHome);
         navNav = findViewById(R.id.navNav);
         navProfile = findViewById(R.id.navProfile);
+
+        // Ensure you add an ImageView with this ID to your s_dashboard.xml
+        btnSettings = findViewById(R.id.btnSettings);
+    }
+
+    private void setupHeaderListeners() {
+        if (btnSettings != null) {
+            btnSettings.setOnClickListener(v -> {
+                // Navigate to the Navigation Settings Activity
+                Intent intent = new Intent(StudentDashboardActivity.this, NavSettingsActivity.class);
+                startActivity(intent);
+            });
+        }
     }
 
     private void setupCarousel() {
         List<CarouselItem> items = new ArrayList<>();
+        // 1. Navigation (The "Commercial" Feature)
+        items.add(new CarouselItem(
+                "AR Navigation",
+                "Experience our state-of-the-art Augmented Reality navigation to find your way.",
+                R.drawable.db_nav_icon,
+                v -> checkCameraPermissionAndOpen()
+        ));
 
-        // Updated items to be Image-Only (Billboard style)
-        // No titles, descriptions, or click actions
-        items.add(new CarouselItem(R.drawable.db_nav_icon));
-        items.add(new CarouselItem(R.drawable.db_rooms_ic));
-        items.add(new CarouselItem(R.drawable.db_instruct_ic));
-        items.add(new CarouselItem(R.drawable.db_profile_ic));
+        // 2. Rooms
+        items.add(new CarouselItem(
+                "Find Rooms",
+                "Locate classrooms, labs, and offices instantly with our digital map.",
+                R.drawable.db_rooms_ic,
+                v -> startActivity(new Intent(StudentDashboardActivity.this, StudentRoomsListActivity.class))
+        ));
+
+        // 3. Instructors
+        items.add(new CarouselItem(
+                "Instructors",
+                "Search for professors and view their schedules and room assignments.",
+                R.drawable.db_instruct_ic,
+                v -> startActivity(new Intent(StudentDashboardActivity.this, StudentInstructorsListActivity.class))
+        ));
+
+        // 4. Profile
+        items.add(new CarouselItem(
+                "Your Profile",
+                "Manage your account settings and view your personal information.",
+                R.drawable.db_profile_ic,
+                v -> startActivity(new Intent(StudentDashboardActivity.this, StudentProfileActivity.class))
+        ));
 
         CarouselAdapter adapter = new CarouselAdapter(items);
         viewPagerCarousel.setAdapter(adapter);
@@ -108,13 +149,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
 
     private void setupBottomNav() {
         navHome.setOnClickListener(v -> viewPagerCarousel.setCurrentItem(0));
-
-        navNav.setOnClickListener(v -> {
-            Intent intent = new Intent(StudentDashboardActivity.this, StudentNavigationListActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        });
-
+        navNav.setOnClickListener(v -> checkCameraPermissionAndOpen());
         navProfile.setOnClickListener(v -> {
             Intent intent = new Intent(StudentDashboardActivity.this, StudentProfileActivity.class);
             startActivity(intent);
@@ -134,7 +169,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
         sliderHandler.removeCallbacks(sliderRunnable);
     }
 
-    // --- Permissions & Camera (Kept for other usages if needed, though unlinked from Carousel now) ---
+    // --- Permissions & Camera ---
     private void checkCameraPermissionAndOpen() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
@@ -164,12 +199,17 @@ public class StudentDashboardActivity extends AppCompatActivity {
 
     // ================== INNER CLASSES FOR CAROUSEL ==================
 
-    // SIMPLIFIED: Only holds the image resource
     static class CarouselItem {
+        String title;
+        String description;
         int iconRes;
+        View.OnClickListener listener;
 
-        public CarouselItem(int iconRes) {
+        public CarouselItem(String title, String description, int iconRes, View.OnClickListener listener) {
+            this.title = title;
+            this.description = description;
             this.iconRes = iconRes;
+            this.listener = listener;
         }
     }
 
@@ -190,9 +230,11 @@ public class StudentDashboardActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull CarouselViewHolder holder, int position) {
             CarouselItem item = items.get(position);
-            // Only set the image
+            holder.title.setText(item.title);
+            holder.desc.setText(item.description);
             holder.icon.setImageResource(item.iconRes);
-            // Removed: click listeners, title setText, desc setText
+            holder.actionBtn.setOnClickListener(item.listener);
+            holder.itemView.setOnClickListener(item.listener);
         }
 
         @Override
@@ -202,12 +244,15 @@ public class StudentDashboardActivity extends AppCompatActivity {
 
         static class CarouselViewHolder extends RecyclerView.ViewHolder {
             ImageView icon;
-            // Removed: Title, Desc, Button views
+            TextView title, desc;
+            Button actionBtn;
 
             public CarouselViewHolder(@NonNull View itemView) {
                 super(itemView);
-                // We only look for the slide_image now
                 icon = itemView.findViewById(R.id.slide_image);
+                title = itemView.findViewById(R.id.slide_title);
+                desc = itemView.findViewById(R.id.slide_desc);
+                actionBtn = itemView.findViewById(R.id.btn_action);
             }
         }
     }
