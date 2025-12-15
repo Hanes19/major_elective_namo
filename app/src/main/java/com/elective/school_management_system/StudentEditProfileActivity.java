@@ -1,6 +1,5 @@
 package com.elective.school_management_system;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -14,7 +13,9 @@ public class StudentEditProfileActivity extends AppCompatActivity {
 
     private ImageButton btnBack;
     private EditText etName, etCourse, etYear, etSection, etEmail, etPhone;
-    private Button btnSaveChanges, btnResetPass, btnForgotPass; // Added buttons
+    private Button btnSaveChanges;
+    // REMOVED: btnResetPass, btnForgotPass (They are not in the layout)
+
     private DatabaseHelper dbHelper;
     private String currentEmail;
     private int currentUserId = -1;
@@ -33,7 +34,6 @@ public class StudentEditProfileActivity extends AppCompatActivity {
     private void initViews() {
         btnBack = findViewById(R.id.btnBack);
 
-        // Updated IDs to match s_edit_profile.xml
         etName = findViewById(R.id.etName);
         etCourse = findViewById(R.id.etCourse);
         etYear = findViewById(R.id.etYear);
@@ -42,8 +42,6 @@ public class StudentEditProfileActivity extends AppCompatActivity {
         etPhone = findViewById(R.id.etPhone);
 
         btnSaveChanges = findViewById(R.id.btnSaveChanges);
-
-
     }
 
     private void loadUserData() {
@@ -76,19 +74,9 @@ public class StudentEditProfileActivity extends AppCompatActivity {
     private void setupListeners() {
         btnBack.setOnClickListener(v -> finish());
 
-        // 1. Reset Password Button
-        btnResetPass.setOnClickListener(v -> {
-            Intent intent = new Intent(StudentEditProfileActivity.this, StudentResetPasswordActivity.class);
-            startActivity(intent);
-        });
+        // REMOVED: Listeners for missing buttons (btnResetPass, btnForgotPass) caused the crash
 
-        // 2. Forgot Password Button
-        btnForgotPass.setOnClickListener(v -> {
-            Intent intent = new Intent(StudentEditProfileActivity.this, ForgotPasswordActivity.class);
-            startActivity(intent);
-        });
-
-        // 3. Save Changes Button
+        // Save Changes Button
         btnSaveChanges.setOnClickListener(v -> {
             String newName = etName.getText().toString().trim();
             String newEmail = etEmail.getText().toString().trim();
