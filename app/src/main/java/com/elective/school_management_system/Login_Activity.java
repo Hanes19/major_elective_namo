@@ -87,7 +87,7 @@ public class Login_Activity extends AppCompatActivity {
                 Toast.makeText(this, "Welcome back, Admin!", Toast.LENGTH_SHORT).show();
             } else {
                 // REVERSED: Client/Student goes to the Old Admin Dashboard (AdminNavigationListActivity)
-                intent = new Intent(Login_Activity.this, AdminNavigationListActivity.class);
+                intent = new Intent(Login_Activity.this, StudentNavigationListActivity.class);
             }
 
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -135,7 +135,7 @@ public class Login_Activity extends AppCompatActivity {
 
             Toast.makeText(this, "Login Successful!", Toast.LENGTH_SHORT).show();
             // REVERSED: Redirect Client/Student to Admin Navigation List (Old Admin Dashboard)
-            Intent intent = new Intent(Login_Activity.this, AdminNavigationListActivity.class);
+            Intent intent = new Intent(Login_Activity.this, StudentNavigationListActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         } else {

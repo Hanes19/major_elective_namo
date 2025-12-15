@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,16 +21,18 @@ public class StudentDashboardActivity extends AppCompatActivity {
     private static final int CAMERA_PERMISSION_CODE = 100;
 
     // UI Components
-    // FIXED: Changed from ImageView to FrameLayout to match the XML
     private FrameLayout imgSettings;
     private LinearLayout searchContainer;
     private LinearLayout cardRooms, cardInstructors, cardNav, cardProfile;
 
-    // FIXED: Changed from RelativeLayout to LinearLayout to match the XML
     private LinearLayout item1, item2, item3;
 
     // Bottom Navigation
     private LinearLayout navHome, navNav, navProfile;
+
+    // Splash Overlay Elements
+    private View splashOverlay;
+    private Button btnGetStarted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +44,6 @@ public class StudentDashboardActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        // This findViewById will now work correctly because imgSettings is a FrameLayout
         imgSettings = findViewById(R.id.img_settings);
         searchContainer = findViewById(R.id.search_container);
 
@@ -50,8 +53,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
         cardNav = findViewById(R.id.card_nav);
         cardProfile = findViewById(R.id.card_profile);
 
-        // Suggestions (Items)
-        // These are LinearLayouts in your XML, so casting them to LinearLayout here prevents a ClassCastException
+        // Suggestions
         item1 = findViewById(R.id.item_1);
         item2 = findViewById(R.id.item_2);
         item3 = findViewById(R.id.item_3);
@@ -60,9 +62,26 @@ public class StudentDashboardActivity extends AppCompatActivity {
         navHome = findViewById(R.id.navHome);
         navNav = findViewById(R.id.navNav);
         navProfile = findViewById(R.id.navProfile);
+
+        // Splash Overlay
+        splashOverlay = findViewById(R.id.splashOverlay);
+        btnGetStarted = findViewById(R.id.btn_get_started);
     }
 
     private void setupListeners() {
+        // --- Splash Screen Actions ---
+        // Clicking "GET STARTED" hides the overlay to reveal the dashboard
+        if (btnGetStarted != null) {
+            btnGetStarted.setOnClickListener(v -> {
+                if (splashOverlay != null) {
+                    splashOverlay.animate()
+                            .alpha(0f)
+                            .setDuration(400)
+                            .withEndAction(() -> splashOverlay.setVisibility(View.GONE));
+                }
+            });
+        }
+
         // --- Header Actions ---
         imgSettings.setOnClickListener(v -> {
             Toast.makeText(this, "Settings feature coming soon", Toast.LENGTH_SHORT).show();
@@ -93,8 +112,15 @@ public class StudentDashboardActivity extends AppCompatActivity {
         });
 
         // --- Bottom Navigation ---
-        // Home (already here)
-        navHome.setOnClickListener(v -> {});
+        // Home Button -> If clicked, maybe show the splash overlay again?
+        // Or just stay on dashboard. Currently effectively does nothing if already on dashboard.
+        navHome.setOnClickListener(v -> {
+            // Optional: Uncomment below if clicking Home should bring back the Splash Screen
+            // if (splashOverlay != null) {
+            //     splashOverlay.setVisibility(View.VISIBLE);
+            //     splashOverlay.setAlpha(1f);
+            // }
+        });
 
         // Nav Button -> Check Perms -> Open Camera
         navNav.setOnClickListener(v -> checkCameraPermissionAndOpen());
@@ -106,7 +132,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
 
-        // --- Suggestion Items (Optional Logic) ---
+        // --- Suggestion Items ---
         item1.setOnClickListener(v -> Toast.makeText(this, "Suggestion 1 Clicked", Toast.LENGTH_SHORT).show());
         item2.setOnClickListener(v -> Toast.makeText(this, "Suggestion 2 Clicked", Toast.LENGTH_SHORT).show());
         item3.setOnClickListener(v -> Toast.makeText(this, "Suggestion 3 Clicked", Toast.LENGTH_SHORT).show());
@@ -121,7 +147,6 @@ public class StudentDashboardActivity extends AppCompatActivity {
     }
 
     private void openCamera() {
-        // Launches the "AR" screen (which is now just a camera preview)
         Intent intent = new Intent(StudentDashboardActivity.this, StudentNavigationActivity.class);
         intent.putExtra("ROOM_NAME", "Navigation Mode");
         startActivity(intent);
