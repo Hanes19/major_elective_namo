@@ -8,7 +8,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-public class AdminNavigationListActivity extends AppCompatActivity {
+public class StudentNavigationListActivity extends AppCompatActivity {
 
     // UI Components
     private ConstraintLayout btnManageMap, btnManageUsers, btnReports;
@@ -52,7 +52,7 @@ public class AdminNavigationListActivity extends AppCompatActivity {
 
         // 2. User Directory (Linked to Instructors for now)
         btnManageUsers.setOnClickListener(v -> {
-            Intent intent = new Intent(AdminNavigationListActivity.this, AdminManageInstructorsActivity.class);
+            Intent intent = new Intent(StudentNavigationListActivity.this, AdminManageInstructorsActivity.class);
             startActivity(intent);
         });
 
