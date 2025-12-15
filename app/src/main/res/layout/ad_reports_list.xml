@@ -113,11 +113,15 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
+            android:id="@+id/navHome"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:alpha="0.6"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
             android:orientation="vertical">
             <ImageView
                 android:layout_width="24dp"
@@ -135,11 +139,15 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/navMap"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:alpha="0.6"
             android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
             android:orientation="vertical">
             <ImageView
                 android:layout_width="24dp"
@@ -157,10 +165,14 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/navReports"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
             android:orientation="vertical">
             <ImageView
                 android:layout_width="24dp"

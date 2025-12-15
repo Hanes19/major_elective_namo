@@ -52,17 +52,81 @@
         app:layout_constraintStart_toEndOf="@+id/img_logo"
         app:layout_constraintTop_toTopOf="@+id/img_logo" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cardNextClass"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/glass_card_dark"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_logo">
+
+        <TextView
+            android:id="@+id/lblNextClass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/raleway_bold"
+            android:text="UPCOMING CLASS"
+            android:textColor="#A9016D"
+            android:textSize="10sp"
+            android:letterSpacing="0.1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtNextClassSubject"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/raleway_bold"
+            android:text="Mobile Development"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblNextClass" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtNextClassSubject">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/door"
+                app:tint="#E0E0E0" />
+
+            <TextView
+                android:id="@+id/txtNextClassRoom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:fontFamily="@font/raleway_regular"
+                android:text="Room 103 • 08:00 AM"
+                android:textColor="#E0E0E0"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPagerCarousel"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginVertical="32dp"
+        android:layout_marginVertical="24dp"
         android:clipToPadding="false"
         android:paddingHorizontal="40dp"
         app:layout_constraintBottom_toTopOf="@+id/worm_dots_indicator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_logo" />
+        app:layout_constraintTop_toBottomOf="@+id/cardNextClass" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/worm_dots_indicator"

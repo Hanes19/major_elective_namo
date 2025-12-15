@@ -3,6 +3,7 @@ package com.elective.school_management_system;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -16,6 +17,9 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
     // Management Console Buttons
     private ConstraintLayout btnManageMap, btnManageUsers, btnReports;
+
+    // Settings Button
+    private FrameLayout btnSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,9 @@ public class AdminDashboardActivity extends AppCompatActivity {
         btnManageMap = findViewById(R.id.btnManageMap);
         btnManageUsers = findViewById(R.id.btnManageUsers);
         btnReports = findViewById(R.id.btnReports);
+
+        // Settings
+        btnSettings = findViewById(R.id.btnSettings);
     }
 
     private void setupListeners() {
@@ -43,22 +50,25 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         btnManageMap.setOnClickListener(v -> {
             // Navigate to Map Management
-            // Ensure AdminManageRoomsActivity is created and registered in AndroidManifest.xml
             Intent intent = new Intent(AdminDashboardActivity.this, AdminManageRoomsActivity.class);
             startActivity(intent);
         });
 
         btnManageUsers.setOnClickListener(v -> {
             // Navigate to User Directory
-            // Ensure AdminUserListActivity is created and registered in AndroidManifest.xml
             Intent intent = new Intent(AdminDashboardActivity.this, AdminUserListActivity.class);
             startActivity(intent);
         });
 
         btnReports.setOnClickListener(v -> {
             // Navigate to Reports
-            // Ensure AdminReportsActivity is created and registered in AndroidManifest.xml
             Intent intent = new Intent(AdminDashboardActivity.this, AdminReportsActivity.class);
+            startActivity(intent);
+        });
+
+        // --- Settings Listener ---
+        btnSettings.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminDashboardActivity.this, NavSettingsActivity.class);
             startActivity(intent);
         });
 
@@ -66,7 +76,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         navMaps.setOnClickListener(v -> {
             // Navigate to Map/Rooms View
-            // Linking to the existing StudentRoomMapActivity
             Intent intent = new Intent(AdminDashboardActivity.this, StudentRoomMapActivity.class);
             startActivity(intent);
         });
@@ -78,7 +87,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         navUpdates.setOnClickListener(v -> {
             // Navigate to Updates/Reports View
-            // Assuming this also goes to the Reports activity
             Intent intent = new Intent(AdminDashboardActivity.this, AdminReportsActivity.class);
             startActivity(intent);
         });
