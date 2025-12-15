@@ -83,7 +83,7 @@ public class Login_Activity extends AppCompatActivity {
             Intent intent;
             if (role.equals("admin")) {
                 // REVERSED: Admin goes to the New Admin Dashboard (Landing Page)
-                intent = new Intent(Login_Activity.this, LandingPageActivity.class);
+                intent = new Intent(Login_Activity.this, MainActivity.class);
                 Toast.makeText(this, "Welcome back, Admin!", Toast.LENGTH_SHORT).show();
             } else {
                 // REVERSED: Client/Student goes to the Old Admin Dashboard (AdminNavigationListActivity)
@@ -121,7 +121,7 @@ public class Login_Activity extends AppCompatActivity {
             Toast.makeText(this, "Login Successful (Admin)", Toast.LENGTH_SHORT).show();
 
             // REVERSED: Redirect Admin to Landing Page (New Admin Dashboard)
-            Intent intent = new Intent(Login_Activity.this, LandingPageActivity.class);
+            Intent intent = new Intent(Login_Activity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
