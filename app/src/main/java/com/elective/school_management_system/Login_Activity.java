@@ -26,9 +26,8 @@ public class Login_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // 1. CHECK SESSION BEFORE LOADING VIEW
-        // If user is already logged in, redirect them immediately
         if (checkSession()) {
-            return; // Stop execution of onCreate so we don't load the login screen
+            return;
         }
 
         setContentView(R.layout.l_login_screen);
@@ -52,11 +51,9 @@ public class Login_Activity extends AppCompatActivity {
 
         btnTogglePass.setOnClickListener(v -> {
             if (isPasswordVisible) {
-                // Set to hide password
                 etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 btnTogglePass.setAlpha(0.5f);
             } else {
-                // Set to show password
                 etPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 btnTogglePass.setAlpha(1.0f);
             }
@@ -73,22 +70,21 @@ public class Login_Activity extends AppCompatActivity {
     private boolean checkSession() {
         SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
         boolean isLoggedIn = prefs.getBoolean("isLoggedIn", false);
-        String role = prefs.getString("role", "client"); // Default to client
+        String role = prefs.getString("role", "client");
 
         if (isLoggedIn) {
             Intent intent;
             if (role.equals("admin")) {
-                // Admin goes to the Admin Dashboard (Landing Page)
-                intent = new Intent(Login_Activity.this, MainActivity.class);
+                // CHANGED: Redirect Admin to AdminDashboardActivity instead of MainActivity (Splash)
+                intent = new Intent(Login_Activity.this, AdminDashboardActivity.class);
                 Toast.makeText(this, "Welcome back, Admin!", Toast.LENGTH_SHORT).show();
             } else {
-                // FIXED: Client/Student now goes to StudentDashboardActivity (s_dashboard)
                 intent = new Intent(Login_Activity.this, StudentDashboardActivity.class);
             }
 
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-            finish(); // Close login activity
+            finish();
             return true;
         }
         return false;
@@ -108,30 +104,27 @@ public class Login_Activity extends AppCompatActivity {
 
         // 2. CHECK FOR ADMIN CREDENTIALS
         if (email.equals("admin") && password.equals("admin123")) {
-            // Save Admin Session
             editor.putString("email", email);
-            editor.putString("role", "admin"); // Save role
+            editor.putString("role", "admin");
             editor.putBoolean("isLoggedIn", true);
             editor.apply();
 
             Toast.makeText(this, "Login Successful (Admin)", Toast.LENGTH_SHORT).show();
 
-            // Redirect Admin to Landing Page
-            Intent intent = new Intent(Login_Activity.this, MainActivity.class);
+            // CHANGED: Redirect Admin to AdminDashboardActivity instead of MainActivity (Splash)
+            Intent intent = new Intent(Login_Activity.this, AdminDashboardActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
         // 3. CHECK FOR CLIENT/STUDENT CREDENTIALS
         else if (dbHelper.checkUser(email, password)) {
-            // Save Client Session
             editor.putString("email", email);
-            editor.putString("role", "client"); // Save role
+            editor.putString("role", "client");
             editor.putBoolean("isLoggedIn", true);
             editor.apply();
 
             Toast.makeText(this, "Login Successful!", Toast.LENGTH_SHORT).show();
 
-            // FIXED: Redirect Client/Student to StudentDashboardActivity (s_dashboard)
             Intent intent = new Intent(Login_Activity.this, StudentDashboardActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
