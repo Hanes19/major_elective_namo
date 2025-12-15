@@ -477,4 +477,49 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_REP_STATUS, newStatus);
         return db.update(TABLE_REPORTS, values, KEY_ID + "=?", new String[]{String.valueOf(id)}) > 0;
     }
+    public List<AdminUserListActivity.UserItem> getAllStudents() {
+        List<AdminUserListActivity.UserItem> list = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Join Users and Profiles
+        String query = "SELECT u.id, u.username, u.email FROM " + TABLE_USERS + " u " +
+                "INNER JOIN " + TABLE_PROFILES + " p ON u.id = p.user_id";
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                list.add(new AdminUserListActivity.UserItem(
+                        cursor.getInt(0),
+                        cursor.getString(1), // Username
+                        cursor.getString(2), // Email
+                        "Student"
+                ));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return list;
+    }
+
+    // Fetch all users who DO NOT have a profile (Guests)
+    public List<AdminUserListActivity.UserItem> getAllGuests() {
+        List<AdminUserListActivity.UserItem> list = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Left Join to find users without profiles
+        String query = "SELECT u.id, u.username, u.email FROM " + TABLE_USERS + " u " +
+                "LEFT JOIN " + TABLE_PROFILES + " p ON u.id = p.user_id " +
+                "WHERE p.user_id IS NULL";
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                list.add(new AdminUserListActivity.UserItem(
+                        cursor.getInt(0),
+                        cursor.getString(1), // Username
+                        cursor.getString(2), // Email
+                        "Guest"
+                ));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return list;
+    }
 }
