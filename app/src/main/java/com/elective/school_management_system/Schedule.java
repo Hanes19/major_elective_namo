@@ -19,8 +19,11 @@ public class Schedule {
         this.endTime = endTime;
     }
 
+    public int getId() { return id; }
+    public int getUserId() { return userId; }
     public String getSubject() { return subject; }
     public String getRoomName() { return roomName; }
+    public String getDay() { return day; } // Added this missing method
     public String getStartTime() { return startTime; }
     public String getEndTime() { return endTime; }
 }

@@ -14,7 +14,7 @@ import java.util.Locale;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SchoolSystem.db";
-    private static final int DATABASE_VERSION = 6; // Updated Version
+    private static final int DATABASE_VERSION = 6;
 
     // --- User Table ---
     private static final String TABLE_USERS = "users";
@@ -50,7 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_REP_STATUS = "status";
     private static final String KEY_REP_DATE = "date_reported";
 
-    // --- NEW: Schedule Table ---
+    // --- Schedule Table ---
     private static final String TABLE_SCHEDULE = "schedules";
     private static final String KEY_SCH_USER_ID = "user_id";
     private static final String KEY_SCH_SUBJECT = "subject";
@@ -59,7 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_SCH_START = "start_time";
     private static final String KEY_SCH_END = "end_time";
 
-    // --- NEW: Events Table ---
+    // --- Events Table ---
     private static final String TABLE_EVENTS = "events";
     private static final String KEY_EVT_TITLE = "title";
     private static final String KEY_EVT_DESC = "description";
@@ -155,8 +155,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // Initial Schedule (Dummy data for User ID 1)
         String sqlSch = "INSERT INTO " + TABLE_SCHEDULE + " (" + KEY_SCH_USER_ID + ", " + KEY_SCH_SUBJECT + ", " + KEY_SCH_ROOM + ", " + KEY_SCH_DAY + ", " + KEY_SCH_START + ", " + KEY_SCH_END + ") VALUES (?, ?, ?, ?, ?, ?)";
-        // Note: For testing, ensure these match the current day you test on, or add logic to fetch 'today' dynamically.
-        // For now, I will add common days.
         db.execSQL(sqlSch, new Object[]{1, "Mobile Development", "Room 103", "Monday", "08:00", "11:00"});
         db.execSQL(sqlSch, new Object[]{1, "Data Structures", "Room 101", "Monday", "13:00", "15:00"});
         db.execSQL(sqlSch, new Object[]{1, "Networking", "Room 102", "Tuesday", "09:00", "12:00"});
@@ -182,6 +180,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // --- SCHEDULE METHODS ---
+
+    // METHOD ADDED: Fetches all schedule items for a specific user
+    public List<Schedule> getUserSchedule(int userId) {
+        List<Schedule> list = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_SCHEDULE, null, KEY_SCH_USER_ID + "=?",
+                new String[]{String.valueOf(userId)}, null, null, KEY_SCH_DAY + " ASC, " + KEY_SCH_START + " ASC");
+
+        if (cursor.moveToFirst()) {
+            do {
+                list.add(new Schedule(
+                        cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(KEY_SCH_USER_ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(KEY_SCH_SUBJECT)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(KEY_SCH_ROOM)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(KEY_SCH_DAY)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(KEY_SCH_START)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(KEY_SCH_END))
+                ));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return list;
+    }
+
     public Schedule getNextClass(int userId) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -522,7 +545,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return list;
     }
-    // Add this method to DatabaseHelper.java
 
     public boolean addReport(String roomName, String description, String category) {
         SQLiteDatabase db = this.getWritableDatabase();

@@ -84,6 +84,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvWelcome">
 
                 <TextView
+                    android:id="@+id/tabSchedule"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -95,6 +96,7 @@
                     android:textSize="14sp" />
 
                 <TextView
+                    android:id="@+id/tabRequests"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -153,11 +155,12 @@
                         android:letterSpacing="0.1"/>
 
                     <TextView
+                        android:id="@+id/tvUpcomingSubject"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:fontFamily="@font/raleway_bold"
-                        android:text="IT101: Major Elective 1"
+                        android:text="No upcoming classes"
                         android:textColor="#FFFFFF"
                         android:textSize="20sp" />
 
@@ -195,11 +198,12 @@
                                     android:textSize="12sp"/>
                             </LinearLayout>
                             <TextView
+                                android:id="@+id/tvUpcomingLocation"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:fontFamily="@font/raleway_medium"
-                                android:text="Computer Lab 1"
+                                android:text="--"
                                 android:textColor="#FFFFFF"
                                 android:textSize="14sp"/>
                         </LinearLayout>
@@ -227,11 +231,12 @@
                                     android:textSize="12sp"/>
                             </LinearLayout>
                             <TextView
+                                android:id="@+id/tvUpcomingTime"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:fontFamily="@font/raleway_medium"
-                                android:text="09:00 - 12:00"
+                                android:text="--"
                                 android:textColor="#FFFFFF"
                                 android:textSize="14sp"/>
                         </LinearLayout>
@@ -452,11 +457,14 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
+            android:id="@+id/navMaps"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="true">
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -473,6 +481,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/navDashboard"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -494,12 +503,15 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/navUpdates"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:alpha="0.6"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="true">
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
