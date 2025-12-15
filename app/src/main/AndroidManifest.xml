@@ -19,16 +19,10 @@
 
         <activity
             android:name=".Login_Activity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false" />
 
         <activity android:name=".RegisterActivity" android:exported="false" />
         <activity android:name=".ForgotPasswordActivity" android:exported="false" />
-
         <activity android:name=".StudentDashboardActivity" android:exported="false" />
         <activity android:name=".StudentNavigationActivity" android:exported="false" />
         <activity android:name=".StudentRoomMapActivity" android:exported="false" />
@@ -41,7 +35,14 @@
         <activity android:name=".StudentNavigationListActivity" android:exported="false" />
         <activity android:name=".AdminManageInstructorsActivity" android:exported="false" />
 
-        <activity android:name=".MainActivity" android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
     </application>
 

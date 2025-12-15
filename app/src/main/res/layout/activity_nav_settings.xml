@@ -8,7 +8,6 @@
     android:background="#0A0322">
 
     <ImageView
-        android:id="@+id/imgBackground"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:alpha="0.3"
@@ -20,7 +19,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        android:id="@+id/glowEffect"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_marginTop="-100dp"
@@ -50,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Settings"
+            android:text="Navigation Settings"
             android:fontFamily="@font/raleway_bold"
             android:textColor="@android:color/white"
             android:textSize="22sp" />
@@ -73,7 +71,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ACCOUNT"
+                android:text="AR &amp; DISPLAY"
                 android:fontFamily="@font/raleway_bold"
                 android:textColor="#B0B0C0"
                 android:textSize="12sp"
@@ -88,80 +86,52 @@
                 android:padding="8dp">
 
                 <LinearLayout
-                    android:id="@+id/btnEditProfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:padding="16dp"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="true">
+                    android:padding="16dp">
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/user_txtbox_ic"
+                        android:src="@drawable/db_nav_icon"
                         app:tint="@android:color/white"/>
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginStart="16dp"
-                        android:text="Edit Profile"
-                        android:fontFamily="@font/raleway_regular"
-                        android:textColor="@android:color/white"
-                        android:textSize="16sp"/>
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Keep Screen On"
+                            android:fontFamily="@font/raleway_bold"
+                            android:textColor="@android:color/white"
+                            android:textSize="16sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Prevents sleep during navigation"
+                            android:fontFamily="@font/raleway_regular"
+                            android:textColor="#B0B0C0"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
 
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@drawable/rarrow_ic"
-                        app:tint="#80FFFFFF"/>
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#20FFFFFF"
-                    android:layout_marginHorizontal="16dp"/>
-
-                <LinearLayout
-                    android:id="@+id/btnChangePassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:padding="16dp"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="true">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/pswrd_txbox_ic"
-                        app:tint="@android:color/white"/>
-
-                    <TextView
-                        android:layout_width="0dp"
+                    <Switch
+                        android:id="@+id/switchScreenOn"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="16dp"
-                        android:text="Change Password"
-                        android:fontFamily="@font/raleway_regular"
-                        android:textColor="@android:color/white"
-                        android:textSize="16sp"/>
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@drawable/rarrow_ic"
-                        app:tint="#80FFFFFF"/>
+                        android:thumbTint="@android:color/white"
+                        android:trackTint="#B0B0C0"/>
                 </LinearLayout>
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="PREFERENCES"
+                android:text="SENSORS &amp; ACCURACY"
                 android:fontFamily="@font/raleway_bold"
                 android:textColor="#B0B0C0"
                 android:textSize="12sp"
@@ -185,7 +155,59 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/bell"
+                        android:src="@drawable/updates"
+                        app:tint="@android:color/white"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Compass Stabilization"
+                            android:fontFamily="@font/raleway_bold"
+                            android:textColor="@android:color/white"
+                            android:textSize="16sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Reduces arrow jitter (laggy)"
+                            android:fontFamily="@font/raleway_regular"
+                            android:textColor="#B0B0C0"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
+
+                    <Switch
+                        android:id="@+id/switchSmoothing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:thumbTint="@android:color/white"
+                        android:trackTint="#B0B0C0"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#20FFFFFF"
+                    android:layout_marginHorizontal="16dp"/>
+
+                <LinearLayout
+                    android:id="@+id/btnCalibrate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/db_settings_ic"
                         app:tint="@android:color/white"/>
 
                     <TextView
@@ -193,43 +215,18 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginStart="16dp"
-                        android:text="Push Notifications"
+                        android:text="Calibrate Sensors"
                         android:fontFamily="@font/raleway_regular"
                         android:textColor="@android:color/white"
                         android:textSize="16sp"/>
 
-                    <Switch
-                        android:id="@+id/switchNotifications"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:theme="@style/Theme.AppCompat"
-                        android:thumbTint="@android:color/white"
-                        android:trackTint="#B0B0C0"/>
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/rarrow_ic"
+                        app:tint="#80FFFFFF"/>
                 </LinearLayout>
             </LinearLayout>
-
-            <android.widget.Button
-                android:id="@+id/btnLogout"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="40dp"
-                android:text="Log Out"
-                android:fontFamily="@font/raleway_bold"
-                android:textSize="16sp"
-                android:textColor="#FF5252"
-                android:background="@drawable/bg_login_glass_card"
-                android:backgroundTint="#20FF5252"
-                app:backgroundTint="@null"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Version 1.0.0"
-                android:textColor="#50FFFFFF"
-                android:gravity="center"
-                android:fontFamily="@font/raleway_regular"
-                android:textSize="12sp"
-                android:layout_marginTop="16dp"/>
 
         </LinearLayout>
     </ScrollView>
