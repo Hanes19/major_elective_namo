@@ -46,5 +46,9 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    // NO AR LIBRARIES HERE. JUST STANDARD ANDROID.
+    // GPS/Location Dependency (Already Present)
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+
+    // ADDED: Google Maps SDK Dependency
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
 }
