@@ -9,62 +9,85 @@
     android:background="@drawable/glass_card_dark"
     android:padding="16dp">
 
-    <View
-        android:id="@+id/statusIndicator"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:background="@drawable/bg_circle_pink"
-        android:backgroundTint="#FF5252"
+    <FrameLayout
+        android:id="@+id/iconContainer"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/btn_glass_circle"
+        android:padding="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/tvStatusText"/>
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/tvStatusText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:fontFamily="@font/raleway_bold"
-        android:text="PENDING"
-        android:textColor="#FF5252"
-        android:textSize="10sp"
-        app:layout_constraintStart_toEndOf="@+id/statusIndicator"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/ivIcon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/updates"
+            app:tint="#FFFFFF"/>
+    </FrameLayout>
 
-    <TextView
-        android:id="@+id/tvDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/raleway_regular"
-        android:text="Oct 24"
-        android:textColor="#B0B0B0"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvRoomName"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:fontFamily="@font/raleway_bold"
-        android:text="Computer Lab 301"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvStatusText" />
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/actionContainer"
+        app:layout_constraintStart_toEndOf="@+id/iconContainer"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/tvIssueCategory"
+        <TextView
+            android:id="@+id/tvRoomName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/raleway_bold"
+            android:text="Computer Lab 101"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/raleway_regular"
+            android:text="Electrical • Oct 24"
+            android:textColor="#B0B0B0"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="• Pending"
+            android:textColor="#FF5252"
+            android:textSize="10sp"
+            android:fontFamily="@font/raleway_bold"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/actionContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:fontFamily="@font/raleway_regular"
-        android:text="Electrical Issue"
-        android:textColor="#B0B0B0"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvRoomName" />
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnViewReport"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/btn_glass_circle"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/rarrow_ic"
+            app:tint="#A0A0A0" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

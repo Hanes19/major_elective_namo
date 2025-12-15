@@ -2,18 +2,30 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0A0322">
 
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.3"
+        android:scaleType="centerCrop"
+        android:src="@drawable/splash_screen_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <View
         android:id="@+id/glowEffect"
         android:layout_width="match_parent"
-        android:layout_height="600dp"
-        android:layout_marginTop="-200dp"
+        android:layout_height="500dp"
+        android:layout_marginTop="-100dp"
         android:background="@drawable/bg_purple_glow"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
@@ -29,6 +41,7 @@
             android:layout_marginStart="16dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="12dp"
+            android:scaleType="fitCenter"
             android:src="@drawable/back_btn"
             app:tint="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -48,17 +61,33 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <View
+        android:id="@+id/headerDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/glass_divider_line"
+        app:layout_constraintTop_toBottomOf="@+id/header" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header">
+        app:layout_constraintTop_toBottomOf="@+id/headerDivider">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:fontFamily="@font/raleway_bold"
+                android:text="System Health"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -70,86 +99,94 @@
                     android:id="@+id/tvHealthTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/raleway_bold"
-                    android:text="System Health"
-                    android:textColor="#B0BEC5"
-                    android:textSize="14sp"
+                    android:fontFamily="@font/raleway_regular"
+                    android:text="Server Status"
+                    android:textColor="#B0B0B0"
+                    android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:fontFamily="@font/raleway_bold"
-                    android:text="Online"
-                    android:textColor="#69F0AE"
+                    android:text="ONLINE"
+                    android:textColor="#00E676"
                     android:textSize="24sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvHealthTitle" />
 
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:src="@drawable/bell"
-                    app:tint="#69F0AE"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:tint="#00E676"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="120dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/glass_card_dark"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/raleway_bold"
                         android:text="342"
-                        android:textColor="@color/white"
-                        android:textSize="32sp" />
+                        android:textColor="@android:color/white"
+                        android:textSize="28sp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
                         android:fontFamily="@font/raleway_regular"
-                        android:text="Active Users"
+                        android:text="Daily Users"
                         android:textColor="#B0B0B0"
-                        android:textSize="12sp" />
+                        android:textSize="10sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="120dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
                     android:background="@drawable/glass_card_dark"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/raleway_bold"
                         android:text="10 AM"
-                        android:textColor="@color/white"
-                        android:textSize="32sp" />
+                        android:textColor="#2196F3"
+                        android:textSize="28sp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
                         android:fontFamily="@font/raleway_regular"
-                        android:text="Peak Traffic"
+                        android:text="Peak Hour"
                         android:textColor="#B0B0B0"
-                        android:textSize="12sp" />
+                        android:textSize="10sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -158,14 +195,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:fontFamily="@font/raleway_bold"
-                android:text="Top 5 Searched Rooms"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:text="Top Searched Rooms"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:background="@drawable/glass_input_field"
                 android:orientation="vertical"
                 android:padding="16dp">
@@ -173,60 +210,42 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="16dp"
                     android:orientation="horizontal">
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/raleway_medium"
+                        android:fontFamily="@font/raleway_bold"
                         android:text="1. Computer Lab 101"
-                        android:textColor="@color/white" />
+                        android:textSize="14sp"
+                        android:textColor="@android:color/white" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/raleway_bold"
-                        android:text="150 searches"
-                        android:textColor="#C51162" />
+                        android:text="150"
+                        android:textColor="#FF5252" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
                     android:orientation="horizontal">
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/raleway_medium"
+                        android:fontFamily="@font/raleway_bold"
                         android:text="2. Faculty Office"
-                        android:textColor="@color/white" />
+                        android:textSize="14sp"
+                        android:textColor="@android:color/white" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/raleway_bold"
-                        android:text="98 searches"
-                        android:textColor="#C51162" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/raleway_medium"
-                        android:text="3. Library"
-                        android:textColor="@color/white" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/raleway_bold"
-                        android:text="85 searches"
-                        android:textColor="#C51162" />
+                        android:text="98"
+                        android:textColor="#FF5252" />
                 </LinearLayout>
             </LinearLayout>
 

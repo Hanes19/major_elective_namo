@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -442,6 +440,3 @@
                 android:fontFamily="@font/raleway_regular"/>
         </LinearLayout>
     </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
->>>>>>> Stashed changes

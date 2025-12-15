@@ -7,10 +7,14 @@
     android:background="#0A0322">
 
     <View
+        android:id="@+id/glowEffect"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="500dp"
+        android:layout_marginTop="-100dp"
         android:background="@drawable/bg_purple_glow"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
@@ -26,8 +30,9 @@
             android:layout_marginStart="16dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="12dp"
+            android:scaleType="fitCenter"
             android:src="@drawable/back_btn"
-            app:tint="#FFFFFF"
+            app:tint="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -36,8 +41,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/raleway_bold"
-            android:text="Details"
-            android:textColor="#FFFFFF"
+            android:text="Report Details"
+            android:textColor="@android:color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -45,11 +50,19 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <View
+        android:id="@+id/headerDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/glass_divider_line"
+        app:layout_constraintTop_toBottomOf="@+id/header" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header">
+        app:layout_constraintTop_toBottomOf="@+id/headerDivider">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -59,11 +72,10 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
-                app:cardCornerRadius="16dp"
+                android:layout_height="250dp"
                 app:cardBackgroundColor="@android:color/transparent"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="0dp">
-
                 <ImageView
                     android:id="@+id/imgEvidence"
                     android:layout_width="match_parent"
@@ -79,60 +91,58 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:fontFamily="@font/raleway_bold"
-                android:text="Room 404"
+                android:text="Computer Lab 301"
                 android:textColor="#FFFFFF"
-                android:textSize="24sp" />
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/raleway_regular"
+                android:text="Reported on Oct 24, 2025"
+                android:textColor="#B0B0B0"
+                android:textSize="14sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
+                android:layout_marginTop="24dp"
+                android:background="@drawable/glass_input_field"
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <TextView
-                    android:id="@+id/tvCategory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/white_pill_bg"
-                    android:backgroundTint="#C51162"
-                    android:paddingHorizontal="12dp"
-                    android:paddingVertical="4dp"
+                    android:text="ISSUE DESCRIPTION"
                     android:fontFamily="@font/raleway_bold"
-                    android:text="Electrical"
-                    android:textColor="#FFFFFF"
-                    android:textSize="12sp" />
+                    android:textSize="10sp"
+                    android:textColor="#B0B0B0"
+                    android:letterSpacing="0.1"/>
 
                 <TextView
-                    android:id="@+id/tvDate"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tvDescription"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="8dp"
                     android:fontFamily="@font/raleway_regular"
-                    android:text="Nov 12, 2025"
-                    android:textColor="#B0B0B0"
-                    android:gravity="center_vertical"
+                    android:lineSpacingMultiplier="1.2"
+                    android:text="The projector in the main area is not turning on. It seems to be an electrical issue with the socket."
+                    android:textColor="#FFFFFF"
                     android:textSize="14sp" />
             </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:fontFamily="@font/raleway_regular"
-                android:lineSpacingMultiplier="1.2"
-                android:text="The projector socket is sparking when plugged in."
-                android:textColor="#FFFFFF"
-                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/btnViewOnMap"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_marginTop="32dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="24dp"
                 android:background="@drawable/btn_glass_primary"
                 app:backgroundTint="@null"
                 android:fontFamily="@font/raleway_bold"
-                android:text="View on Map"
+                android:text="Locate on Map"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF" />
 
@@ -141,12 +151,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:fontFamily="@font/raleway_bold"
-                android:text="Mark Status"
-                android:textColor="#B0B0B0"
-                android:textSize="14sp" />
+                android:text="Update Status"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
 
-            <RadioGroup
-                android:id="@+id/radioGroupStatus"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -157,21 +166,27 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/glass_input_field"
                     android:buttonTint="#FF5252"
-                    android:fontFamily="@font/raleway_medium"
+                    android:padding="12dp"
+                    android:fontFamily="@font/raleway_bold"
                     android:text="Pending"
-                    android:textColor="#FFFFFF" />
+                    android:textColor="#FF5252" />
 
                 <RadioButton
                     android:id="@+id/rbResolved"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/glass_input_field"
                     android:buttonTint="#00E676"
-                    android:fontFamily="@font/raleway_medium"
+                    android:padding="12dp"
+                    android:fontFamily="@font/raleway_bold"
                     android:text="Resolved"
-                    android:textColor="#FFFFFF" />
-            </RadioGroup>
+                    android:textColor="#00E676" />
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
