@@ -35,6 +35,7 @@
         <activity android:name=".StudentNavigationListActivity" android:exported="false" />
         <activity android:name=".AdminManageInstructorsActivity" android:exported="false" />
         <activity android:name=".AdminDashboardActivity" android:exported="false" />
+        <activity android:name=".NavSettingsActivity" android:exported="false" android:screenOrientation="portrait" />
 
         <activity
             android:name=".MainActivity"

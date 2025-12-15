@@ -11,17 +11,17 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SchoolSystem.db";
-    // Version 4 forces a database reset to ensure tables are correct
-    private static final int DATABASE_VERSION = 4;
+    // Version 5 adds the Reports table
+    private static final int DATABASE_VERSION = 5;
 
-    // User Table
+    // --- User Table ---
     private static final String TABLE_USERS = "users";
     private static final String KEY_ID = "id";
     private static final String KEY_USER_NAME = "username";
     private static final String KEY_USER_EMAIL = "email";
     private static final String KEY_USER_PASSWORD = "password";
 
-    // User Profile Table
+    // --- User Profile Table ---
     private static final String TABLE_PROFILES = "user_profiles";
     private static final String KEY_PROFILE_USER_ID = "user_id";
     private static final String KEY_PROFILE_COURSE = "course";
@@ -29,16 +29,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_PROFILE_SECTION = "section";
     private static final String KEY_PROFILE_PHONE = "phone";
 
-    // Instructor Table
+    // --- Instructor Table ---
     private static final String TABLE_INSTRUCTORS = "instructors";
     private static final String KEY_INST_NAME = "name";
     private static final String KEY_INST_DEPT = "department";
 
-    // Room Table
+    // --- Room Table ---
     private static final String TABLE_ROOMS = "rooms";
     private static final String KEY_ROOM_NAME = "room_name";
     private static final String KEY_ROOM_DESC = "description";
     private static final String KEY_ROOM_AR_ID = "ar_destination_id";
+
+    // --- NEW: Reports Table ---
+    private static final String TABLE_REPORTS = "reports";
+    private static final String KEY_REP_ROOM = "room_name";
+    private static final String KEY_REP_DESC = "description";
+    private static final String KEY_REP_CATEGORY = "category"; // e.g., Electrical, Plumbing
+    private static final String KEY_REP_STATUS = "status";     // Pending, Resolved
+    private static final String KEY_REP_DATE = "date_reported";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -81,27 +89,49 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + KEY_ROOM_AR_ID + " TEXT" + ")";
         db.execSQL(CREATE_ROOMS_TABLE);
 
-        addInitialRooms(db);
+        // 5. Reports Table (NEW)
+        String CREATE_REPORTS_TABLE = "CREATE TABLE " + TABLE_REPORTS + "("
+                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + KEY_REP_ROOM + " TEXT,"
+                + KEY_REP_DESC + " TEXT,"
+                + KEY_REP_CATEGORY + " TEXT,"
+                + KEY_REP_STATUS + " TEXT,"
+                + KEY_REP_DATE + " TEXT" + ")";
+        db.execSQL(CREATE_REPORTS_TABLE);
+
+        addInitialData(db);
     }
 
-    private void addInitialRooms(SQLiteDatabase db) {
-        String sql = "INSERT INTO " + TABLE_ROOMS + " (" + KEY_ROOM_NAME + ", " + KEY_ROOM_DESC + ", " + KEY_ROOM_AR_ID + ") VALUES (?, ?, ?)";
-        db.execSQL(sql, new Object[]{"Room 101", "General Education Lecture Room", "room_101"});
-        db.execSQL(sql, new Object[]{"Room 102", "Science Laboratory", "room_102"});
-        db.execSQL(sql, new Object[]{"Room 103", "Computer Laboratory 1", "room_103"});
-        db.execSQL(sql, new Object[]{"Faculty Room", "Main Faculty Office", "faculty_room"});
+    private void addInitialData(SQLiteDatabase db) {
+        // Initial Rooms
+        String sqlRoom = "INSERT INTO " + TABLE_ROOMS + " (" + KEY_ROOM_NAME + ", " + KEY_ROOM_DESC + ", " + KEY_ROOM_AR_ID + ") VALUES (?, ?, ?)";
+        db.execSQL(sqlRoom, new Object[]{"Room 101", "General Education Lecture Room", "room_101"});
+        db.execSQL(sqlRoom, new Object[]{"Room 102", "Science Laboratory", "room_102"});
+        db.execSQL(sqlRoom, new Object[]{"Room 103", "Computer Laboratory 1", "room_103"});
+        db.execSQL(sqlRoom, new Object[]{"Faculty Room", "Main Faculty Office", "faculty_room"});
+
+        // Initial Dummy Reports
+        String sqlRep = "INSERT INTO " + TABLE_REPORTS + " (" + KEY_REP_ROOM + ", " + KEY_REP_DESC + ", " + KEY_REP_CATEGORY + ", " + KEY_REP_STATUS + ", " + KEY_REP_DATE + ") VALUES (?, ?, ?, ?, ?)";
+        db.execSQL(sqlRep, new Object[]{"Room 103", "Projector not displaying colors correctly", "Electrical", "Pending", "Oct 24, 2025"});
+        db.execSQL(sqlRep, new Object[]{"Room 101", "Aircon leaking water", "Maintenance", "Resolved", "Oct 20, 2025"});
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Drop older tables if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROFILES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_INSTRUCTORS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROOMS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_REPORTS);
+        // Create tables again
         onCreate(db);
     }
 
-    // --- USER ID HELPER ---
+    // ============================================================================================
+    // --- USER AUTHENTICATION & PROFILE METHODS ---
+    // ============================================================================================
+
     public int getUserId(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_USERS, new String[]{KEY_ID},
@@ -115,7 +145,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    // --- PROFILE FUNCTIONS ---
     public boolean saveUserProfile(int userId, String course, String year, String section, String phone) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -144,7 +173,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 KEY_PROFILE_USER_ID + "=?", new String[]{String.valueOf(userId)}, null, null, null);
     }
 
-    // --- EXISTING USER FUNCTIONS ---
     public boolean registerUser(String username, String email, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -200,12 +228,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return exists;
     }
 
-    // --- ROOM & INSTRUCTOR FUNCTIONS ---
+    // ============================================================================================
+    // --- ROOM MANAGEMENT METHODS ---
+    // ============================================================================================
+
     public List<Room> getAllRooms() {
         return getRoomsFromQuery(null, null);
     }
 
-    // UPDATED: Now searches Name OR Description
     public List<Room> searchRooms(String query) {
         String selection = KEY_ROOM_NAME + " LIKE ? OR " + KEY_ROOM_DESC + " LIKE ?";
         String[] selectionArgs = new String[]{"%" + query + "%", "%" + query + "%"};
@@ -246,6 +276,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return null;
     }
 
+    public boolean addRoom(String name, String desc) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_ROOM_NAME, name);
+        values.put(KEY_ROOM_DESC, desc);
+        // Simple auto-generation for AR ID
+        values.put(KEY_ROOM_AR_ID, "room_" + System.currentTimeMillis());
+        return db.insert(TABLE_ROOMS, null, values) != -1;
+    }
+
+    public boolean updateRoom(int id, String name, String desc) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_ROOM_NAME, name);
+        values.put(KEY_ROOM_DESC, desc);
+        return db.update(TABLE_ROOMS, values, KEY_ID + "=?", new String[]{String.valueOf(id)}) > 0;
+    }
+
+    public boolean deleteRoom(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_ROOMS, KEY_ID + "=?", new String[]{String.valueOf(id)}) > 0;
+    }
+
+    // ============================================================================================
+    // --- INSTRUCTOR MANAGEMENT METHODS ---
+    // ============================================================================================
+
     public List<Instructor> getAllInstructors() {
         List<Instructor> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -282,5 +339,55 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean deleteInstructor(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_INSTRUCTORS, KEY_ID + "=?", new String[]{String.valueOf(id)}) > 0;
+    }
+
+    // ============================================================================================
+    // --- REPORT MANAGEMENT METHODS (NEW) ---
+    // ============================================================================================
+
+    public List<Report> getAllReports() {
+        List<Report> list = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Order by Status (Pending first) then Date
+        Cursor cursor = db.query(TABLE_REPORTS, null, null, null, null, null, KEY_REP_STATUS + " ASC, " + KEY_ID + " DESC");
+        if (cursor.moveToFirst()) {
+            do {
+                list.add(new Report(
+                        cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_ROOM)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_DESC)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_CATEGORY)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_STATUS)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_DATE))
+                ));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return list;
+    }
+
+    public Report getReport(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_REPORTS, null, KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            Report r = new Report(
+                    cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_ROOM)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_DESC)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_CATEGORY)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_STATUS)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_DATE))
+            );
+            cursor.close();
+            return r;
+        }
+        return null;
+    }
+
+    public boolean updateReportStatus(int id, String newStatus) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_REP_STATUS, newStatus);
+        return db.update(TABLE_REPORTS, values, KEY_ID + "=?", new String[]{String.valueOf(id)}) > 0;
     }
 }

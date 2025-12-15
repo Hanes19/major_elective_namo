@@ -174,7 +174,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Reduces arrow jitter (laggy)"
+                            android:text="Reduces arrow jitter"
                             android:fontFamily="@font/raleway_regular"
                             android:textColor="#B0B0C0"
                             android:textSize="12sp"/>
@@ -227,6 +227,39 @@
                         app:tint="#80FFFFFF"/>
                 </LinearLayout>
             </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SESSION"
+                android:fontFamily="@font/raleway_bold"
+                android:textColor="#B0B0C0"
+                android:textSize="12sp"
+                android:letterSpacing="0.1"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="12dp" />
+
+            <android.widget.Button
+                android:id="@+id/btnLogout"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="Log Out"
+                android:fontFamily="@font/raleway_bold"
+                android:textSize="16sp"
+                android:textColor="#FF5252"
+                android:background="@drawable/bg_login_glass_card"
+                android:backgroundTint="#20FF5252"
+                app:backgroundTint="@null"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Version 1.1.0"
+                android:textColor="#50FFFFFF"
+                android:gravity="center"
+                android:fontFamily="@font/raleway_regular"
+                android:textSize="12sp"
+                android:layout_marginTop="16dp"/>
 
         </LinearLayout>
     </ScrollView>
