@@ -3,7 +3,6 @@ package com.elective.school_management_system;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -21,7 +20,7 @@ public class NavSettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nav_settings);
+        setContentView(R.layout.ad_nav_settings);
 
         // Initialize Shared Preferences
         prefs = getSharedPreferences("NavPrefs", Context.MODE_PRIVATE);

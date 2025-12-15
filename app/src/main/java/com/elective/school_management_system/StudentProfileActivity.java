@@ -4,15 +4,20 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class StudentProfileActivity extends AppCompatActivity {
 
-    private ImageButton btnBack, btnEdit; // Changed from AppCompatButton/ImageView to ImageButton
-    private TextView btnLogout;           // Changed from AppCompatButton to TextView (it is a TextView in XML)
+    private ImageButton btnBack, btnEdit;
+    private TextView btnLogout;
     private TextView tvName, tvEmail;
+
+    // Added: Bottom Navigation Layouts
+    private LinearLayout navHome, navNav, navProfile;
+
     private DatabaseHelper dbHelper;
     private String currentEmail;
 
@@ -41,6 +46,11 @@ public class StudentProfileActivity extends AppCompatActivity {
 
         tvName = findViewById(R.id.tvProfileName);
         tvEmail = findViewById(R.id.tvProfileEmail);
+
+        // Initialize Bottom Navigation Views
+        navHome = findViewById(R.id.navHome);
+        navNav = findViewById(R.id.navNav);
+        navProfile = findViewById(R.id.navProfile);
     }
 
     private void loadUserProfile() {
@@ -70,6 +80,34 @@ public class StudentProfileActivity extends AppCompatActivity {
             btnEdit.setOnClickListener(v -> {
                 Intent intent = new Intent(StudentProfileActivity.this, StudentEditProfileActivity.class);
                 startActivity(intent);
+            });
+        }
+
+        // --- Bottom Navigation Logic ---
+
+        // 1. Home Clicked -> Go to StudentDashboardActivity
+        if (navHome != null) {
+            navHome.setOnClickListener(v -> {
+                Intent intent = new Intent(StudentProfileActivity.this, StudentDashboardActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                finish(); // Close Profile so it doesn't pile up in back stack
+            });
+        }
+
+        // 2. Navigation Clicked -> Go to StudentNavigationListActivity
+        if (navNav != null) {
+            navNav.setOnClickListener(v -> {
+                Intent intent = new Intent(StudentProfileActivity.this, StudentNavigationListActivity.class);
+                startActivity(intent);
+                finish(); // Close Profile
+            });
+        }
+
+        // 3. Profile Clicked -> Already here
+        if (navProfile != null) {
+            navProfile.setOnClickListener(v -> {
+                // Already on profile, do nothing or just refresh
             });
         }
     }
