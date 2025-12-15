@@ -36,14 +36,32 @@ public class AdminManageRoomsActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerViewRooms);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Navigation
-        LinearLayout bottomNav = findViewById(R.id.bottomNav);
-        // Assuming children index 0=Maps, 1=Dashboard, 2=Updates based on XML structure
-        // Or find by IDs if you added IDs to the linear layouts inside bottomNav
+        // --- Initialize Bottom Navigation Views ---
+        navMaps = findViewById(R.id.navMaps);
+        navDashboard = findViewById(R.id.navDashboard);
+        navUpdates = findViewById(R.id.navUpdates);
 
+        // --- Set Listeners ---
         btnBack.setOnClickListener(v -> finish());
-
         fabAdd.setOnClickListener(v -> showRoomDialog(null));
+
+        // Navigation Logic
+        navMaps.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminManageRoomsActivity.this, StudentRoomMapActivity.class);
+            startActivity(intent);
+        });
+
+        navDashboard.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminManageRoomsActivity.this, AdminDashboardActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish(); // Optional: Close this activity to return to dashboard
+        });
+
+        navUpdates.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminManageRoomsActivity.this, AdminReportsActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void loadRooms() {

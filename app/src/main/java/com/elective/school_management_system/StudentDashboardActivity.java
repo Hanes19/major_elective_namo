@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,14 +37,9 @@ public class StudentDashboardActivity extends AppCompatActivity {
     private ViewPager2 viewPagerCarousel;
     private TabLayout dotsIndicator;
     private LinearLayout navHome, navNav, navProfile;
-    private ImageButton btnSettings;
 
-    // NEW: Schedule UI
-    private TextView txtNextClassSubject, txtNextClassRoom;
-
-    // Logic
-    private DatabaseHelper dbHelper;
-    private int currentUserId = 1; // HARDCODED for demo. Replace with Session Manager.
+    // Settings Button (Optional: Will only work if R.id.btnSettings exists in layout)
+    private View btnSettings;
 
     // Carousel Data
     private Handler sliderHandler = new Handler(Looper.getMainLooper());
@@ -56,16 +50,9 @@ public class StudentDashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.s_dashboard);
 
-        dbHelper = new DatabaseHelper(this);
-        NotificationHelper.createNotificationChannel(this);
-
         initViews();
         setupCarousel();
         setupBottomNav();
-
-        // Load Schedule Logic
-        updateNextClassCard();
-        checkAndNotify();
     }
 
     private void initViews() {
@@ -76,45 +63,17 @@ public class StudentDashboardActivity extends AppCompatActivity {
         navNav = findViewById(R.id.navNav);
         navProfile = findViewById(R.id.navProfile);
 
-        // IMPORTANT: Ensure these IDs exist in your s_dashboard.xml layout!
-        txtNextClassSubject = findViewById(R.id.txtNextClassSubject);
-        txtNextClassRoom = findViewById(R.id.txtNextClassRoom);
-    }
-
-    private void updateNextClassCard() {
-        if (txtNextClassSubject == null || txtNextClassRoom == null) return;
-
-        Schedule nextClass = dbHelper.getNextClass(currentUserId);
-
-        if (nextClass != null) {
-            txtNextClassSubject.setText(nextClass.getSubject());
-            txtNextClassRoom.setText(nextClass.getRoomName() + " • " + nextClass.getStartTime());
-
-            // Allow clicking the text to navigate immediately
-            txtNextClassRoom.setOnClickListener(v -> {
-                Intent intent = new Intent(StudentDashboardActivity.this, StudentNavigationActivity.class);
-                intent.putExtra("ROOM_NAME", nextClass.getRoomName());
-                startActivity(intent);
-            });
-        } else {
-            txtNextClassSubject.setText("No upcoming classes");
-            txtNextClassRoom.setText("Enjoy your free time!");
-        }
-    }
-
-    private void checkAndNotify() {
-        Schedule nextClass = dbHelper.getNextClass(currentUserId);
-        if (nextClass != null) {
-            // In a production app, checking logic should be more robust (e.g. check if class is in 15 mins).
-            // For this demo, we notify if there is *any* upcoming class today.
-            NotificationHelper.sendNotification(this,
-                    "Upcoming Class: " + nextClass.getSubject(),
-                    "Your class in " + nextClass.getRoomName() + " starts at " + nextClass.getStartTime());
-        }
+        // Safely attempt to find the settings button.
+        // If it doesn't exist in s_dashboard.xml, this will be null (which we handle later).
+        // Note: We use 'findViewById' with the ID if it exists in your R file (e.g. from Admin dashboard)
+        // or you can comment this out if you haven't added the button to XML yet.
+        btnSettings = findViewById(R.id.btnSettings);
     }
 
     private void setupCarousel() {
         List<CarouselItem> items = new ArrayList<>();
+
+        // Updated items to be Image-Only (Billboard style)
         items.add(new CarouselItem(R.drawable.db_nav_icon));
         items.add(new CarouselItem(R.drawable.db_rooms_ic));
         items.add(new CarouselItem(R.drawable.db_instruct_ic));
@@ -123,6 +82,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
         CarouselAdapter adapter = new CarouselAdapter(items);
         viewPagerCarousel.setAdapter(adapter);
 
+        // Visual Effect for Carousel (Zoom/Fade)
         viewPagerCarousel.setClipToPadding(false);
         viewPagerCarousel.setClipChildren(false);
         viewPagerCarousel.setOffscreenPageLimit(3);
@@ -136,8 +96,12 @@ public class StudentDashboardActivity extends AppCompatActivity {
         });
         viewPagerCarousel.setPageTransformer(transformer);
 
-        new TabLayoutMediator(dotsIndicator, viewPagerCarousel, (tab, position) -> {}).attach();
+        // Link Dots to ViewPager
+        new TabLayoutMediator(dotsIndicator, viewPagerCarousel, (tab, position) -> {
+            // Dots are handled by the drawable selector
+        }).attach();
 
+        // Auto-Scroll Logic
         sliderRunnable = new Runnable() {
             @Override
             public void run() {
@@ -146,7 +110,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
                     nextItem = 0;
                 }
                 viewPagerCarousel.setCurrentItem(nextItem);
-                sliderHandler.postDelayed(this, 3000);
+                sliderHandler.postDelayed(this, 3000); // 3 seconds delay
             }
         };
     }
@@ -166,6 +130,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
 
+        // Safe check: Only set listener if the button was actually found in the layout
         if (btnSettings != null) {
             btnSettings.setOnClickListener(v -> {
                 Intent intent = new Intent(StudentDashboardActivity.this, NavSettingsActivity.class);
@@ -177,17 +142,18 @@ public class StudentDashboardActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        updateNextClassCard();
+        // Start auto-scroll
         sliderHandler.postDelayed(sliderRunnable, 3000);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        // Stop auto-scroll to save resources
         sliderHandler.removeCallbacks(sliderRunnable);
     }
 
-    // --- Permissions & Camera (Retained) ---
+    // --- Permissions & Camera Logic ---
     private void checkCameraPermissionAndOpen() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
@@ -216,15 +182,21 @@ public class StudentDashboardActivity extends AppCompatActivity {
     }
 
     // ================== INNER CLASSES FOR CAROUSEL ==================
+
     static class CarouselItem {
         int iconRes;
-        public CarouselItem(int iconRes) { this.iconRes = iconRes; }
+
+        public CarouselItem(int iconRes) {
+            this.iconRes = iconRes;
+        }
     }
 
     static class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder> {
         private final List<CarouselItem> items;
 
-        public CarouselAdapter(List<CarouselItem> items) { this.items = items; }
+        public CarouselAdapter(List<CarouselItem> items) {
+            this.items = items;
+        }
 
         @NonNull
         @Override
@@ -240,10 +212,13 @@ public class StudentDashboardActivity extends AppCompatActivity {
         }
 
         @Override
-        public int getItemCount() { return items.size(); }
+        public int getItemCount() {
+            return items.size();
+        }
 
         static class CarouselViewHolder extends RecyclerView.ViewHolder {
             ImageView icon;
+
             public CarouselViewHolder(@NonNull View itemView) {
                 super(itemView);
                 icon = itemView.findViewById(R.id.slide_image);
