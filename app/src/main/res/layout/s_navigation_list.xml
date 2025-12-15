@@ -122,131 +122,82 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/card_rooms"
-                android:layout_width="0dp"
-                android:layout_height="80dp"
+                android:id="@+id/quick_actions_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_marginTop="24dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/glass_card_dark"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/card_instructors"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/search_container"
-                app:layout_constraintHorizontal_weight="1">
+                app:layout_constraintTop_toBottomOf="@id/search_container">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/db_rooms_ic"
-                    app:tint="@android:color/white"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="Rooms"
-                    android:textColor="@android:color/white"
-                    android:textSize="12sp"
-                    android:fontFamily="@font/raleway_bold"/>
-            </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/card_rooms"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/glass_card_dark"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/card_instructors"
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/glass_card_dark"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="@+id/card_rooms"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/card_rooms"
-                app:layout_constraintTop_toTopOf="@+id/card_rooms"
-                app:layout_constraintHorizontal_weight="1">
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/db_rooms_ic"
+                        app:tint="@android:color/white"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="All Rooms"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/raleway_bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="View Directory"
+                        android:textColor="#B0B0B0"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/raleway_light"/>
+                </LinearLayout>
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/db_instruct_ic"
-                    app:tint="@android:color/white"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="Instructors"
-                    android:textColor="@android:color/white"
-                    android:textSize="12sp"
-                    android:fontFamily="@font/raleway_bold"/>
-            </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/card_instructors"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/glass_card_dark"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/card_nav"
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/btn_glass_primary"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/card_profile"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/card_rooms"
-                app:layout_constraintHorizontal_weight="1">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/db_nav_icon"
-                    app:tint="@android:color/white"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="Start Navigation"
-                    android:textColor="@android:color/white"
-                    android:textSize="12sp"
-                    android:fontFamily="@font/raleway_bold"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/card_profile"
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/glass_card_dark"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="@+id/card_nav"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/card_nav"
-                app:layout_constraintTop_toTopOf="@+id/card_nav"
-                app:layout_constraintHorizontal_weight="1">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/db_profile_ic"
-                    app:tint="@android:color/white"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="Profile"
-                    android:textColor="@android:color/white"
-                    android:textSize="12sp"
-                    android:fontFamily="@font/raleway_bold"/>
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/db_instruct_ic"
+                        app:tint="@android:color/white"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Instructors"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/raleway_bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Contact List"
+                        android:textColor="#B0B0B0"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/raleway_light"/>
+                </LinearLayout>
             </LinearLayout>
 
             <TextView
@@ -254,12 +205,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="Suggestions"
+                android:text="Suggested Routes"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:fontFamily="@font/raleway_bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/card_nav"/>
+                app:layout_constraintTop_toBottomOf="@id/quick_actions_row"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -282,14 +233,33 @@
                     android:focusable="true"
                     android:background="?attr/selectableItemBackground">
 
-                    <TextView
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/clock"
+                        app:tint="#00E676"
+                        android:layout_marginEnd="12dp"/>
+
+                    <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/raleway_light"
                         android:layout_height="wrap_content"
-                        android:text="Room Computer Lab 3"
-                        android:textColor="#E0E0E0"
-                        android:textSize="14sp"/>
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/raleway_bold"
+                            android:text="Next Class: Web Dev"
+                            android:textColor="@android:color/white"
+                            android:textSize="14sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/raleway_light"
+                            android:text="Room Computer Lab 3 • 9:30 AM"
+                            android:textColor="#B0B0B0"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
                     <ImageView
                         android:layout_width="16dp"
                         android:layout_height="16dp"
@@ -314,12 +284,18 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:background="?attr/selectableItemBackground">
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/list_icon"
+                        app:tint="#5E35B1"
+                        android:layout_marginEnd="12dp"/>
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:fontFamily="@font/raleway_light"
+                        android:fontFamily="@font/raleway_regular"
                         android:layout_height="wrap_content"
-                        android:text="Professor Marcelo Dupalco"
+                        android:text="Library"
                         android:textColor="#E0E0E0"
                         android:textSize="14sp"/>
                     <ImageView
@@ -346,12 +322,18 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:background="?attr/selectableItemBackground">
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/db_search_ic"
+                        app:tint="#80FFFFFF"
+                        android:layout_marginEnd="12dp"/>
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:fontFamily="@font/raleway_light"
+                        android:fontFamily="@font/raleway_regular"
                         android:layout_height="wrap_content"
-                        android:text="Room 103"
+                        android:text="Last Search: Room 103"
                         android:textColor="#E0E0E0"
                         android:textSize="14sp"/>
                     <ImageView
