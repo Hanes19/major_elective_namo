@@ -7,24 +7,11 @@
     android:layout_height="match_parent"
     android:background="#0A0322">
 
-    <ImageView
-        android:id="@+id/imgBackground"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:alpha="0.3"
-        android:contentDescription="Background Map"
-        android:scaleType="centerCrop"
-        android:src="@drawable/splash_screen_bg"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <View
         android:id="@+id/glowEffect"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_marginTop="-50dp"
+        android:layout_height="500dp"
+        android:layout_marginTop="-100dp"
         android:background="@drawable/bg_purple_glow"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,10 +20,9 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:fillViewport="true"
         android:clipToPadding="false"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/navDivider">
+        app:layout_constraintBottom_toTopOf="@+id/navDivider"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -48,22 +34,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="48dp"
                 android:fontFamily="@font/raleway_bold"
-                android:text="Your Agenda For Today"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
+                android:text="Your Agenda"
+                android:textColor="#B0B0B0"
+                android:textSize="14sp"
                 android:letterSpacing="0.05"
-                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/tvWelcome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/raleway_bold"
+                android:text="Welcome, Prof!"
+                android:textColor="@android:color/white"
+                android:textSize="28sp"
+                app:layout_constraintStart_toStartOf="@+id/tvHeader"
+                app:layout_constraintTop_toBottomOf="@+id/tvHeader" />
+
             <FrameLayout
                 android:id="@+id/imgLogo"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:layout_marginEnd="24dp"
-                android:padding="8dp"
+                android:background="@drawable/btn_glass_circle"
+                android:padding="2dp"
                 app:layout_constraintBottom_toBottomOf="@+id/tvWelcome"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tvHeader">
@@ -71,30 +69,17 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:padding="4dp"
                     android:src="@drawable/app_logo" />
             </FrameLayout>
-
-            <TextView
-                android:id="@+id/tvWelcome"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/raleway_regular"
-                android:text="Welcome!"
-                android:textColor="#E0E0E0"
-                android:textSize="32sp"
-                android:textStyle="normal"
-                app:layout_constraintStart_toStartOf="@+id/tvHeader"
-                app:layout_constraintTop_toBottomOf="@+id/tvHeader" />
 
             <LinearLayout
                 android:id="@+id/tabContainer"
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
+                android:layout_height="50dp"
                 android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="24dp"
-                android:background="@drawable/glass_card_dark"
-                android:orientation="horizontal"
+                android:background="@drawable/glass_tab_container"
                 android:padding="4dp"
                 app:layout_constraintTop_toBottomOf="@+id/tvWelcome">
 
@@ -105,25 +90,19 @@
                     android:background="@drawable/glass_tab_active"
                     android:fontFamily="@font/raleway_bold"
                     android:gravity="center"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
                     android:text="My Schedule"
-                    android:textColor="@android:color/white"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:drawableStartCompat="@android:drawable/ic_menu_agenda"
-                    app:drawableTint="@android:color/white" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:fontFamily="@font/raleway_bold"
                     android:layout_weight="1"
+                    android:fontFamily="@font/raleway_bold"
                     android:gravity="center"
-                    android:text="My Profile"
-                    android:textColor="#80E0E0E0"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:text="Requests"
+                    android:textColor="#B0B0B0"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -139,18 +118,22 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/imgContainer"
                     android:layout_width="match_parent"
-                    android:layout_height="180dp"
+                    android:layout_height="160dp"
+                    app:cardBackgroundColor="@android:color/transparent"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
-                    app:cardBackgroundColor="@android:color/transparent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#40000000"
                         android:scaleType="centerCrop"
                         android:src="@drawable/classroom" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#40000000"/>
                 </androidx.cardview.widget.CardView>
 
                 <LinearLayout
@@ -158,18 +141,16 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:paddingTop="16dp"
-                    android:paddingHorizontal="4dp"
                     app:layout_constraintTop_toBottomOf="@+id/imgContainer">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/raleway_light"
+                        android:fontFamily="@font/raleway_bold"
                         android:text="UPCOMING CLASS"
-                        android:letterSpacing="0.1"
-                        android:textColor="#A0A0A0"
+                        android:textColor="#A9016D"
                         android:textSize="12sp"
-                        android:textStyle="bold"/>
+                        android:letterSpacing="0.1"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -177,36 +158,34 @@
                         android:layout_marginTop="4dp"
                         android:fontFamily="@font/raleway_bold"
                         android:text="IT101: Major Elective 1"
-                        android:textColor="@android:color/white"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:textColor="#FFFFFF"
+                        android:textSize="20sp" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#1AFFFFFF"
-                        android:layout_marginVertical="12dp"/>
+                        android:layout_marginVertical="12dp"
+                        android:background="#1AFFFFFF"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:baselineAligned="false">
+                        android:orientation="horizontal">
 
                         <LinearLayout
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:orientation="vertical">
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="center_vertical">
                                 <ImageView
-                                    android:layout_width="14dp"
-                                    android:layout_height="14dp"
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
                                     android:src="@drawable/door"
-                                    app:tint="#A0A0A0" />
+                                    app:tint="#A0A0A0"/>
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -219,26 +198,26 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:fontFamily="@font/raleway_light"
+                                android:fontFamily="@font/raleway_medium"
                                 android:text="Computer Lab 1"
-                                android:textColor="#E0E0E0"
-                                android:textSize="14sp" />
+                                android:textColor="#FFFFFF"
+                                android:textSize="14sp"/>
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:orientation="vertical">
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="center_vertical">
                                 <ImageView
-                                    android:layout_width="14dp"
-                                    android:layout_height="14dp"
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
                                     android:src="@drawable/clock"
-                                    app:tint="#A0A0A0" />
+                                    app:tint="#A0A0A0"/>
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -251,24 +230,129 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:fontFamily="@font/raleway_light"
+                                android:fontFamily="@font/raleway_medium"
                                 android:text="09:00 - 12:00"
-                                android:textColor="#E0E0E0"
-                                android:textSize="14sp" />
+                                android:textColor="#FFFFFF"
+                                android:textSize="14sp"/>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/quickNavTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginStart="24dp"
+                android:fontFamily="@font/raleway_bold"
+                android:text="Quick Navigate"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardUpcoming" />
+
+            <HorizontalScrollView
+                android:id="@+id/quickNavScroll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:layout_marginHorizontal="16dp"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/cardUpcoming">
+                android:clipToPadding="false"
+                android:paddingHorizontal="24dp"
+                android:scrollbars="none"
+                app:layout_constraintTop_toBottomOf="@id/quickNavTitle">
 
                 <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/btnNavFaculty"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/glass_card_dark"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="20dp">
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/db_profile_ic"
+                            app:tint="#FFFFFF" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:fontFamily="@font/raleway_medium"
+                            android:text="Faculty\nRoom"
+                            android:gravity="center"
+                            android:textColor="#E0E0E0"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/btnNavAdmin"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/glass_card_dark"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="20dp">
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/db_settings_ic"
+                            app:tint="#FFFFFF" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:fontFamily="@font/raleway_medium"
+                            android:text="HR /\nAdmin"
+                            android:gravity="center"
+                            android:textColor="#E0E0E0"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/btnNavClinic"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/glass_card_dark"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="20dp">
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/add"
+                            app:tint="#FFFFFF" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:fontFamily="@font/raleway_medium"
+                            android:text="Clinic\nCenter"
+                            android:gravity="center"
+                            android:textColor="#E0E0E0"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginHorizontal="16dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/quickNavScroll">
+
+                <LinearLayout
+                    android:id="@+id/btnAssignedRooms"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -280,13 +364,13 @@
                     <FrameLayout
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:background="@drawable/circle_bg">
+                        android:background="@drawable/btn_glass_circle"
+                        android:padding="8dp">
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:src="@drawable/doubledoor"
-                            app:tint="@android:color/white" />
+                            app:tint="#FFFFFF" />
                     </FrameLayout>
 
                     <TextView
@@ -294,10 +378,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:fontFamily="@font/raleway_bold"
-                        android:text="My Assigned\nRooms"
-                        android:textColor="@android:color/white"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
+                        android:text="Assigned\nRooms"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -305,11 +388,11 @@
                         android:layout_marginTop="8dp"
                         android:text="View All →"
                         android:textColor="#A0A0A0"
-                        android:textSize="12sp"
-                        android:fontFamily="@font/raleway_light"/>
+                        android:textSize="12sp"/>
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/btnMySchedule"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -321,24 +404,23 @@
                     <FrameLayout
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:background="@drawable/circle_bg">
+                        android:background="@drawable/btn_glass_circle"
+                        android:padding="8dp">
                         <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:src="@drawable/toga"
-                            app:tint="@android:color/white" />
+                            app:tint="#FFFFFF" />
                     </FrameLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="My\nSchedule"
                         android:fontFamily="@font/raleway_bold"
-                        android:textColor="@android:color/white"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
+                        android:text="Full\nSchedule"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -346,7 +428,6 @@
                         android:layout_marginTop="8dp"
                         android:text="View All →"
                         android:textColor="#A0A0A0"
-                        android:fontFamily="@font/raleway_light"
                         android:textSize="12sp"/>
                 </LinearLayout>
             </LinearLayout>
@@ -359,9 +440,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@drawable/glass_divider_line"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNav"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/bottomNav" />
 
     <LinearLayout
         android:id="@+id/bottomNav"
@@ -374,63 +453,65 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:alpha="0.6"
             android:orientation="vertical">
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/maps"
-                app:tint="#ffff"/>
+                app:tint="#FFFFFF"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:fontFamily="@font/raleway_regular"
                 android:text="Maps"
-                android:textColor="#ffff"
+                android:textColor="#FFFFFF"
                 android:textSize="10sp"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@drawable/db_ic"
-                app:tint="@android:color/white"/>
+                app:tint="#FFFFFF"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:fontFamily="@font/raleway_bold"
                 android:text="Dashboard"
-                android:textColor="@android:color/white"
+                android:textColor="#FFFFFF"
                 android:textSize="10sp"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
             android:alpha="0.6"
+            android:gravity="center"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="21dp"
-                android:layout_height="21dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@drawable/updates"
-                app:tint="#ffff"/>
+                app:tint="#FFFFFF"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:fontFamily="@font/raleway_regular"
                 android:text="Updates"
-                android:textColor="#ffff"
+                android:textColor="#FFFFFF"
                 android:textSize="10sp"/>
         </LinearLayout>
     </LinearLayout>
