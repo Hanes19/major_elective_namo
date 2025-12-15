@@ -76,11 +76,13 @@
                 </LinearLayout>
 
                 <FrameLayout
+
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="10dp">
                     <ImageView
+
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/db_settings_ic"
