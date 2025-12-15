@@ -43,9 +43,7 @@ public class StudentEditProfileActivity extends AppCompatActivity {
 
         btnSaveChanges = findViewById(R.id.btnSaveChanges);
 
-        // Updated IDs to match s_edit_profile.xml
-        btnResetPass = findViewById(R.id.btnReset);
-        btnForgotPass = findViewById(R.id.btnForgot);
+
     }
 
     private void loadUserData() {
