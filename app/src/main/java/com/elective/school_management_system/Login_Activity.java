@@ -75,11 +75,11 @@ public class Login_Activity extends AppCompatActivity {
         if (isLoggedIn) {
             Intent intent;
             if (role.equals("admin")) {
-                // CHANGED: Redirect Admin to AdminDashboardActivity instead of MainActivity (Splash)
                 intent = new Intent(Login_Activity.this, AdminDashboardActivity.class);
                 Toast.makeText(this, "Welcome back, Admin!", Toast.LENGTH_SHORT).show();
-            } else if (role.equals("teacher")) { // Add this condition
+            } else if (role.equals("teacher")) {
                 intent = new Intent(Login_Activity.this, TeacherDashboardActivity.class);
+                Toast.makeText(this, "Welcome back, Teacher!", Toast.LENGTH_SHORT).show();
             } else {
                 intent = new Intent(Login_Activity.this, StudentDashboardActivity.class);
             }
@@ -113,11 +113,24 @@ public class Login_Activity extends AppCompatActivity {
 
             Toast.makeText(this, "Login Successful (Admin)", Toast.LENGTH_SHORT).show();
 
-            // CHANGED: Redirect Admin to AdminDashboardActivity instead of MainActivity (Splash)
             Intent intent = new Intent(Login_Activity.this, AdminDashboardActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
+        // --- ADDED: HARDCODED TEACHER USER FOR TESTING ---
+        else if (email.equals("teacher") && password.equals("teacher123")) {
+            editor.putString("email", email);
+            editor.putString("role", "teacher");
+            editor.putBoolean("isLoggedIn", true);
+            editor.apply();
+
+            Toast.makeText(this, "Login Successful (Teacher)", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(Login_Activity.this, TeacherDashboardActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+        // -------------------------------------------------
         // 3. CHECK FOR CLIENT/STUDENT CREDENTIALS
         else if (dbHelper.checkUser(email, password)) {
             editor.putString("email", email);
