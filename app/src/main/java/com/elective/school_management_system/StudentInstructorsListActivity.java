@@ -27,7 +27,7 @@ public class StudentInstructorsListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ad_instructors_list); // Uses the shared layout
+        setContentView(R.layout.ad_manage_instructors); // Uses the shared layout
 
         dbHelper = new DatabaseHelper(this);
 
@@ -37,10 +37,9 @@ public class StudentInstructorsListActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        // Cast to ImageButton as per typical XML, though View works too
+
         btnBack = findViewById(R.id.btnBack);
 
-        // Find the Admin "Add" button and hide it
         btnAddInstructor = findViewById(R.id.btnAddInstructor);
         if (btnAddInstructor != null) {
             btnAddInstructor.setVisibility(View.GONE);

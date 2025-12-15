@@ -26,9 +26,8 @@ public class Login_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // 1. CHECK SESSION BEFORE LOADING VIEW
-        // If user is already logged in, redirect them immediately
         if (checkSession()) {
-            return; // Stop execution of onCreate so we don't load the login screen
+            return; // Stop execution so we don't load the login screen
         }
 
         setContentView(R.layout.l_login_screen);
@@ -67,26 +66,25 @@ public class Login_Activity extends AppCompatActivity {
         btnLogin.setOnClickListener(v -> performLogin());
     }
 
-    // --- NEW: Session Check Function ---
     private boolean checkSession() {
         SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
         boolean isLoggedIn = prefs.getBoolean("isLoggedIn", false);
-        String role = prefs.getString("role", "client"); // Default to client
+        String role = prefs.getString("role", "client");
 
         if (isLoggedIn) {
             Intent intent;
             if (role.equals("admin")) {
-                // TODO: Replace 'ClientDashboardActivity.class' with your 'AdminDashboardActivity.class'
-                // Based on your file list, you might need to create this Activity or link to 'AdminManageInstructorsActivity.class'
-                intent = new Intent(Login_Activity.this, StudentDashboardActivity.class);
+                // Redirect to Admin Dashboard
+                intent = new Intent(Login_Activity.this, AdminDashboardActivity.class);
                 Toast.makeText(this, "Welcome back, Admin!", Toast.LENGTH_SHORT).show();
             } else {
+                // Redirect to Student/Client Dashboard
                 intent = new Intent(Login_Activity.this, StudentDashboardActivity.class);
             }
 
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-            finish(); // Close login activity
+            finish();
             return true;
         }
         return false;
@@ -108,14 +106,14 @@ public class Login_Activity extends AppCompatActivity {
         if (email.equals("admin") && password.equals("admin123")) {
             // Save Admin Session
             editor.putString("email", email);
-            editor.putString("role", "admin"); // Save role
+            editor.putString("role", "admin");
             editor.putBoolean("isLoggedIn", true);
             editor.apply();
 
             Toast.makeText(this, "Login Successful (Admin)", Toast.LENGTH_SHORT).show();
 
-            // TODO: Redirect to Admin Dashboard
-            Intent intent = new Intent(Login_Activity.this, StudentDashboardActivity.class);
+            // Redirect to Admin Dashboard
+            Intent intent = new Intent(Login_Activity.this, AdminDashboardActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
@@ -123,7 +121,7 @@ public class Login_Activity extends AppCompatActivity {
         else if (dbHelper.checkUser(email, password)) {
             // Save Client Session
             editor.putString("email", email);
-            editor.putString("role", "client"); // Save role
+            editor.putString("role", "client");
             editor.putBoolean("isLoggedIn", true);
             editor.apply();
 
