@@ -6,7 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
+import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;

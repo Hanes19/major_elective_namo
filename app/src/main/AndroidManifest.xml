@@ -43,6 +43,7 @@
         <activity android:name=".TeacherARNavigationActivity" android:exported="false" />
         <activity android:name=".GuestDashboardActivity" android:exported="false" />
         <activity android:name=".GuestUpdatesActivity" android:exported="false" />
+        <activity android:name=".AdminReportsActivity" android:exported="false" />
 
         <activity
             android:name=".MainActivity"

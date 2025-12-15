@@ -23,20 +23,27 @@ public class TeacherUpdatesActivity extends AppCompatActivity {
 
     private void initViews() {
         btnBack = findViewById(R.id.btnBack);
-        navMaps = findViewById(R.id.bottomNav).findViewById(R.id.navMaps_placeholder); // You need IDs in bottomNav include
-        // Since t_update_list.xml copies the bottom nav code manually (not via include),
-        // we can find views by traversal or assuming you add IDs like in t_dashboard.
 
-        // Based on t_update_list.xml provided, the LinearLayouts inside bottomNav DO NOT have IDs.
-        // You must add IDs to the 3 LinearLayouts inside the bottomNav of t_update_list.xml:
-        // @+id/navMaps, @+id/navDashboard, @+id/navUpdates
+        // Find the bottom nav items directly by their new IDs
+        navMaps = findViewById(R.id.navMaps);
+        navDashboard = findViewById(R.id.navDashboard);
+        navUpdates = findViewById(R.id.navUpdates);
     }
 
     private void setupListeners() {
         btnBack.setOnClickListener(v -> finish());
 
-        // Add listeners to bottom nav items similar to Dashboard to allow switching tabs
-        // navDashboard.setOnClickListener(v -> startActivity(new Intent(this, TeacherDashboardActivity.class)));
-        // navMaps.setOnClickListener(v -> startActivity(new Intent(this, TeacherRoomsActivity.class)));
+        // Navigation Logic
+        navDashboard.setOnClickListener(v -> {
+            startActivity(new Intent(this, TeacherDashboardActivity.class));
+            finish();
+        });
+
+        navMaps.setOnClickListener(v -> {
+            startActivity(new Intent(this, TeacherRoomsActivity.class));
+            finish();
+        });
+
+        // navUpdates is the current activity, so no listener needed or just return
     }
 }
