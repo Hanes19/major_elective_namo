@@ -76,7 +76,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         navMaps.setOnClickListener(v -> {
             // Navigate to Map/Rooms View
-            Intent intent = new Intent(AdminDashboardActivity.this, StudentRoomMapActivity.class);
+            Intent intent = new Intent(AdminDashboardActivity.this, AdminRoomMapActivity.class);
             startActivity(intent);
         });
 

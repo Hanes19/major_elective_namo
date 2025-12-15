@@ -58,7 +58,7 @@ public class AdminReportsActivity extends AppCompatActivity {
 
         // Navigation Logic matches AdminDashboard
         navMaps.setOnClickListener(v -> {
-            Intent intent = new Intent(AdminReportsActivity.this, StudentRoomMapActivity.class);
+            Intent intent = new Intent(AdminReportsActivity.this, AdminRoomMapActivity.class);
             startActivity(intent);
             finish();
         });

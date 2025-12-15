@@ -47,7 +47,7 @@ public class AdminManageRoomsActivity extends AppCompatActivity {
 
         // Navigation Logic
         navMaps.setOnClickListener(v -> {
-            Intent intent = new Intent(AdminManageRoomsActivity.this, StudentRoomMapActivity.class);
+            Intent intent = new Intent(AdminManageRoomsActivity.this, AdminRoomMapActivity.class);
             startActivity(intent);
         });
 

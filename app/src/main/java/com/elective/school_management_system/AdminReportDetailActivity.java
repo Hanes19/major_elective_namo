@@ -1,5 +1,6 @@
 package com.elective.school_management_system;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ public class AdminReportDetailActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;
     private int reportId;
 
+    private Report currentReport;
     private TextView tvRoomName, tvDate, tvDesc;
     private RadioButton rbPending, rbResolved;
     private Button btnViewOnMap;
@@ -46,9 +48,14 @@ public class AdminReportDetailActivity extends AppCompatActivity {
         rbResolved.setOnClickListener(v -> updateStatus("Resolved"));
 
         btnViewOnMap.setOnClickListener(v -> {
-            // Future logic to open map
-            Toast.makeText(this, "Map location feature coming soon", Toast.LENGTH_SHORT).show();
+            if (currentReport != null) {
+                // UPDATED: Open Admin Map
+                Intent intent = new Intent(AdminReportDetailActivity.this, AdminRoomMapActivity.class);
+                intent.putExtra("TARGET_ROOM", currentReport.getRoomName());
+                startActivity(intent);
+            }
         });
+
     }
 
     private void loadData() {
