@@ -11,7 +11,7 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SchoolSystem.db";
-    // UPDATED: Version 4 forces a database reset (wipes old data)
+    // Version 4 forces a database reset to ensure tables are correct
     private static final int DATABASE_VERSION = 4;
 
     // User Table
@@ -21,9 +21,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_USER_EMAIL = "email";
     private static final String KEY_USER_PASSWORD = "password";
 
-    // User Profile Table (NEW - For Edit Profile)
+    // User Profile Table
     private static final String TABLE_PROFILES = "user_profiles";
-    private static final String KEY_PROFILE_USER_ID = "user_id"; // Foreign Key
+    private static final String KEY_PROFILE_USER_ID = "user_id";
     private static final String KEY_PROFILE_COURSE = "course";
     private static final String KEY_PROFILE_YEAR = "year_level";
     private static final String KEY_PROFILE_SECTION = "section";
@@ -54,7 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + KEY_USER_PASSWORD + " TEXT" + ")";
         db.execSQL(CREATE_USERS_TABLE);
 
-        // 2. User Profiles Table (Linked by user_id)
+        // 2. User Profiles Table
         String CREATE_PROFILES_TABLE = "CREATE TABLE " + TABLE_PROFILES + "("
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + KEY_PROFILE_USER_ID + " INTEGER,"
@@ -94,7 +94,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // This drops old tables and creates new ones (Erases DB)
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROFILES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_INSTRUCTORS);
@@ -102,7 +101,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // --- USER ID HELPER (Required for Profile) ---
+    // --- USER ID HELPER ---
     public int getUserId(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_USERS, new String[]{KEY_ID},
@@ -116,8 +115,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    // --- PROFILE FUNCTIONS (For Edit Profile) ---
-
+    // --- PROFILE FUNCTIONS ---
     public boolean saveUserProfile(int userId, String course, String year, String section, String phone) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -127,7 +125,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_PROFILE_SECTION, section);
         values.put(KEY_PROFILE_PHONE, phone);
 
-        // Check if profile exists
         Cursor cursor = db.query(TABLE_PROFILES, new String[]{KEY_ID},
                 KEY_PROFILE_USER_ID + "=?", new String[]{String.valueOf(userId)}, null, null, null);
 
@@ -188,7 +185,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.update(TABLE_USERS, values, KEY_USER_EMAIL + "=?", new String[]{currentEmail}) > 0;
     }
 
-    // --- FIX FOR YOUR ERROR ---
     public boolean updatePassword(String email, String newPassword) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -208,9 +204,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Room> getAllRooms() {
         return getRoomsFromQuery(null, null);
     }
+
+    // UPDATED: Now searches Name OR Description
     public List<Room> searchRooms(String query) {
-        return getRoomsFromQuery(KEY_ROOM_NAME + " LIKE ?", new String[]{"%" + query + "%"});
+        String selection = KEY_ROOM_NAME + " LIKE ? OR " + KEY_ROOM_DESC + " LIKE ?";
+        String[] selectionArgs = new String[]{"%" + query + "%", "%" + query + "%"};
+        return getRoomsFromQuery(selection, selectionArgs);
     }
+
     private List<Room> getRoomsFromQuery(String selection, String[] selectionArgs) {
         List<Room> roomList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -228,6 +229,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return roomList;
     }
+
     public Room getRoomById(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_ROOMS, null, KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
@@ -243,6 +245,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return null;
     }
+
     public List<Instructor> getAllInstructors() {
         List<Instructor> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -259,6 +262,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return list;
     }
+
     public boolean addInstructor(String name, String department) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -266,6 +270,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_INST_DEPT, department);
         return db.insert(TABLE_INSTRUCTORS, null, values) != -1;
     }
+
     public boolean updateInstructor(int id, String name, String department) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -273,6 +278,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_INST_DEPT, department);
         return db.update(TABLE_INSTRUCTORS, values, KEY_ID + "=?", new String[]{String.valueOf(id)}) > 0;
     }
+
     public boolean deleteInstructor(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_INSTRUCTORS, KEY_ID + "=?", new String[]{String.valueOf(id)}) > 0;

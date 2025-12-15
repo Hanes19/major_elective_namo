@@ -6,7 +6,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,8 +15,8 @@ import java.util.List;
 
 public class StudentInstructorsListActivity extends AppCompatActivity {
 
-    private ImageButton btnBack; // Changed to ImageButton to match typical usage
-    private View btnAddInstructor; // The admin button we want to hide
+    private ImageButton btnBack;
+    private View btnAddInstructor;
     private EditText etSearch;
     private RecyclerView recyclerView;
     private DatabaseHelper dbHelper;
@@ -27,20 +26,30 @@ public class StudentInstructorsListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ad_manage_instructors); // Uses the shared layout
+        setContentView(R.layout.ad_manage_instructors);
 
         dbHelper = new DatabaseHelper(this);
 
         initViews();
         setupRecyclerView();
         setupListeners();
+
+        // NEW: Handle search query passed from Dashboard
+        if (getIntent().hasExtra("SEARCH_QUERY")) {
+            String query = getIntent().getStringExtra("SEARCH_QUERY");
+            if (etSearch != null) {
+                etSearch.setText(query);
+                // Trigger filter manually just in case TextWatcher doesn't catch the set text immediately
+                filter(query);
+            }
+        }
     }
 
     private void initViews() {
-
         btnBack = findViewById(R.id.btnBack);
-
         btnAddInstructor = findViewById(R.id.btnAddInstructor);
+
+        // Hide Admin Button
         if (btnAddInstructor != null) {
             btnAddInstructor.setVisibility(View.GONE);
         }
