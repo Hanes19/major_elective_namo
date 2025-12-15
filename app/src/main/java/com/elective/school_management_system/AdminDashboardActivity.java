@@ -42,42 +42,45 @@ public class AdminDashboardActivity extends AppCompatActivity {
         // --- Management Console Listeners ---
 
         btnManageMap.setOnClickListener(v -> {
-            // Navigate to Map Management (e.g., AdminManageRoomsActivity)
-            // Intent intent = new Intent(AdminDashboardActivity.this, AdminManageRoomsActivity.class);
-            // startActivity(intent);
-            Toast.makeText(this, "Manage Map Data clicked", Toast.LENGTH_SHORT).show();
+            // Navigate to Map Management
+            // Ensure AdminManageRoomsActivity is created and registered in AndroidManifest.xml
+            Intent intent = new Intent(AdminDashboardActivity.this, AdminManageRoomsActivity.class);
+            startActivity(intent);
         });
 
         btnManageUsers.setOnClickListener(v -> {
-            // Navigate to User Directory (e.g., AdminUserListActivity)
-            // Intent intent = new Intent(AdminDashboardActivity.this, AdminUserListActivity.class);
-            // startActivity(intent);
-            Toast.makeText(this, "User Directory clicked", Toast.LENGTH_SHORT).show();
+            // Navigate to User Directory
+            // Ensure AdminUserListActivity is created and registered in AndroidManifest.xml
+            Intent intent = new Intent(AdminDashboardActivity.this, AdminUserListActivity.class);
+            startActivity(intent);
         });
 
         btnReports.setOnClickListener(v -> {
-            // Navigate to Reports (e.g., AdminReportsActivity)
-            // Intent intent = new Intent(AdminDashboardActivity.this, AdminReportsActivity.class);
-            // startActivity(intent);
-            Toast.makeText(this, "System Reports clicked", Toast.LENGTH_SHORT).show();
+            // Navigate to Reports
+            // Ensure AdminReportsActivity is created and registered in AndroidManifest.xml
+            Intent intent = new Intent(AdminDashboardActivity.this, AdminReportsActivity.class);
+            startActivity(intent);
         });
 
         // --- Bottom Navigation Listeners ---
 
         navMaps.setOnClickListener(v -> {
             // Navigate to Map/Rooms View
-            Toast.makeText(this, "Maps Navigation clicked", Toast.LENGTH_SHORT).show();
-            // Example: startActivity(new Intent(this, StudentRoomMapActivity.class));
+            // Linking to the existing StudentRoomMapActivity
+            Intent intent = new Intent(AdminDashboardActivity.this, StudentRoomMapActivity.class);
+            startActivity(intent);
         });
 
         navDashboard.setOnClickListener(v -> {
             // Already on Dashboard
-            Toast.makeText(this, "You are on the Dashboard", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You are already on the Dashboard", Toast.LENGTH_SHORT).show();
         });
 
         navUpdates.setOnClickListener(v -> {
             // Navigate to Updates/Reports View
-            Toast.makeText(this, "Updates Navigation clicked", Toast.LENGTH_SHORT).show();
+            // Assuming this also goes to the Reports activity
+            Intent intent = new Intent(AdminDashboardActivity.this, AdminReportsActivity.class);
+            startActivity(intent);
         });
     }
 
