@@ -34,6 +34,7 @@
         <activity android:name=".StudentResetPasswordActivity" android:exported="false" />
         <activity android:name=".StudentNavigationListActivity" android:exported="false" />
         <activity android:name=".AdminManageInstructorsActivity" android:exported="false" />
+        <activity android:name=".AdminDashboardActivity" android:exported="false" />
 
         <activity
             android:name=".MainActivity"
