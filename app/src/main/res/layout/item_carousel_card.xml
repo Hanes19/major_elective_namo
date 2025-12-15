@@ -2,32 +2,88 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="16dp"
+        android:layout_width="300dp"
+        android:layout_height="400dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginVertical="12dp"
         app:cardCornerRadius="24dp"
-        app:cardElevation="8dp"
-        app:cardBackgroundColor="#26ffffff">
+        android:layout_gravity="center"
+        app:cardElevation="10dp"
+        app:cardBackgroundColor="@android:color/transparent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="350dp"
-            android:layout_height="450dp"
-            android:background="@drawable/glass_card_dark">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/slide_image"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/db_nav_icon"
-                app:tint="@android:color/white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/screen" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#50000000" />
+
+            <FrameLayout
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_margin="24dp"
+                android:background="@drawable/btn_gradient"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <ImageView
+                    android:id="@+id/slide_icon"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/db_nav_icon"
+                    app:tint="#FFFFFF" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp"
+                android:background="@drawable/bg_gradient_palette"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:id="@+id/slide_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Navigation"
+                    android:fontFamily="@font/raleway_bold"
+                    android:textColor="@android:color/white"
+                    android:textSize="28sp"
+                    android:shadowColor="#80000000"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="4"/>
+
+                <TextView
+                    android:id="@+id/slide_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Find your room easily with AR"
+                    android:fontFamily="@font/raleway_medium"
+                    android:textColor="#E0E0E0"
+                    android:textSize="16sp"
+                    android:shadowColor="#80000000"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="2"/>
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
