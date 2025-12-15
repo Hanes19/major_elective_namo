@@ -96,6 +96,21 @@
         app:layout_constraintTop_toBottomOf="@+id/filterContainer"
         tools:listitem="@layout/item_report_card" />
 
+    <ImageButton
+        android:id="@+id/btnAddReport"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/btn_fab_gradient"
+        android:elevation="6dp"
+        android:padding="16dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/add"
+        app:tint="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/navDivider"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <View
         android:id="@+id/navDivider"
         android:layout_width="match_parent"
@@ -113,7 +128,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
-            android:id="@+id/navHome"
+            android:id="@+id/navMaps"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -126,20 +141,20 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/db_home_ic"
+                android:src="@drawable/maps"
                 app:tint="#FFFFFF" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/raleway_regular"
-                android:text="Home"
+                android:text="Maps"
                 android:textColor="#FFFFFF"
                 android:textSize="10sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/navMap"
+            android:id="@+id/navDashboard"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -152,20 +167,20 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/db_nav_icon"
+                android:src="@drawable/db_ic"
                 app:tint="#FFFFFF" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/raleway_regular"
-                android:text="Navigation"
+                android:text="Dashboard"
                 android:textColor="#FFFFFF"
                 android:textSize="10sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/navReports"
+            android:id="@+id/navUpdates"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -183,8 +198,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:fontFamily="@font/raleway_regular"
-                android:text="Reports"
+                android:fontFamily="@font/raleway_bold"
+                android:text="Updates"
                 android:textColor="#FFFFFF"
                 android:textSize="10sp" />
         </LinearLayout>

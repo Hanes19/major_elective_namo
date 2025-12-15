@@ -522,4 +522,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return list;
     }
+    // Add this method to DatabaseHelper.java
+
+    public boolean addReport(String roomName, String description, String category) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        // Get current date
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+        String currentDate = sdf.format(new Date());
+
+        values.put(KEY_REP_ROOM, roomName);
+        values.put(KEY_REP_DESC, description);
+        values.put(KEY_REP_CATEGORY, category);
+        values.put(KEY_REP_STATUS, "Pending"); // Default status
+        values.put(KEY_REP_DATE, currentDate);
+
+        long result = db.insert(TABLE_REPORTS, null, values);
+        return result != -1;
+    }
 }

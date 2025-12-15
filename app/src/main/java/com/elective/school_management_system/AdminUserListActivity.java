@@ -31,7 +31,9 @@ public class AdminUserListActivity extends AppCompatActivity {
     private EditText etSearch;
     private RecyclerView recyclerViewUsers;
     private ImageButton btnBack;
-    private LinearLayout navHome, navNavigation, navProfile; // Bottom Nav
+
+    // Bottom Nav (Admin Version)
+    private LinearLayout navMaps, navDashboard, navUpdates;
 
     // Data
     private DatabaseHelper dbHelper;
@@ -63,12 +65,13 @@ public class AdminUserListActivity extends AppCompatActivity {
         recyclerViewUsers = findViewById(R.id.recyclerViewUsers);
         btnBack = findViewById(R.id.btnBack);
 
-        // Bottom Navigation
-        LinearLayout bottomNav = findViewById(R.id.bottomNav);
+        // Bottom Navigation (Admin IDs)
+        // Ensure the ID in XML is updated to @+id/bottom_navigation_bar
+        LinearLayout bottomNav = findViewById(R.id.bottom_navigation_bar);
         if (bottomNav != null) {
-            navHome = (LinearLayout) bottomNav.getChildAt(0); // Assuming order: Home, Nav, Profile
-            navNavigation = (LinearLayout) bottomNav.getChildAt(1);
-            navProfile = (LinearLayout) bottomNav.getChildAt(2);
+            navMaps = findViewById(R.id.navMaps);
+            navDashboard = findViewById(R.id.navDashboard);
+            navUpdates = findViewById(R.id.navUpdates);
         }
     }
 
@@ -101,24 +104,23 @@ public class AdminUserListActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
-        // Bottom Navigation
-        if (navHome != null) {
-            navHome.setOnClickListener(v -> {
-                startActivity(new Intent(this, AdminDashboardActivity.class));
-                finish();
-            });
-        }
-
-        if (navNavigation != null) {
-            navNavigation.setOnClickListener(v -> {
+        // Bottom Navigation Listeners (Admin Logic)
+        if (navMaps != null) {
+            navMaps.setOnClickListener(v -> {
                 startActivity(new Intent(this, StudentRoomMapActivity.class));
             });
         }
 
-        if (navProfile != null) {
-            navProfile.setOnClickListener(v -> {
-                // Optional: Navigate to a generic profile or admin profile
-                Toast.makeText(this, "Admin Profile", Toast.LENGTH_SHORT).show();
+        if (navDashboard != null) {
+            navDashboard.setOnClickListener(v -> {
+                startActivity(new Intent(this, AdminDashboardActivity.class));
+                finish(); // Finish current activity to go back to dashboard
+            });
+        }
+
+        if (navUpdates != null) {
+            navUpdates.setOnClickListener(v -> {
+                startActivity(new Intent(this, AdminReportsActivity.class));
             });
         }
     }
@@ -271,8 +273,6 @@ public class AdminUserListActivity extends AppCompatActivity {
 
             public UserViewHolder(@NonNull View itemView) {
                 super(itemView);
-                // Corrected: Removed reference to non-existent IDs (tvStudentName, tvStudentId)
-                // Assuming tvName and tvEmail exist in item_user_row_student.xml
                 tvName = itemView.findViewById(R.id.tvName);
                 tvSubtitle = itemView.findViewById(R.id.tvEmail);
             }

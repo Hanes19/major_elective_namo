@@ -151,80 +151,94 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@drawable/glass_divider_line"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNav" />
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_bar" />
 
     <LinearLayout
-        android:id="@+id/bottomNav"
+        android:id="@+id/bottom_navigation_bar"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="#F20A0322"
-        android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:gravity="center"
+        android:elevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
+            android:id="@+id/navMaps"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:alpha="0.6"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
             android:orientation="vertical">
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/db_home_ic"
-                app:tint="#FFFFFF" />
+                android:src="@drawable/maps"
+                app:tint="#FFFF"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:fontFamily="@font/raleway_regular"
-                android:text="Home"
-                android:textColor="#FFFFFF"
-                android:textSize="10sp" />
+                android:text="Maps"
+                android:textSize="10sp"
+                android:textColor="#FFFF"
+                android:fontFamily="@font/raleway_regular"/>
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/navDashboard"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:alpha="0.6"
             android:gravity="center"
+            android:alpha="1.0"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
             android:orientation="vertical">
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/db_nav_icon"
-                app:tint="#FFFFFF" />
+                android:src="@drawable/db_ic"
+                app:tint="@android:color/white"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:fontFamily="@font/raleway_regular"
-                android:text="Navigation"
-                android:textColor="#FFFFFF"
-                android:textSize="10sp" />
+                android:text="Dashboard"
+                android:textSize="10sp"
+                android:textColor="@android:color/white"
+                android:fontFamily="@font/raleway_bold"/>
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/navUpdates"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:alpha="0.6"
             android:gravity="center"
+            android:alpha="0.6"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
             android:orientation="vertical">
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/db_profile_ic"
-                app:tint="#FFFFFF" />
+                android:src="@drawable/updates"
+                app:tint="#FFFF"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:fontFamily="@font/raleway_regular"
-                android:text="Profile"
-                android:textColor="#FFFFFF"
-                android:textSize="10sp" />
+                android:text="Updates"
+                android:textSize="10sp"
+                android:textColor="#FFFF"
+                android:fontFamily="@font/raleway_regular"/>
         </LinearLayout>
     </LinearLayout>
 
