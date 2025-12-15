@@ -79,10 +79,10 @@
                 android:id="@+id/img_settings"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-
                 android:padding="12dp"
                 android:clickable="true"
                 android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/logoContainer"
                 app:layout_constraintBottom_toBottomOf="@id/logoContainer">
@@ -130,6 +130,7 @@
                 android:background="@drawable/glass_card_dark"
                 android:clickable="true"
                 android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toStartOf="@+id/card_instructors"
@@ -160,6 +161,7 @@
                 android:background="@drawable/glass_card_dark"
                 android:clickable="true"
                 android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="@+id/card_rooms"
@@ -192,6 +194,7 @@
                 android:background="@drawable/btn_glass_primary"
                 android:clickable="true"
                 android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toStartOf="@+id/card_profile"
@@ -222,6 +225,7 @@
                 android:background="@drawable/glass_card_dark"
                 android:clickable="true"
                 android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="@+id/card_nav"
@@ -273,7 +277,10 @@
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
                     android:paddingHorizontal="16dp"
-                    android:paddingVertical="12dp">
+                    android:paddingVertical="12dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
 
                     <TextView
                         android:layout_width="0dp"
@@ -303,7 +310,10 @@
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
                     android:paddingHorizontal="16dp"
-                    android:paddingVertical="12dp">
+                    android:paddingVertical="12dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="1"
@@ -332,7 +342,10 @@
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
                     android:paddingHorizontal="16dp"
-                    android:paddingVertical="12dp">
+                    android:paddingVertical="12dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
                     <TextView
                         android:layout_width="0dp"
                         android:layout_weight="1"
@@ -401,7 +414,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:alpha="0.6"
             android:clickable="true"
             android:focusable="true"
             android:background="?attr/selectableItemBackground"
@@ -427,7 +439,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:alpha="0.6"
             android:clickable="true"
             android:focusable="true"
             android:background="?attr/selectableItemBackground"

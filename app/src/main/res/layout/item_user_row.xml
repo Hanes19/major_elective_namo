@@ -4,12 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginHorizontal="24dp"
     android:layout_marginBottom="12dp"
-    android:layout_marginHorizontal="16dp" android:background="@drawable/glass_card_dark"
+    android:background="@drawable/glass_card_dark"
     android:padding="16dp">
 
     <FrameLayout
-        android:id="@+id/iconContainer"
+        android:id="@+id/avatarContainer"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/btn_glass_circle"
@@ -19,79 +20,84 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/ivIcon"
+            android:id="@+id/ivUser"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="12dp"
+            android:padding="4dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/door"
-            app:tint="#FFFFFF" />
+            android:src="@drawable/profile" />
     </FrameLayout>
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnNavigate"
-        app:layout_constraintStart_toEndOf="@+id/iconContainer"
+        app:layout_constraintEnd_toStartOf="@+id/actionContainer"
+        app:layout_constraintStart_toEndOf="@+id/avatarContainer"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tvRoomName"
+            android:id="@+id/tvUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/raleway_bold"
-            android:text="Room 101"
+            android:text="Juan Tamad"
             android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:maxLines="1"
-            android:ellipsize="end"/>
+            android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/tvRoomDesc"
+            android:id="@+id/tvUserID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:fontFamily="@font/raleway_regular"
-            android:text="General Education"
+            android:text="ID: 2023-001"
             android:textColor="#B0B0B0"
-            android:textSize="12sp"
-            android:maxLines="1"
-            android:ellipsize="end"/>
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="• Active"
+            android:textColor="#00E676"
+            android:textSize="10sp"
+            android:fontFamily="@font/raleway_bold"/>
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/btnNavigate"
+        android:id="@+id/actionContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/glass_tab_active"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="10dp"
-        android:clickable="true"
-        android:focusable="true"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/db_nav_icon"
-            app:tint="#A9016D" />
+        <ImageButton
+            android:id="@+id/btnEditUser"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/btn_glass_circle"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/pen"
+            app:tint="#A0A0A0" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:fontFamily="@font/raleway_bold"
-            android:text="GO"
-            android:textColor="#A9016D"
-            android:textSize="10sp" />
+        <ImageButton
+            android:id="@+id/btnBanUser"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/btn_glass_circle"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/delete"
+            app:tint="#FF5252" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
