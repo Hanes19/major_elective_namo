@@ -8,6 +8,16 @@
     android:layout_height="match_parent"
     android:background="#0A0322">
 
+    <View
+        android:id="@+id/glowEffect2"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_marginTop="-100dp"
+        android:background="@drawable/bg_purple_glow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/bgImage"
         android:layout_width="0dp"
@@ -19,6 +29,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <ImageView
         android:id="@+id/imgLogo"
