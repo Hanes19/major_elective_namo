@@ -61,8 +61,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
         navNav = findViewById(R.id.navNav);
         navProfile = findViewById(R.id.navProfile);
 
-        // Initialize Settings Button
-        btnSettings = findViewById(R.id.btnSettings);
+
     }
 
     private void setupCarousel() {
