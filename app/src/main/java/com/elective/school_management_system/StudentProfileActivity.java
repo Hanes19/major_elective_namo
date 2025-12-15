@@ -3,16 +3,15 @@ package com.elective.school_management_system;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast; // Import Toast
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 
 public class StudentProfileActivity extends AppCompatActivity {
 
-    private ImageView btnBack;
-    private AppCompatButton btnEdit, btnLogout;
+    private ImageButton btnBack, btnEdit; // Changed from AppCompatButton/ImageView to ImageButton
+    private TextView btnLogout;           // Changed from AppCompatButton to TextView (it is a TextView in XML)
     private TextView tvName, tvEmail;
     private DatabaseHelper dbHelper;
     private String currentEmail;
@@ -35,9 +34,11 @@ public class StudentProfileActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        // Matches XML types
         btnBack = findViewById(R.id.btnBack);
         btnEdit = findViewById(R.id.btnEdit);
         btnLogout = findViewById(R.id.btnLogout);
+
         tvName = findViewById(R.id.tvProfileName);
         tvEmail = findViewById(R.id.tvProfileEmail);
     }
@@ -56,17 +57,21 @@ public class StudentProfileActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        btnBack.setOnClickListener(v -> finish());
-        btnLogout.setOnClickListener(v -> logout());
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> finish());
+        }
+
+        if (btnLogout != null) {
+            btnLogout.setOnClickListener(v -> logout());
+        }
 
         // EDIT BUTTON LOGIC
-        btnEdit.setOnClickListener(v -> {
-            // Debug Toast: If you don't see this, the button isn't clicking.
-            Toast.makeText(StudentProfileActivity.this, "Opening Edit Profile...", Toast.LENGTH_SHORT).show();
-
-            Intent intent = new Intent(StudentProfileActivity.this, StudentEditProfileActivity.class);
-            startActivity(intent);
-        });
+        if (btnEdit != null) {
+            btnEdit.setOnClickListener(v -> {
+                Intent intent = new Intent(StudentProfileActivity.this, StudentEditProfileActivity.class);
+                startActivity(intent);
+            });
+        }
     }
 
     private void logout() {

@@ -6,14 +6,13 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class StudentNavigationListActivity extends AppCompatActivity {
 
-    // UI Components
-    private ConstraintLayout btnManageMap, btnManageUsers, btnReports;
-    private LinearLayout navMaps, navDashboard, navUpdates;
-    private View btnSettings; // We will need to find this by walking the hierarchy or adding an ID
+    // UI Components matching s_navigation_list.xml
+    private LinearLayout cardRooms, cardInstructors;
+    private LinearLayout navHome, navNav, navProfile;
+    private View btnSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,75 +24,61 @@ public class StudentNavigationListActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        btnManageMap = findViewById(R.id.btnManageMap);
-        btnManageUsers = findViewById(R.id.btnManageUsers);
-        btnReports = findViewById(R.id.btnReports);
+        // Main Cards
+        cardRooms = findViewById(R.id.card_rooms);
+        cardInstructors = findViewById(R.id.card_instructors);
 
-        navMaps = findViewById(R.id.navMaps);
-        navDashboard = findViewById(R.id.navDashboard);
-        navUpdates = findViewById(R.id.navUpdates);
+        // Settings button (FrameLayout in XML)
+        btnSettings = findViewById(R.id.img_settings);
 
-        // Note: The settings icon in your XML didn't have an ID.
-        // You should add android:id="@+id/btnSettings" to the FrameLayout wrapping the settings icon in ad_dashboard.xml
-        // For now, we can try to find it, or you can add the ID.
-        // btnSettings = findViewById(R.id.btnSettings);
+        // Bottom Navigation
+        navHome = findViewById(R.id.navHome);
+        navNav = findViewById(R.id.navNav);
+        navProfile = findViewById(R.id.navProfile);
     }
 
     private void setupListeners() {
-        // --- Dashboard Cards ---
+        // --- Main Action Cards ---
 
-        // 1. Manage Map Data
-        btnManageMap.setOnClickListener(v -> {
-            // TODO: Create AdminManageRoomsActivity and link it here
-            // Intent intent = new Intent(AdminDashboardActivity.this, AdminManageRoomsActivity.class);
-            // startActivity(intent);
-            Toast.makeText(this, "Manage Rooms/Map feature coming soon", Toast.LENGTH_SHORT).show();
-        });
-
-        // 2. User Directory (Linked to Instructors for now)
-        btnManageUsers.setOnClickListener(v -> {
-            Intent intent = new Intent(StudentNavigationListActivity.this, AdminManageInstructorsActivity.class);
+        // 1. All Rooms (was btnManageMap)
+        cardRooms.setOnClickListener(v -> {
+            Intent intent = new Intent(StudentNavigationListActivity.this, StudentRoomsListActivity.class);
             startActivity(intent);
         });
 
-        // 3. System Reports
-        btnReports.setOnClickListener(v -> {
-            Toast.makeText(this, "Reports feature coming soon", Toast.LENGTH_SHORT).show();
+        // 2. Instructors (was btnManageUsers)
+        cardInstructors.setOnClickListener(v -> {
+            Intent intent = new Intent(StudentNavigationListActivity.this, StudentInstructorsListActivity.class);
+            startActivity(intent);
         });
+
+        // Settings Button
+        if (btnSettings != null) {
+            btnSettings.setOnClickListener(v -> {
+                Toast.makeText(this, "Settings clicked", Toast.LENGTH_SHORT).show();
+            });
+        }
 
         // --- Bottom Navigation ---
 
-        navMaps.setOnClickListener(v -> {
-            // Navigation logic if you want to reuse the Student Map or a specific Admin Map
-            Toast.makeText(this, "Map View", Toast.LENGTH_SHORT).show();
+        // Home / Dashboard
+        navHome.setOnClickListener(v -> {
+            Intent intent = new Intent(StudentNavigationListActivity.this, StudentDashboardActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish(); // Optional: finish this activity to remove it from stack
         });
 
-        navDashboard.setOnClickListener(v -> {
-            // Already on Dashboard
+        // Navigation (Current Screen)
+        navNav.setOnClickListener(v -> {
+            // Already on Navigation List
         });
 
-        navUpdates.setOnClickListener(v -> {
-            Toast.makeText(this, "Updates View", Toast.LENGTH_SHORT).show();
+        // Profile
+        navProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(StudentNavigationListActivity.this, StudentProfileActivity.class);
+            startActivity(intent);
+            finish(); // Optional
         });
-
-        // --- Logout Logic (Optional) ---
-        // If you add the ID to the settings button, use this:
-        /*
-        if (btnSettings != null) {
-            btnSettings.setOnClickListener(v -> {
-                // Clear Session
-                SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.clear();
-                editor.apply();
-
-                // Redirect to Login
-                Intent intent = new Intent(AdminDashboardActivity.this, Login_Activity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
-            });
-        }
-        */
     }
 }
