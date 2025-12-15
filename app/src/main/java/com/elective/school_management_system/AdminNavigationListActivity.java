@@ -18,7 +18,7 @@ public class AdminNavigationListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ad_navigation_list);
+        setContentView(R.layout.s_navigation_list);
 
         initViews();
         setupListeners();
