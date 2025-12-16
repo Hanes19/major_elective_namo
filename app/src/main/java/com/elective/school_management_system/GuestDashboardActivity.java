@@ -27,28 +27,11 @@ public class GuestDashboardActivity extends AppCompatActivity {
     }
 
     private void setupGridListeners() {
-        // The grid items are inside a GridLayout.
-        // Based on g_dashboard.xml, we can identify them by their child index or by traversing.
-        // However, the XML does not have IDs for the LinearLayout containers, only for inner contents.
-        // We will traverse the GridLayout to find the clickable Linear Layouts.
-
-        // Option B: Since we can't easily modify the XML IDs right now without re-uploading,
-        // we can set OnClickListeners to the GridLayout's children by index.
-
-        android.widget.GridLayout gridLayout = findViewById(R.id.searchContainer).getRootView().findViewById(R.id.searchContainer).getNextFocusDownId() != View.NO_ID
-                ? findViewById(R.id.searchContainer).getRootView().findViewById(R.id.searchContainer) // This lookup is tricky without IDs.
-                : null;
-
-        // Simpler approach: Find the container and getting children.
-        // Note: In g_dashboard.xml provided, the GridLayout is directly below @id/searchContainer
-
-        // Let's assume you will ADD IDs to the LinearLayouts in g_dashboard.xml for robustness.
-        // For this code, I will use findViewById assuming you update the XML or I will find them by traversing the parent ViewGroup.
-
-        // Finding the GridLayout
+        // Traversing the GridLayout to set listeners dynamically
         android.view.ViewGroup rootView = (android.view.ViewGroup) ((android.view.ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
         android.widget.GridLayout grid = null;
 
+        // Find the GridLayout inside the layout
         for(int i=0; i<rootView.getChildCount(); i++){
             if(rootView.getChildAt(i) instanceof android.widget.GridLayout){
                 grid = (android.widget.GridLayout) rootView.getChildAt(i);
@@ -57,16 +40,19 @@ public class GuestDashboardActivity extends AppCompatActivity {
         }
 
         if (grid != null) {
-            // Child 0: Admissions
+            // Child 0: Admissions -> Navigation
             grid.getChildAt(0).setOnClickListener(v -> startNavigation("Admissions Office"));
 
-            // Child 1: Cashier
+            // Child 1: Cashier -> Navigation
             grid.getChildAt(1).setOnClickListener(v -> startNavigation("Cashier"));
 
-            // Child 2: Events
-            grid.getChildAt(2).setOnClickListener(v -> startActivity(new Intent(this, GuestUpdatesActivity.class)));
+            // Child 2: Events -> Open Updates Activity
+            grid.getChildAt(2).setOnClickListener(v -> {
+                startActivity(new Intent(this, GuestUpdatesActivity.class));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            });
 
-            // Child 3: Restrooms
+            // Child 3: Restrooms -> Navigation
             grid.getChildAt(3).setOnClickListener(v -> startNavigation("Restroom"));
         }
     }
@@ -75,9 +61,19 @@ public class GuestDashboardActivity extends AppCompatActivity {
         LinearLayout searchContainer = findViewById(R.id.searchContainer);
         searchContainer.setOnClickListener(v -> {
             Intent intent = new Intent(GuestDashboardActivity.this, StudentRoomsListActivity.class);
-            // We can treat the room list as a general directory
             startActivity(intent);
+            // Forward Animation
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
+
+        // Map Banner Listener (from g_dashboard.xml)
+        View mapBanner = findViewById(R.id.mapBanner);
+        if (mapBanner != null) {
+            mapBanner.setOnClickListener(v -> {
+                // Assuming you have a general map activity, or open navigation default
+                startNavigation("Main Entrance");
+            });
+        }
     }
 
     private void startNavigation(String target) {
@@ -93,6 +89,7 @@ public class GuestDashboardActivity extends AppCompatActivity {
         Intent intent = new Intent(GuestDashboardActivity.this, StudentNavigationActivity.class);
         intent.putExtra("ROOM_NAME", target);
         startActivity(intent);
+        // Forward Animation
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 

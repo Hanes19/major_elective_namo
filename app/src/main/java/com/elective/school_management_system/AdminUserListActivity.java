@@ -13,14 +13,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,19 +29,18 @@ public class AdminUserListActivity extends AppCompatActivity {
     private RecyclerView recyclerViewUsers;
     private ImageButton btnBack;
 
-    // Bottom Nav (Admin Version)
+    // Bottom Nav
     private LinearLayout navMaps, navDashboard, navUpdates;
 
     // Data
     private DatabaseHelper dbHelper;
     private AdminUserAdapter adapter;
-    private List<UserItem> allItems = new ArrayList<>(); // Stores all loaded items for search filtering
-    private String currentTab = "Student"; // Default tab
+    private List<UserItem> allItems = new ArrayList<>();
+    private String currentTab = "Student";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // We use the student layout as the base, but we will manipulate the UI for other tabs
         setContentView(R.layout.ad_user_list_student);
 
         dbHelper = new DatabaseHelper(this);
@@ -52,8 +48,6 @@ public class AdminUserListActivity extends AppCompatActivity {
         initViews();
         setupListeners();
         setupRecyclerView();
-
-        // Load default tab
         selectTab("Student");
     }
 
@@ -65,14 +59,9 @@ public class AdminUserListActivity extends AppCompatActivity {
         recyclerViewUsers = findViewById(R.id.recyclerViewUsers);
         btnBack = findViewById(R.id.btnBack);
 
-        // Bottom Navigation (Admin IDs)
-        // Ensure the ID in XML is updated to @+id/bottom_navigation_bar
-        LinearLayout bottomNav = findViewById(R.id.bottom_navigation_bar);
-        if (bottomNav != null) {
-            navMaps = findViewById(R.id.navMaps);
-            navDashboard = findViewById(R.id.navDashboard);
-            navUpdates = findViewById(R.id.navUpdates);
-        }
+        navMaps = findViewById(R.id.navMaps);
+        navDashboard = findViewById(R.id.navDashboard);
+        navUpdates = findViewById(R.id.navUpdates);
     }
 
     private void setupRecyclerView() {
@@ -82,9 +71,12 @@ public class AdminUserListActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        // Back Button
+        // Back Button: Reverse Animation (Go back to Dashboard)
         if (btnBack != null) {
-            btnBack.setOnClickListener(v -> onBackPressed());
+            btnBack.setOnClickListener(v -> {
+                finish();
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            });
         }
 
         // Tabs
@@ -104,23 +96,36 @@ public class AdminUserListActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
-        // Bottom Navigation Listeners (Admin Logic)
+        // Bottom Navigation Logic
+
+        // 1. Maps (Sibling Activity)
         if (navMaps != null) {
             navMaps.setOnClickListener(v -> {
-                startActivity(new Intent(this, StudentRoomMapActivity.class));
+                Intent intent = new Intent(this, AdminRoomMapActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                finish();
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             });
         }
 
+        // 2. Dashboard (Parent Activity) -> Reverse Animation
         if (navDashboard != null) {
             navDashboard.setOnClickListener(v -> {
-                startActivity(new Intent(this, AdminDashboardActivity.class));
-                finish(); // Finish current activity to go back to dashboard
+                Intent intent = new Intent(this, AdminDashboardActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                finish();
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             });
         }
 
+        // 3. Updates (Sibling Activity) -> Forward Animation (Usually to the right)
         if (navUpdates != null) {
             navUpdates.setOnClickListener(v -> {
-                startActivity(new Intent(this, AdminReportsActivity.class));
+                Intent intent = new Intent(this, AdminReportsActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             });
         }
     }
@@ -129,7 +134,6 @@ public class AdminUserListActivity extends AppCompatActivity {
         currentTab = tabName;
         resetTabStyles();
 
-        // Highlight selected tab
         Drawable activeDrawable = ContextCompat.getDrawable(this, R.drawable.glass_tab_active);
         int whiteColor = Color.WHITE;
 
@@ -154,33 +158,24 @@ public class AdminUserListActivity extends AppCompatActivity {
 
     private void resetTabStyles() {
         int grayColor = Color.parseColor("#B0B0B0");
-        Drawable transparent = null;
-
-        tabStudent.setBackground(transparent);
+        tabStudent.setBackground(null);
         tabStudent.setTextColor(grayColor);
-
-        tabTeacher.setBackground(transparent);
+        tabTeacher.setBackground(null);
         tabTeacher.setTextColor(grayColor);
-
-        tabGuest.setBackground(transparent);
+        tabGuest.setBackground(null);
         tabGuest.setTextColor(grayColor);
     }
 
-    // --- Data Loading Methods ---
-
+    // --- Data Loading & Filtering ---
     private void loadStudents() {
         allItems.clear();
-        // Fetch students (Users who have profiles)
         List<UserItem> students = dbHelper.getAllStudents();
-        if (students != null) {
-            allItems.addAll(students);
-        }
+        if (students != null) allItems.addAll(students);
         adapter.updateList(allItems);
     }
 
     private void loadTeachers() {
         allItems.clear();
-        // Fetch instructors
         List<Instructor> instructors = dbHelper.getAllInstructors();
         if (instructors != null) {
             for (Instructor inst : instructors) {
@@ -192,11 +187,8 @@ public class AdminUserListActivity extends AppCompatActivity {
 
     private void loadGuests() {
         allItems.clear();
-        // Fetch guests (Users without profiles)
         List<UserItem> guests = dbHelper.getAllGuests();
-        if (guests != null) {
-            allItems.addAll(guests);
-        }
+        if (guests != null) allItems.addAll(guests);
         adapter.updateList(allItems);
     }
 
@@ -211,13 +203,18 @@ public class AdminUserListActivity extends AppCompatActivity {
         adapter.updateList(filtered);
     }
 
-    // --- Inner Classes for Adapter and Model ---
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
 
+    // --- Inner Classes ---
     public static class UserItem {
         private int id;
         private String name;
-        private String subtitle; // Email or Department or Details
-        private String type; // Student, Teacher, Guest
+        private String subtitle;
+        private String type;
 
         public UserItem(int id, String name, String subtitle, String type) {
             this.id = id;
@@ -225,7 +222,6 @@ public class AdminUserListActivity extends AppCompatActivity {
             this.subtitle = subtitle;
             this.type = type;
         }
-
         public String getName() { return name; }
         public String getSubtitle() { return subtitle; }
     }
@@ -245,7 +241,6 @@ public class AdminUserListActivity extends AppCompatActivity {
         @NonNull
         @Override
         public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            // Using student row as generic
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_user_row_student, parent, false);
             return new UserViewHolder(view);
@@ -254,23 +249,15 @@ public class AdminUserListActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
             UserItem item = userList.get(position);
-
-            if (holder.tvName != null) {
-                holder.tvName.setText(item.getName());
-            }
-            if (holder.tvSubtitle != null) {
-                holder.tvSubtitle.setText(item.getSubtitle());
-            }
+            holder.tvName.setText(item.getName());
+            holder.tvSubtitle.setText(item.getSubtitle());
         }
 
         @Override
-        public int getItemCount() {
-            return userList.size();
-        }
+        public int getItemCount() { return userList.size(); }
 
         class UserViewHolder extends RecyclerView.ViewHolder {
             TextView tvName, tvSubtitle;
-
             public UserViewHolder(@NonNull View itemView) {
                 super(itemView);
                 tvName = itemView.findViewById(R.id.tvName);

@@ -14,7 +14,7 @@ import java.util.Locale;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SchoolSystem.db";
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7; // Updated version to trigger onUpgrade
 
     // --- User Table ---
     private static final String TABLE_USERS = "users";
@@ -141,27 +141,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void addInitialData(SQLiteDatabase db) {
-        // Initial Rooms
+        // --- 1. Sample Users ---
+        // Student (ID 1)
+        db.execSQL("INSERT INTO " + TABLE_USERS + " (" + KEY_USER_NAME + ", " + KEY_USER_EMAIL + ", " + KEY_USER_PASSWORD + ") VALUES ('Student Demo', 'student@test.com', 'password123')");
+        // Teacher (ID 2)
+        db.execSQL("INSERT INTO " + TABLE_USERS + " (" + KEY_USER_NAME + ", " + KEY_USER_EMAIL + ", " + KEY_USER_PASSWORD + ") VALUES ('Prof. Severus', 'teacher@test.com', 'password123')");
+
+        // --- 2. Sample Rooms ---
         String sqlRoom = "INSERT INTO " + TABLE_ROOMS + " (" + KEY_ROOM_NAME + ", " + KEY_ROOM_DESC + ", " + KEY_ROOM_AR_ID + ") VALUES (?, ?, ?)";
         db.execSQL(sqlRoom, new Object[]{"Room 101", "General Education Lecture Room", "room_101"});
         db.execSQL(sqlRoom, new Object[]{"Room 102", "Science Laboratory", "room_102"});
         db.execSQL(sqlRoom, new Object[]{"Room 103", "Computer Laboratory 1", "room_103"});
         db.execSQL(sqlRoom, new Object[]{"Faculty Room", "Main Faculty Office", "faculty_room"});
+        db.execSQL(sqlRoom, new Object[]{"Admin Office", "Administration & HR", "admin_office"});
+        db.execSQL(sqlRoom, new Object[]{"Clinic", "School Health Center", "clinic"});
 
-        // Initial Reports
+        // --- 3. Sample Schedule (For Teacher ID 2) ---
+        int teacherId = 2;
+        String sqlSch = "INSERT INTO " + TABLE_SCHEDULE + " (" + KEY_SCH_USER_ID + ", " + KEY_SCH_SUBJECT + ", " + KEY_SCH_ROOM + ", " + KEY_SCH_DAY + ", " + KEY_SCH_START + ", " + KEY_SCH_END + ") VALUES (?, ?, ?, ?, ?, ?)";
+
+        // Monday
+        db.execSQL(sqlSch, new Object[]{teacherId, "Adv. Potions", "Room 102", "Monday", "08:00", "10:00"});
+        db.execSQL(sqlSch, new Object[]{teacherId, "Defense Against Dark Arts", "Room 101", "Monday", "13:00", "15:00"});
+
+        // Tuesday
+        db.execSQL(sqlSch, new Object[]{teacherId, "Alchemy 101", "Room 103", "Tuesday", "09:00", "12:00"});
+
+        // Wednesday
+        db.execSQL(sqlSch, new Object[]{teacherId, "Adv. Potions", "Room 102", "Wednesday", "08:00", "10:00"});
+        db.execSQL(sqlSch, new Object[]{teacherId, "Ethics in Magic", "Room 101", "Wednesday", "10:00", "12:00"});
+
+        // Friday
+        db.execSQL(sqlSch, new Object[]{teacherId, "Staff Meeting", "Faculty Room", "Friday", "16:00", "17:00"});
+
+        // --- 4. Sample Reports ---
         String sqlRep = "INSERT INTO " + TABLE_REPORTS + " (" + KEY_REP_ROOM + ", " + KEY_REP_DESC + ", " + KEY_REP_CATEGORY + ", " + KEY_REP_STATUS + ", " + KEY_REP_DATE + ") VALUES (?, ?, ?, ?, ?)";
         db.execSQL(sqlRep, new Object[]{"Room 103", "Projector not displaying colors correctly", "Electrical", "Pending", "Oct 24, 2025"});
         db.execSQL(sqlRep, new Object[]{"Room 101", "Aircon leaking water", "Maintenance", "Resolved", "Oct 20, 2025"});
 
-        // Initial Schedule (Dummy data for User ID 1)
-        String sqlSch = "INSERT INTO " + TABLE_SCHEDULE + " (" + KEY_SCH_USER_ID + ", " + KEY_SCH_SUBJECT + ", " + KEY_SCH_ROOM + ", " + KEY_SCH_DAY + ", " + KEY_SCH_START + ", " + KEY_SCH_END + ") VALUES (?, ?, ?, ?, ?, ?)";
-        db.execSQL(sqlSch, new Object[]{1, "Mobile Development", "Room 103", "Monday", "08:00", "11:00"});
-        db.execSQL(sqlSch, new Object[]{1, "Data Structures", "Room 101", "Monday", "13:00", "15:00"});
-        db.execSQL(sqlSch, new Object[]{1, "Networking", "Room 102", "Tuesday", "09:00", "12:00"});
-        db.execSQL(sqlSch, new Object[]{1, "Ethics", "Room 101", "Wednesday", "10:00", "12:00"});
-        db.execSQL(sqlSch, new Object[]{1, "Capstone Project", "Room 103", "Friday", "14:00", "17:00"});
-
-        // Initial Events
+        // --- 5. Sample Events ---
         String sqlEvt = "INSERT INTO " + TABLE_EVENTS + " (" + KEY_EVT_TITLE + ", " + KEY_EVT_DESC + ", " + KEY_EVT_DATE + ", " + KEY_EVT_TYPE + ") VALUES (?, ?, ?, ?)";
         db.execSQL(sqlEvt, new Object[]{"Campus Job Fair", "Join us at the Gymnasium for the annual job fair.", "2025-10-25", "General"});
         db.execSQL(sqlEvt, new Object[]{"Library Maintenance", "The library will be closed for electrical repairs.", "2025-10-26", "Emergency"});
@@ -179,9 +197,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // --- SCHEDULE METHODS ---
+    // ================== DATA ACCESS METHODS ==================
 
-    // METHOD ADDED: Fetches all schedule items for a specific user
+    // --- SCHEDULE METHODS ---
     public List<Schedule> getUserSchedule(int userId) {
         List<Schedule> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -214,14 +232,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String currentDay = dayFormat.format(now);
         String currentTime = timeFormat.format(now);
 
-        // Find class today where start_time > now
+        // Logic: Get today's classes that start after current time
         String selection = KEY_SCH_USER_ID + "=? AND " + KEY_SCH_DAY + "=? AND " + KEY_SCH_START + " > ?";
         String[] args = new String[]{String.valueOf(userId), currentDay, currentTime};
 
         Cursor cursor = db.query(TABLE_SCHEDULE, null, selection, args, null, null, KEY_SCH_START + " ASC", "1");
 
+        Schedule s = null;
         if (cursor != null && cursor.moveToFirst()) {
-            Schedule s = new Schedule(
+            s = new Schedule(
                     cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID)),
                     cursor.getInt(cursor.getColumnIndexOrThrow(KEY_SCH_USER_ID)),
                     cursor.getString(cursor.getColumnIndexOrThrow(KEY_SCH_SUBJECT)),
@@ -230,10 +249,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     cursor.getString(cursor.getColumnIndexOrThrow(KEY_SCH_START)),
                     cursor.getString(cursor.getColumnIndexOrThrow(KEY_SCH_END))
             );
-            cursor.close();
-            return s;
         }
-        return null;
+        if (cursor != null) cursor.close(); // Ensure cursor is always closed
+
+        if (s != null) return s;
+
+        // Fallback: If no class later TODAY, just return the very next class in the database for testing purposes
+        Cursor cursorAll = db.query(TABLE_SCHEDULE, null, KEY_SCH_USER_ID + "=?",
+                new String[]{String.valueOf(userId)}, null, null, KEY_SCH_DAY + " ASC, " + KEY_SCH_START + " ASC", "1");
+
+        if (cursorAll != null) {
+            if (cursorAll.moveToFirst()) {
+                s = new Schedule(
+                        cursorAll.getInt(cursorAll.getColumnIndexOrThrow(KEY_ID)),
+                        cursorAll.getInt(cursorAll.getColumnIndexOrThrow(KEY_SCH_USER_ID)),
+                        cursorAll.getString(cursorAll.getColumnIndexOrThrow(KEY_SCH_SUBJECT)),
+                        cursorAll.getString(cursorAll.getColumnIndexOrThrow(KEY_SCH_ROOM)),
+                        cursorAll.getString(cursorAll.getColumnIndexOrThrow(KEY_SCH_DAY)),
+                        cursorAll.getString(cursorAll.getColumnIndexOrThrow(KEY_SCH_START)),
+                        cursorAll.getString(cursorAll.getColumnIndexOrThrow(KEY_SCH_END))
+                );
+            }
+            cursorAll.close(); // Clean up second cursor
+        }
+        return s;
     }
 
     // --- EVENT METHODS ---
@@ -256,10 +295,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
-    // ============================================================================================
-    // --- EXISTING METHODS (USER, ROOMS, INSTRUCTORS, REPORTS) ---
-    // ============================================================================================
-
+    // --- USER / PROFILE METHODS ---
     public int getUserId(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_USERS, new String[]{KEY_ID},
@@ -267,44 +303,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int id = -1;
         if (cursor != null && cursor.moveToFirst()) {
             id = cursor.getInt(0);
-            cursor.close();
         }
+        if (cursor != null) cursor.close();
         return id;
     }
 
-    public boolean saveUserProfile(int userId, String course, String year, String section, String phone) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(KEY_PROFILE_USER_ID, userId);
-        values.put(KEY_PROFILE_COURSE, course);
-        values.put(KEY_PROFILE_YEAR, year);
-        values.put(KEY_PROFILE_SECTION, section);
-        values.put(KEY_PROFILE_PHONE, phone);
-        Cursor cursor = db.query(TABLE_PROFILES, new String[]{KEY_ID},
-                KEY_PROFILE_USER_ID + "=?", new String[]{String.valueOf(userId)}, null, null, null);
-        long result;
-        if (cursor != null && cursor.getCount() > 0) {
-            result = db.update(TABLE_PROFILES, values, KEY_PROFILE_USER_ID + "=?", new String[]{String.valueOf(userId)});
-            cursor.close();
-        } else {
-            result = db.insert(TABLE_PROFILES, null, values);
-        }
-        return result != -1;
-    }
-
-    public Cursor getUserProfile(int userId) {
+    public String getUsername(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.query(TABLE_PROFILES, null,
-                KEY_PROFILE_USER_ID + "=?", new String[]{String.valueOf(userId)}, null, null, null);
-    }
-
-    public boolean registerUser(String username, String email, String password) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(KEY_USER_NAME, username);
-        values.put(KEY_USER_EMAIL, email);
-        values.put(KEY_USER_PASSWORD, password);
-        return db.insert(TABLE_USERS, null, values) != -1;
+        Cursor cursor = db.query(TABLE_USERS, new String[]{KEY_USER_NAME},
+                KEY_USER_EMAIL + "=?", new String[]{email}, null, null, null);
+        String name = "User";
+        if (cursor != null && cursor.moveToFirst()) {
+            name = cursor.getString(0);
+        }
+        if (cursor != null) cursor.close();
+        return name;
     }
 
     public boolean checkUser(String email, String password) {
@@ -317,31 +330,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return exists;
     }
 
-    public String getUsername(String email) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_USERS, new String[]{KEY_USER_NAME},
-                KEY_USER_EMAIL + "=?", new String[]{email}, null, null, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            String name = cursor.getString(0);
-            cursor.close();
-            return name;
-        }
-        return "User";
-    }
-
-    public boolean updateUser(String currentEmail, String newName, String newEmail) {
+    public boolean registerUser(String username, String email, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(KEY_USER_NAME, newName);
-        values.put(KEY_USER_EMAIL, newEmail);
-        return db.update(TABLE_USERS, values, KEY_USER_EMAIL + "=?", new String[]{currentEmail}) > 0;
-    }
-
-    public boolean updatePassword(String email, String newPassword) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(KEY_USER_PASSWORD, newPassword);
-        return db.update(TABLE_USERS, values, KEY_USER_EMAIL + "=?", new String[]{email}) > 0;
+        values.put(KEY_USER_NAME, username);
+        values.put(KEY_USER_EMAIL, email);
+        values.put(KEY_USER_PASSWORD, password);
+        return db.insert(TABLE_USERS, null, values) != -1;
     }
 
     public boolean checkEmailExists(String email) {
@@ -352,6 +347,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return exists;
     }
 
+    public boolean updatePassword(String email, String newPassword) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_USER_PASSWORD, newPassword);
+        return db.update(TABLE_USERS, values, KEY_USER_EMAIL + "=?", new String[]{email}) > 0;
+    }
+
+    // --- ROOM METHODS ---
     public List<Room> getAllRooms() {
         return getRoomsFromQuery(null, null);
     }
@@ -380,22 +383,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return roomList;
     }
 
-    public Room getRoomById(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_ROOMS, null, KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            Room r = new Room(
-                    id,
-                    cursor.getString(cursor.getColumnIndexOrThrow(KEY_ROOM_NAME)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(KEY_ROOM_DESC)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(KEY_ROOM_AR_ID))
-            );
-            cursor.close();
-            return r;
-        }
-        return null;
-    }
-
     public boolean addRoom(String name, String desc) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -418,6 +405,87 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.delete(TABLE_ROOMS, KEY_ID + "=?", new String[]{String.valueOf(id)}) > 0;
     }
 
+    // --- REPORT METHODS ---
+    public List<Report> getAllReports() {
+        List<Report> list = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_REPORTS, null, null, null, null, null, KEY_REP_STATUS + " ASC, " + KEY_ID + " DESC");
+        if (cursor.moveToFirst()) {
+            do {
+                list.add(new Report(
+                        cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_ROOM)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_DESC)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_CATEGORY)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_STATUS)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_DATE))
+                ));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return list;
+    }
+
+    public boolean addReport(String roomName, String description, String category) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+        String currentDate = sdf.format(new Date());
+
+        values.put(KEY_REP_ROOM, roomName);
+        values.put(KEY_REP_DESC, description);
+        values.put(KEY_REP_CATEGORY, category);
+        values.put(KEY_REP_STATUS, "Pending");
+        values.put(KEY_REP_DATE, currentDate);
+
+        long result = db.insert(TABLE_REPORTS, null, values);
+        return result != -1;
+    }
+
+    public List<AdminUserListActivity.UserItem> getAllStudents() {
+        List<AdminUserListActivity.UserItem> list = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT u.id, u.username, u.email FROM " + TABLE_USERS + " u " +
+                "INNER JOIN " + TABLE_PROFILES + " p ON u.id = p.user_id";
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                list.add(new AdminUserListActivity.UserItem(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        "Student"
+                ));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return list;
+    }
+
+    public List<AdminUserListActivity.UserItem> getAllGuests() {
+        List<AdminUserListActivity.UserItem> list = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT u.id, u.username, u.email FROM " + TABLE_USERS + " u " +
+                "LEFT JOIN " + TABLE_PROFILES + " p ON u.id = p.user_id " +
+                "WHERE p.user_id IS NULL";
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                list.add(new AdminUserListActivity.UserItem(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        "Guest"
+                ));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return list;
+    }
+
+    // Existing Instructors Logic
     public List<Instructor> getAllInstructors() {
         List<Instructor> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -454,113 +522,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean deleteInstructor(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_INSTRUCTORS, KEY_ID + "=?", new String[]{String.valueOf(id)}) > 0;
-    }
-
-    public List<Report> getAllReports() {
-        List<Report> list = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_REPORTS, null, null, null, null, null, KEY_REP_STATUS + " ASC, " + KEY_ID + " DESC");
-        if (cursor.moveToFirst()) {
-            do {
-                list.add(new Report(
-                        cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_ROOM)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_DESC)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_CATEGORY)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_STATUS)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_DATE))
-                ));
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        return list;
-    }
-
-    public Report getReport(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_REPORTS, null, KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            Report r = new Report(
-                    cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_ROOM)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_DESC)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_CATEGORY)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_STATUS)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_DATE))
-            );
-            cursor.close();
-            return r;
-        }
-        return null;
-    }
-
-    public boolean updateReportStatus(int id, String newStatus) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(KEY_REP_STATUS, newStatus);
-        return db.update(TABLE_REPORTS, values, KEY_ID + "=?", new String[]{String.valueOf(id)}) > 0;
-    }
-    public List<AdminUserListActivity.UserItem> getAllStudents() {
-        List<AdminUserListActivity.UserItem> list = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        // Join Users and Profiles
-        String query = "SELECT u.id, u.username, u.email FROM " + TABLE_USERS + " u " +
-                "INNER JOIN " + TABLE_PROFILES + " p ON u.id = p.user_id";
-
-        Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            do {
-                list.add(new AdminUserListActivity.UserItem(
-                        cursor.getInt(0),
-                        cursor.getString(1), // Username
-                        cursor.getString(2), // Email
-                        "Student"
-                ));
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        return list;
-    }
-
-    // Fetch all users who DO NOT have a profile (Guests)
-    public List<AdminUserListActivity.UserItem> getAllGuests() {
-        List<AdminUserListActivity.UserItem> list = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        // Left Join to find users without profiles
-        String query = "SELECT u.id, u.username, u.email FROM " + TABLE_USERS + " u " +
-                "LEFT JOIN " + TABLE_PROFILES + " p ON u.id = p.user_id " +
-                "WHERE p.user_id IS NULL";
-
-        Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            do {
-                list.add(new AdminUserListActivity.UserItem(
-                        cursor.getInt(0),
-                        cursor.getString(1), // Username
-                        cursor.getString(2), // Email
-                        "Guest"
-                ));
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        return list;
-    }
-
-    public boolean addReport(String roomName, String description, String category) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-
-        // Get current date
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
-        String currentDate = sdf.format(new Date());
-
-        values.put(KEY_REP_ROOM, roomName);
-        values.put(KEY_REP_DESC, description);
-        values.put(KEY_REP_CATEGORY, category);
-        values.put(KEY_REP_STATUS, "Pending"); // Default status
-        values.put(KEY_REP_DATE, currentDate);
-
-        long result = db.insert(TABLE_REPORTS, null, values);
-        return result != -1;
     }
 }

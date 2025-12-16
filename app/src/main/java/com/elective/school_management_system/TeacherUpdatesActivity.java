@@ -3,7 +3,9 @@ package com.elective.school_management_system;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,31 +21,59 @@ public class TeacherUpdatesActivity extends AppCompatActivity {
 
         initViews();
         setupListeners();
+        highlightCurrentTab();
     }
 
     private void initViews() {
         btnBack = findViewById(R.id.btnBack);
-
-        // Find the bottom nav items directly by their new IDs
         navMaps = findViewById(R.id.navMaps);
         navDashboard = findViewById(R.id.navDashboard);
         navUpdates = findViewById(R.id.navUpdates);
     }
 
+    private void highlightCurrentTab() {
+        // visually highlight "Updates" since we are in TeacherUpdatesActivity
+        if (navUpdates != null) {
+            navUpdates.setAlpha(1.0f); // Make it fully opaque
+            // Optional: Tint icon if you want extra polish
+            // ((ImageView)navUpdates.getChildAt(0)).setColorFilter(Color.parseColor("#A9016D"));
+        }
+    }
+
     private void setupListeners() {
-        btnBack.setOnClickListener(v -> finish());
+        // Back Button: Reverse Animation (Slide Left)
+        btnBack.setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        });
 
         // Navigation Logic
+
+        // Go Left to Dashboard
         navDashboard.setOnClickListener(v -> {
-            startActivity(new Intent(this, TeacherDashboardActivity.class));
+            Intent intent = new Intent(this, TeacherDashboardActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
             finish();
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         });
 
+        // Go Far Left to Maps
         navMaps.setOnClickListener(v -> {
-            startActivity(new Intent(this, TeacherRoomsActivity.class));
+            Intent intent = new Intent(this, TeacherRoomsActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
             finish();
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         });
 
-        // navUpdates is the current activity, so no listener needed or just return
+        // Already on Updates
+        navUpdates.setOnClickListener(v -> {});
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

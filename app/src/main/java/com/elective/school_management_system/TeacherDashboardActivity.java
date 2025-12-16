@@ -1,7 +1,10 @@
 package com.elective.school_management_system;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -9,10 +12,18 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 public class TeacherDashboardActivity extends AppCompatActivity {
 
+    private static final int CAMERA_PERMISSION_CODE = 101;
+
+    // Views
     private LinearLayout navMaps, navDashboard, navUpdates;
     private LinearLayout btnAssignedRooms, btnMySchedule;
     private LinearLayout btnNavFaculty, btnNavAdmin, btnNavClinic;
@@ -25,6 +36,8 @@ public class TeacherDashboardActivity extends AppCompatActivity {
 
     private DatabaseHelper dbHelper;
     private int userId;
+    private String userEmail;
+    private String pendingRoomName; // For permission handling
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +48,17 @@ public class TeacherDashboardActivity extends AppCompatActivity {
 
         // Load Session
         SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
-        String email = prefs.getString("email", "");
-        userId = dbHelper.getUserId(email);
+        userEmail = prefs.getString("email", "");
+        userId = dbHelper.getUserId(userEmail);
+
+        // If no session, redirect to Login
+        if (userId == -1 || userEmail.isEmpty()) {
+            logoutUser();
+            return;
+        }
 
         initViews();
-        loadUserData(email);
+        loadUserData();
         loadUpcomingClass();
         setupListeners();
     }
@@ -50,30 +69,36 @@ public class TeacherDashboardActivity extends AppCompatActivity {
         navDashboard = findViewById(R.id.navDashboard);
         navUpdates = findViewById(R.id.navUpdates);
 
-        // Buttons
+        // Main Feature Buttons
         btnAssignedRooms = findViewById(R.id.btnAssignedRooms);
         btnMySchedule = findViewById(R.id.btnMySchedule);
+
+        // Quick Nav Buttons
         btnNavFaculty = findViewById(R.id.btnNavFaculty);
         btnNavAdmin = findViewById(R.id.btnNavAdmin);
         btnNavClinic = findViewById(R.id.btnNavClinic);
-        imgLogo = findViewById(R.id.imgLogo);
 
-        // Dynamic Texts
+        // Header & Profile
+        imgLogo = findViewById(R.id.imgLogo);
         tvWelcome = findViewById(R.id.tvWelcome);
+
+        // Upcoming Class Data
         tvUpcomingSubject = findViewById(R.id.tvUpcomingSubject);
         tvUpcomingLocation = findViewById(R.id.tvUpcomingLocation);
         tvUpcomingTime = findViewById(R.id.tvUpcomingTime);
 
-        // Tabs
+        // Tabs & Card
         tabSchedule = findViewById(R.id.tabSchedule);
         tabRequests = findViewById(R.id.tabRequests);
         cardUpcoming = findViewById(R.id.cardUpcoming);
     }
 
-    private void loadUserData(String email) {
-        String username = dbHelper.getUsername(email);
+    private void loadUserData() {
+        String username = dbHelper.getUsername(userEmail);
         if (username != null && !username.isEmpty()) {
             tvWelcome.setText("Welcome, " + username + "!");
+        } else {
+            tvWelcome.setText("Welcome, Teacher!");
         }
     }
 
@@ -91,41 +116,46 @@ public class TeacherDashboardActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        // Bottom Navigation
+        // --- Bottom Navigation ---
         navMaps.setOnClickListener(v -> {
-            startActivity(new Intent(this, TeacherRoomsActivity.class));
-            // Don't finish() here if you want to keep the dashboard in stack,
-            // or finish() if you want a flat navigation hierarchy.
+            Intent intent = new Intent(this, TeacherRoomsActivity.class);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
-        navUpdates.setOnClickListener(v -> startActivity(new Intent(this, TeacherUpdatesActivity.class)));
 
-        // Main Features
+        navUpdates.setOnClickListener(v -> {
+            Intent intent = new Intent(this, TeacherUpdatesActivity.class);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        });
+
+        // --- Dashboard Buttons ---
         btnAssignedRooms.setOnClickListener(v -> startActivity(new Intent(this, TeacherAssignedRoomsActivity.class)));
         btnMySchedule.setOnClickListener(v -> startActivity(new Intent(this, TeacherScheduleActivity.class)));
 
-        // Quick Nav
-        btnNavFaculty.setOnClickListener(v -> openNavigation("Faculty Room"));
-        btnNavAdmin.setOnClickListener(v -> openNavigation("Admin Office"));
-        btnNavClinic.setOnClickListener(v -> openNavigation("Clinic"));
+        // --- Quick AR Navigation (With Permission Check) ---
+        btnNavFaculty.setOnClickListener(v -> checkCameraPermissionAndOpen("Faculty Room"));
+        btnNavAdmin.setOnClickListener(v -> checkCameraPermissionAndOpen("Admin Office"));
+        btnNavClinic.setOnClickListener(v -> checkCameraPermissionAndOpen("Clinic"));
 
-        // Tabs Logic
+        // --- Tabs Logic ---
         tabSchedule.setOnClickListener(v -> {
             updateTabUI(true);
             cardUpcoming.setVisibility(View.VISIBLE);
-            // If you had a requests layout, hide it here
         });
 
         tabRequests.setOnClickListener(v -> {
             updateTabUI(false);
             cardUpcoming.setVisibility(View.GONE);
-            // If you had a requests layout, show it here
-            Toast.makeText(this, "No pending requests", Toast.LENGTH_SHORT).show();
+            // Feature placeholder
+            Toast.makeText(this, "No pending requests at the moment.", Toast.LENGTH_SHORT).show();
         });
 
-        // Profile
-        imgLogo.setOnClickListener(v -> Toast.makeText(this, "Teacher Profile", Toast.LENGTH_SHORT).show());
+        // --- Profile / Logout ---
+        imgLogo.setOnClickListener(v -> showProfileDialog());
     }
 
+    // --- UI Helpers ---
     private void updateTabUI(boolean isScheduleActive) {
         if (isScheduleActive) {
             tabSchedule.setBackgroundResource(R.drawable.glass_tab_active);
@@ -140,21 +170,70 @@ public class TeacherDashboardActivity extends AppCompatActivity {
         }
     }
 
+    // --- AR Navigation & Permissions ---
+    private void checkCameraPermissionAndOpen(String roomName) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            pendingRoomName = roomName;
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+        } else {
+            openNavigation(roomName);
+        }
+    }
+
     private void openNavigation(String roomName) {
         Intent intent = new Intent(this, TeacherARNavigationActivity.class);
-        intent.putExtra("ROOM_NAME", roomName);
+        intent.putExtra("TARGET_ROOM", roomName);
         startActivity(intent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                String roomToOpen = (pendingRoomName != null) ? pendingRoomName : "Navigation";
+                openNavigation(roomToOpen);
+            } else {
+                Toast.makeText(this, "Camera permission is required for AR Navigation", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    // --- Profile & Logout Logic ---
+    private void showProfileDialog() {
+        String username = dbHelper.getUsername(userEmail);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Teacher Profile");
+        builder.setMessage("Name: " + username + "\nEmail: " + userEmail + "\nRole: Instructor");
+
+        builder.setPositiveButton("Logout", (dialog, which) -> logoutUser());
+        builder.setNegativeButton("Close", (dialog, which) -> dialog.dismiss());
+
+        builder.show();
+    }
+
+    private void logoutUser() {
+        SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.clear();
+        editor.apply();
+
+        Intent intent = new Intent(this, Login_Activity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        loadUpcomingClass(); // Refresh data when returning
+        loadUpcomingClass(); // Refresh data in case schedule changed
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finishAffinity();
+        finishAffinity(); // Exit app
     }
 }
