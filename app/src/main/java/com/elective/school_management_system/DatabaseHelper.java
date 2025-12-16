@@ -14,7 +14,7 @@ import java.util.Locale;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SchoolSystem.db";
-    private static final int DATABASE_VERSION = 7; // Updated version to trigger onUpgrade
+    private static final int DATABASE_VERSION = 7;
 
     // --- User Table ---
     private static final String TABLE_USERS = "users";
@@ -250,11 +250,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     cursor.getString(cursor.getColumnIndexOrThrow(KEY_SCH_END))
             );
         }
-        if (cursor != null) cursor.close(); // Ensure cursor is always closed
+        if (cursor != null) cursor.close();
 
         if (s != null) return s;
 
-        // Fallback: If no class later TODAY, just return the very next class in the database for testing purposes
+        // Fallback: Return any next scheduled class if nothing is left for today
         Cursor cursorAll = db.query(TABLE_SCHEDULE, null, KEY_SCH_USER_ID + "=?",
                 new String[]{String.valueOf(userId)}, null, null, KEY_SCH_DAY + " ASC, " + KEY_SCH_START + " ASC", "1");
 
@@ -270,7 +270,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         cursorAll.getString(cursorAll.getColumnIndexOrThrow(KEY_SCH_END))
                 );
             }
-            cursorAll.close(); // Clean up second cursor
+            cursorAll.close();
         }
         return s;
     }
@@ -354,6 +354,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.update(TABLE_USERS, values, KEY_USER_EMAIL + "=?", new String[]{email}) > 0;
     }
 
+    // [RESTORED] Missing Method: getUserProfile
+    public Cursor getUserProfile(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.query(TABLE_PROFILES, null,
+                KEY_PROFILE_USER_ID + "=?", new String[]{String.valueOf(userId)}, null, null, null);
+    }
+
+    // [RESTORED] Missing Method: saveUserProfile
+    public boolean saveUserProfile(int userId, String course, String year, String section, String phone) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_PROFILE_USER_ID, userId);
+        values.put(KEY_PROFILE_COURSE, course);
+        values.put(KEY_PROFILE_YEAR, year);
+        values.put(KEY_PROFILE_SECTION, section);
+        values.put(KEY_PROFILE_PHONE, phone);
+
+        // Check if exists
+        Cursor cursor = db.query(TABLE_PROFILES, new String[]{KEY_ID},
+                KEY_PROFILE_USER_ID + "=?", new String[]{String.valueOf(userId)}, null, null, null);
+
+        long result;
+        if (cursor != null && cursor.getCount() > 0) {
+            result = db.update(TABLE_PROFILES, values, KEY_PROFILE_USER_ID + "=?", new String[]{String.valueOf(userId)});
+        } else {
+            result = db.insert(TABLE_PROFILES, null, values);
+        }
+
+        if (cursor != null) cursor.close();
+        return result != -1;
+    }
+
+    // [RESTORED] Missing Method: updateUser
+    public boolean updateUser(String currentEmail, String newName, String newEmail) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_USER_NAME, newName);
+        values.put(KEY_USER_EMAIL, newEmail);
+        return db.update(TABLE_USERS, values, KEY_USER_EMAIL + "=?", new String[]{currentEmail}) > 0;
+    }
+
     // --- ROOM METHODS ---
     public List<Room> getAllRooms() {
         return getRoomsFromQuery(null, null);
@@ -381,6 +422,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return roomList;
+    }
+
+    public Room getRoomById(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_ROOMS, null, KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            Room r = new Room(
+                    id,
+                    cursor.getString(cursor.getColumnIndexOrThrow(KEY_ROOM_NAME)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(KEY_ROOM_DESC)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(KEY_ROOM_AR_ID))
+            );
+            cursor.close();
+            return r;
+        }
+        if (cursor != null) cursor.close();
+        return null;
     }
 
     public boolean addRoom(String name, String desc) {
@@ -424,6 +482,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return list;
+    }
+
+    public Report getReport(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_REPORTS, null, KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            Report r = new Report(
+                    cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_ROOM)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_DESC)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_CATEGORY)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_STATUS)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(KEY_REP_DATE))
+            );
+            cursor.close();
+            return r;
+        }
+        if (cursor != null) cursor.close();
+        return null;
+    }
+
+    public boolean updateReportStatus(int id, String newStatus) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_REP_STATUS, newStatus);
+        return db.update(TABLE_REPORTS, values, KEY_ID + "=?", new String[]{String.valueOf(id)}) > 0;
     }
 
     public boolean addReport(String roomName, String description, String category) {
@@ -485,7 +569,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
-    // Existing Instructors Logic
+    // --- INSTRUCTOR METHODS ---
     public List<Instructor> getAllInstructors() {
         List<Instructor> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
