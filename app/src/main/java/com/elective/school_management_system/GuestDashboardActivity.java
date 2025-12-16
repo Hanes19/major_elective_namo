@@ -70,8 +70,10 @@ public class GuestDashboardActivity extends AppCompatActivity {
         View mapBanner = findViewById(R.id.mapBanner);
         if (mapBanner != null) {
             mapBanner.setOnClickListener(v -> {
-                // Assuming you have a general map activity, or open navigation default
-                startNavigation("Main Entrance");
+                // UPDATED: Points to GuestMapActivity instead of immediate AR navigation
+                Intent intent = new Intent(GuestDashboardActivity.this, GuestMapActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             });
         }
     }

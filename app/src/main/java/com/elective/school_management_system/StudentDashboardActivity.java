@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView; // Added Import
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -142,8 +142,9 @@ public class StudentDashboardActivity extends AppCompatActivity {
     private void setupBottomNav() {
         navHome.setOnClickListener(v -> viewPagerCarousel.setCurrentItem(0));
 
+        // UPDATED: Points to StudentRoomMapActivity (The Map) instead of the List
         navNav.setOnClickListener(v -> {
-            Intent intent = new Intent(StudentDashboardActivity.this, StudentNavigationListActivity.class);
+            Intent intent = new Intent(StudentDashboardActivity.this, StudentRoomMapActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
