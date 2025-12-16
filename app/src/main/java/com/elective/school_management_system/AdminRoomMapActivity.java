@@ -28,7 +28,7 @@ public class AdminRoomMapActivity extends AppCompatActivity implements OnMapRead
     private LinearLayout navDashboard, navMap, navUpdates;
     private GoogleMap mMap;
 
-    // TODO: Update these coordinates to your school's real location
+    // Center of the Campus
     private static final double SCHOOL_LAT = 14.5995;
     private static final double SCHOOL_LNG = 120.9842;
 
@@ -43,7 +43,6 @@ public class AdminRoomMapActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void initViews() {
-        // We only initialize views that actually exist in the new layout
         btnBack = findViewById(R.id.btnBack);
         tabList = findViewById(R.id.tabList);
 
@@ -99,7 +98,7 @@ public class AdminRoomMapActivity extends AppCompatActivity implements OnMapRead
         LatLng schoolLocation = new LatLng(SCHOOL_LAT, SCHOOL_LNG);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(schoolLocation, 18f));
 
-        // 2. Add Markers Programmatically (instead of using TextViews)
+        // 2. Add Markers Programmatically
         addRoomMarkers();
 
         // 3. Handle Marker Clicks
@@ -112,7 +111,7 @@ public class AdminRoomMapActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void addRoomMarkers() {
-        // In a real app, you would fetch these from your database
+        // Mock Data - Replace with database fetch if needed
         List<Room> rooms = new ArrayList<>();
         rooms.add(new Room(101, "101", "Ground Floor", "ar_101", SCHOOL_LAT + 0.0001, SCHOOL_LNG + 0.0001));
         rooms.add(new Room(102, "102", "Ground Floor", "ar_102", SCHOOL_LAT - 0.0001, SCHOOL_LNG - 0.0001));
