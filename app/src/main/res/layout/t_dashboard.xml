@@ -127,6 +127,7 @@
                 android:layout_marginTop="24dp"
                 android:background="@drawable/glass_card_dark"
                 android:padding="16dp"
+                android:visibility="visible"
                 app:layout_constraintTop_toBottomOf="@+id/tabContainer">
 
                 <androidx.cardview.widget.CardView
@@ -255,6 +256,36 @@
                     </LinearLayout>
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutRequests"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/glass_card_dark"
+                android:gravity="center"
+                android:minHeight="200dp"
+                android:orientation="vertical"
+                android:padding="24dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/tabContainer">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/updates"
+                    app:tint="#50FFFFFF" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/raleway_medium"
+                    android:text="No pending requests"
+                    android:textColor="#80FFFFFF"
+                    android:textSize="14sp" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/quickNavTitle"

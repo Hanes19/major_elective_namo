@@ -36,16 +36,15 @@ public class AdminManageRoomsActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerViewRooms);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // --- Initialize Bottom Navigation Views ---
         navMaps = findViewById(R.id.navMaps);
         navDashboard = findViewById(R.id.navDashboard);
         navUpdates = findViewById(R.id.navUpdates);
 
-        // --- Set Listeners ---
         btnBack.setOnClickListener(v -> finish());
+
+        // ADD ROOM FUNCTIONALITY
         fabAdd.setOnClickListener(v -> showRoomDialog(null));
 
-        // Navigation Logic
         navMaps.setOnClickListener(v -> {
             Intent intent = new Intent(AdminManageRoomsActivity.this, AdminRoomMapActivity.class);
             startActivity(intent);
@@ -55,7 +54,7 @@ public class AdminManageRoomsActivity extends AppCompatActivity {
             Intent intent = new Intent(AdminManageRoomsActivity.this, AdminDashboardActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-            finish(); // Optional: Close this activity to return to dashboard
+            finish();
         });
 
         navUpdates.setOnClickListener(v -> {
@@ -79,7 +78,7 @@ public class AdminManageRoomsActivity extends AppCompatActivity {
                         .setMessage("Are you sure you want to delete " + room.getRoomName() + "?")
                         .setPositiveButton("Delete", (dialog, which) -> {
                             dbHelper.deleteRoom(room.getId());
-                            loadRooms();
+                            loadRooms(); // Refresh List
                         })
                         .setNegativeButton("Cancel", null)
                         .show();
@@ -88,6 +87,7 @@ public class AdminManageRoomsActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    // Handles Adding and Editing Rooms
     private void showRoomDialog(Room room) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(room == null ? "Add Room" : "Edit Room");
@@ -109,20 +109,25 @@ public class AdminManageRoomsActivity extends AppCompatActivity {
         builder.setView(layout);
 
         builder.setPositiveButton("Save", (dialog, which) -> {
-            String name = etName.getText().toString();
-            String desc = etDesc.getText().toString();
+            String name = etName.getText().toString().trim();
+            String desc = etDesc.getText().toString().trim();
 
             if (name.isEmpty()) {
-                Toast.makeText(this, "Name required", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Room name is required", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             if (room == null) {
-                dbHelper.addRoom(name, desc);
+                // Add new room
+                boolean success = dbHelper.addRoom(name, desc);
+                if(success) Toast.makeText(this, "Room Added", Toast.LENGTH_SHORT).show();
+                else Toast.makeText(this, "Error Adding Room", Toast.LENGTH_SHORT).show();
             } else {
-                dbHelper.updateRoom(room.getId(), name, desc);
+                // Update existing room
+                boolean success = dbHelper.updateRoom(room.getId(), name, desc);
+                if(success) Toast.makeText(this, "Room Updated", Toast.LENGTH_SHORT).show();
             }
-            loadRooms();
+            loadRooms(); // Refresh the list immediately
         });
         builder.setNegativeButton("Cancel", null);
         builder.show();

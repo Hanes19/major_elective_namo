@@ -14,10 +14,10 @@ public class StudentProfileActivity extends AppCompatActivity {
     private TextView btnLogout;
     private TextView tvName, tvEmail;
 
-    // Added: Settings Menu Buttons
+    // Settings Menu Buttons
     private LinearLayout btnChangePassword, btnUpdates, btnHelpSupport;
 
-    // Bottom Navigation Layouts
+    // Bottom Navigation
     private LinearLayout navHome, navNav, navProfile;
 
     private DatabaseHelper dbHelper;
@@ -37,25 +37,21 @@ public class StudentProfileActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadUserProfile(); // Refresh data when coming back
+        loadUserProfile();
     }
 
     private void initViews() {
-        // Toolbar
         btnBack = findViewById(R.id.btnBack);
         btnEdit = findViewById(R.id.btnEdit);
 
-        // Profile Info
         tvName = findViewById(R.id.tvProfileName);
         tvEmail = findViewById(R.id.tvProfileEmail);
 
-        // Settings Buttons
         btnChangePassword = findViewById(R.id.btnChangePassword);
         btnUpdates = findViewById(R.id.btnUpdates);
         btnHelpSupport = findViewById(R.id.btnHelpSupport);
         btnLogout = findViewById(R.id.btnLogout);
 
-        // Bottom Navigation
         navHome = findViewById(R.id.navHome);
         navNav = findViewById(R.id.navNav);
         navProfile = findViewById(R.id.navProfile);
@@ -75,12 +71,9 @@ public class StudentProfileActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        // Back
-        if (btnBack != null) {
-            btnBack.setOnClickListener(v -> finish());
-        }
+        if (btnBack != null) btnBack.setOnClickListener(v -> finish());
 
-        // Edit Profile
+        // Profile Editing
         if (btnEdit != null) {
             btnEdit.setOnClickListener(v -> {
                 Intent intent = new Intent(StudentProfileActivity.this, StudentEditProfileActivity.class);
@@ -88,14 +81,11 @@ public class StudentProfileActivity extends AppCompatActivity {
             });
         }
 
-        // Logout
-        if (btnLogout != null) {
-            btnLogout.setOnClickListener(v -> logout());
-        }
+        if (btnLogout != null) btnLogout.setOnClickListener(v -> logout());
 
-        // --- Settings Menu Logic ---
+        // --- Settings Functionality ---
 
-        // 1. Change Password
+        // 1. Change Password / Settings
         if (btnChangePassword != null) {
             btnChangePassword.setOnClickListener(v -> {
                 Intent intent = new Intent(StudentProfileActivity.this, StudentResetPasswordActivity.class);
@@ -119,8 +109,7 @@ public class StudentProfileActivity extends AppCompatActivity {
             });
         }
 
-        // --- Bottom Navigation Logic ---
-
+        // --- Bottom Navigation ---
         if (navHome != null) {
             navHome.setOnClickListener(v -> {
                 Intent intent = new Intent(StudentProfileActivity.this, StudentDashboardActivity.class);
@@ -137,8 +126,6 @@ public class StudentProfileActivity extends AppCompatActivity {
                 finish();
             });
         }
-
-        // Already on Profile
     }
 
     private void logout() {

@@ -26,6 +26,7 @@ public class TeacherDashboardActivity extends AppCompatActivity {
     private TextView tvWelcome, tvUpcomingSubject, tvUpcomingLocation, tvUpcomingTime;
     private TextView tabSchedule, tabRequests;
     private View cardUpcoming;
+    private View layoutRequests; // New View
 
     private DatabaseHelper dbHelper;
     private int userId;
@@ -79,6 +80,7 @@ public class TeacherDashboardActivity extends AppCompatActivity {
         tabSchedule = findViewById(R.id.tabSchedule);
         tabRequests = findViewById(R.id.tabRequests);
         cardUpcoming = findViewById(R.id.cardUpcoming);
+        layoutRequests = findViewById(R.id.layoutRequests); // Bind new view
     }
 
     private void loadUserData() {
@@ -124,15 +126,17 @@ public class TeacherDashboardActivity extends AppCompatActivity {
         btnNavAdmin.setOnClickListener(v -> openGoogleMaps());
         btnNavClinic.setOnClickListener(v -> openGoogleMaps());
 
+        // Tab Logic
         tabSchedule.setOnClickListener(v -> {
             updateTabUI(true);
             cardUpcoming.setVisibility(View.VISIBLE);
+            layoutRequests.setVisibility(View.GONE);
         });
 
         tabRequests.setOnClickListener(v -> {
             updateTabUI(false);
             cardUpcoming.setVisibility(View.GONE);
-            Toast.makeText(this, "No pending requests at the moment.", Toast.LENGTH_SHORT).show();
+            layoutRequests.setVisibility(View.VISIBLE);
         });
 
         imgLogo.setOnClickListener(v -> showProfileDialog());

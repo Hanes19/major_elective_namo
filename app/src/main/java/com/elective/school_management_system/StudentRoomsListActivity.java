@@ -6,7 +6,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout; // Changed from TextView
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +17,6 @@ import java.util.List;
 public class StudentRoomsListActivity extends AppCompatActivity {
 
     private ImageView btnBack;
-    // Changed type to LinearLayout to match XML
     private LinearLayout navMap, navDashboard, navUpdates;
     private EditText etSearch;
     private RecyclerView recyclerView;
@@ -37,8 +36,6 @@ public class StudentRoomsListActivity extends AppCompatActivity {
 
     private void initViews() {
         btnBack = findViewById(R.id.btnBack);
-
-        // Fixed: Matching the IDs we added to s_rooms_list.xml
         navMap = findViewById(R.id.navMap);
         navDashboard = findViewById(R.id.navDashboard);
         navUpdates = findViewById(R.id.navUpdates);
@@ -50,6 +47,7 @@ public class StudentRoomsListActivity extends AppCompatActivity {
     private void setupRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         List<Room> allRooms = dbHelper.getAllRooms();
+        // Displays all rooms by default (acting as suggestions)
         adapter = new RoomAdapter(this, allRooms);
         recyclerView.setAdapter(adapter);
     }
@@ -57,7 +55,7 @@ public class StudentRoomsListActivity extends AppCompatActivity {
     private void setupListeners() {
         btnBack.setOnClickListener(v -> finish());
 
-        // Navigation Logic
+        // Navigation
         navMap.setOnClickListener(v -> {
             Intent intent = new Intent(StudentRoomsListActivity.this, StudentRoomMapActivity.class);
             startActivity(intent);
@@ -65,7 +63,6 @@ public class StudentRoomsListActivity extends AppCompatActivity {
 
         navDashboard.setOnClickListener(v -> {
             Intent intent = new Intent(StudentRoomsListActivity.this, StudentDashboardActivity.class);
-            // Clear back stack so we don't pile up activities
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         });
@@ -74,7 +71,7 @@ public class StudentRoomsListActivity extends AppCompatActivity {
                 Toast.makeText(this, "Updates coming soon...", Toast.LENGTH_SHORT).show()
         );
 
-        // Search Logic
+        // Room Suggestion / Search Logic
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -82,6 +79,7 @@ public class StudentRoomsListActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (adapter != null) {
+                    // Filters the list in real-time providing suggestions based on input
                     List<Room> filteredList = dbHelper.searchRooms(s.toString());
                     adapter.updateList(filteredList);
                 }
