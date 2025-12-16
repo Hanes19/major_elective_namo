@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="#0A0322">
 
+    <!-- Background Image -->
     <ImageView
         android:id="@+id/imgBackground"
         android:layout_width="0dp"
@@ -20,6 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Top Glow Effect -->
     <View
         android:id="@+id/glowEffect"
         android:layout_width="match_parent"
@@ -30,6 +32,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Scrollable Content -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -44,6 +47,7 @@
             android:paddingBottom="40dp"
             android:paddingHorizontal="24dp">
 
+            <!-- Logo Section -->
             <FrameLayout
                 android:id="@+id/logoContainer"
                 android:layout_width="80dp"
@@ -75,6 +79,7 @@
                 app:layout_constraintTop_toTopOf="@id/logoContainer"
                 app:layout_constraintBottom_toBottomOf="@id/logoContainer"/>
 
+            <!-- Settings Button -->
             <FrameLayout
                 android:id="@+id/img_settings"
                 android:layout_width="48dp"
@@ -94,6 +99,7 @@
                     app:tint="@android:color/white"/>
             </FrameLayout>
 
+            <!-- Search Bar -->
             <LinearLayout
                 android:id="@+id/search_container"
                 android:layout_width="match_parent"
@@ -121,13 +127,78 @@
                     android:textSize="14sp"/>
             </LinearLayout>
 
+            <!-- Map Navigation Banner (ADDED) -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/map_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/glass_card_dark"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:padding="20dp"
+                app:layout_constraintTop_toBottomOf="@id/search_container">
+
+                <ImageView
+                    android:id="@+id/icon_map"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/maps"
+                    app:tint="#A9016D"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/icon_arrow"
+                    app:layout_constraintStart_toEndOf="@id/icon_map"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/raleway_bold"
+                        android:text="Map"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/raleway_regular"
+                        android:text="Navigate to the school"
+                        android:textColor="#B0B0C0"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/icon_arrow"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:rotation="180"
+                    android:src="@drawable/back_btn"
+                    app:tint="#FFFFFF"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Quick Actions -->
             <LinearLayout
                 android:id="@+id/quick_actions_row"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="24dp"
-                app:layout_constraintTop_toBottomOf="@id/search_container">
+                app:layout_constraintTop_toBottomOf="@id/map_banner">
 
                 <LinearLayout
                     android:id="@+id/card_rooms"
@@ -200,6 +271,7 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- Suggested Routes Header -->
             <TextView
                 android:id="@+id/tv_suggestions"
                 android:layout_width="wrap_content"
@@ -212,6 +284,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/quick_actions_row"/>
 
+            <!-- Suggestions List -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -348,6 +421,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
+    <!-- Bottom Navigation Divider -->
     <View
         android:id="@+id/nav_divider"
         android:layout_width="match_parent"
@@ -355,6 +429,7 @@
         android:background="@drawable/glass_divider_line"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_bar" />
 
+    <!-- Bottom Navigation Bar -->
     <LinearLayout
         android:id="@+id/bottom_navigation_bar"
         android:layout_width="match_parent"
@@ -379,14 +454,14 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/db_home_ic"
-                app:tint="@android:color/white"/>
+                app:tint="#A9016D"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Home"
                 android:textSize="10sp"
-                android:textColor="@android:color/white"
+                android:textColor="#A9016D"
                 android:fontFamily="@font/raleway_bold"/>
         </LinearLayout>
 

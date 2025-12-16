@@ -443,7 +443,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/db_profile_ic"
-                app:tint="#FFFFFF"
+                app:tint="#A9016D"
                 android:contentDescription="Profile"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -451,7 +451,7 @@
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/raleway_bold"
                 android:text="Profile"
-                android:textColor="#FFFFFF"
+                android:textColor="#A9016D"
                 android:textSize="10sp" />
         </LinearLayout>
     </LinearLayout>

@@ -349,14 +349,24 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/db_profile_ic"
+<<<<<<< Updated upstream
                 app:tint="#FFFFFF"/>
+=======
+                app:tint="#A9016D"
+                android:contentDescription="Profile"/>
+>>>>>>> Stashed changes
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Profile"
+<<<<<<< Updated upstream
                 android:textColor="#FFFFFF"
                 android:textSize="10sp"
                 android:fontFamily="@font/raleway_bold"/>
+=======
+                android:textColor="#A9016D"
+                android:textSize="10sp" />
+>>>>>>> Stashed changes
         </LinearLayout>
     </LinearLayout>
 
