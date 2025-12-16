@@ -15,8 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -36,13 +34,12 @@ public class StudentRoomMapActivity extends AppCompatActivity implements OnMapRe
     private LinearLayout navHome, navNavigation, navProfile;
 
     private GoogleMap mMap;
-
     private LatLng selectedDestination;
     private String selectedBuildingName;
 
-    // Campus Coordinates
-    private static final double SCHOOL_LAT = 14.5995;
-    private static final double SCHOOL_LNG = 120.9842;
+    // School Coordinates (TS Building, Hagkol, Valencia City)
+    private static final double SCHOOL_LAT = 7.9230;
+    private static final double SCHOOL_LNG = 125.0953;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +55,6 @@ public class StudentRoomMapActivity extends AppCompatActivity implements OnMapRe
         btnBack = findViewById(R.id.btnBack);
         tabList = findViewById(R.id.tabList);
         btnNavigateSchool = findViewById(R.id.btnNavigateSchool);
-
-        // Bottom Navigation
         navHome = findViewById(R.id.navHome);
         navNavigation = findViewById(R.id.navNavigation);
         navProfile = findViewById(R.id.navProfile);
@@ -68,7 +63,6 @@ public class StudentRoomMapActivity extends AppCompatActivity implements OnMapRe
     private void setupListeners() {
         btnBack.setOnClickListener(v -> finish());
 
-        // Switch to List View
         tabList.setOnClickListener(v -> {
             Intent intent = new Intent(StudentRoomMapActivity.this, StudentRoomsListActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -76,10 +70,8 @@ public class StudentRoomMapActivity extends AppCompatActivity implements OnMapRe
             finish();
         });
 
-        // "Get Directions" - Opens External Google Maps
         btnNavigateSchool.setOnClickListener(v -> {
             if (selectedDestination == null) {
-                // Default to main school coordinates if no building selected
                 selectedDestination = new LatLng(SCHOOL_LAT, SCHOOL_LNG);
             }
 
@@ -90,11 +82,10 @@ public class StudentRoomMapActivity extends AppCompatActivity implements OnMapRe
             if (mapIntent.resolveActivity(getPackageManager()) != null) {
                 startActivity(mapIntent);
             } else {
-                Toast.makeText(this, "Google Maps app is not installed.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Google Maps is not installed.", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // --- Bottom Navigation Logic ---
         navHome.setOnClickListener(v -> {
             Intent intent = new Intent(StudentRoomMapActivity.this, StudentDashboardActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -102,9 +93,7 @@ public class StudentRoomMapActivity extends AppCompatActivity implements OnMapRe
             finish();
         });
 
-        navNavigation.setOnClickListener(v -> {
-            Toast.makeText(this, "You are already on the Map.", Toast.LENGTH_SHORT).show();
-        });
+        navNavigation.setOnClickListener(v -> Toast.makeText(this, "You are already on the Map.", Toast.LENGTH_SHORT).show());
 
         navProfile.setOnClickListener(v -> {
             Intent intent = new Intent(StudentRoomMapActivity.this, StudentProfileActivity.class);
@@ -124,17 +113,12 @@ public class StudentRoomMapActivity extends AppCompatActivity implements OnMapRe
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
-        // 1. Move Camera to School
         LatLng schoolLocation = new LatLng(SCHOOL_LAT, SCHOOL_LNG);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(schoolLocation, 17.5f));
 
-        // 2. Enable User Location
         enableUserLocation();
-
-        // 3. Add Building Markers
         addBuildingMarkers();
 
-        // 4. Handle Marker Clicks
         mMap.setOnMarkerClickListener(marker -> {
             selectedDestination = marker.getPosition();
             selectedBuildingName = marker.getTitle();
@@ -146,10 +130,10 @@ public class StudentRoomMapActivity extends AppCompatActivity implements OnMapRe
 
     private void addBuildingMarkers() {
         List<Room> buildings = new ArrayList<>();
-        // Mock Data
-        buildings.add(new Room(1, "Main Building", "Admin & Registrar", "", SCHOOL_LAT, SCHOOL_LNG));
-        buildings.add(new Room(2, "Engineering Bldg", "Rooms 101-105", "", SCHOOL_LAT + 0.0002, SCHOOL_LNG + 0.0002));
-        buildings.add(new Room(3, "Library", "Study Area", "", SCHOOL_LAT - 0.0002, SCHOOL_LNG - 0.0002));
+        // Updated mock markers relative to the new school location
+        buildings.add(new Room(1, "TS Building", "Main Campus", "", SCHOOL_LAT, SCHOOL_LNG));
+        buildings.add(new Room(2, "Annex A", "Rooms 101-105", "", SCHOOL_LAT + 0.0001, SCHOOL_LNG + 0.0001));
+        buildings.add(new Room(3, "Library", "Study Area", "", SCHOOL_LAT - 0.0001, SCHOOL_LNG - 0.0001));
 
         for (Room b : buildings) {
             LatLng pos = new LatLng(b.getLatitude(), b.getLongitude());

@@ -14,7 +14,8 @@ import java.util.Locale;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SchoolSystem.db";
-    private static final int DATABASE_VERSION = 7;
+    // [FIX] Incremented version to apply schema changes (Drop & Recreate)
+    private static final int DATABASE_VERSION = 8;
 
     // --- User Table ---
     private static final String TABLE_USERS = "users";
@@ -22,6 +23,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_USER_NAME = "username";
     private static final String KEY_USER_EMAIL = "email";
     private static final String KEY_USER_PASSWORD = "password";
+    // [FIX] Added Role Column
+    private static final String KEY_USER_ROLE = "role";
 
     // --- User Profile Table ---
     private static final String TABLE_PROFILES = "user_profiles";
@@ -72,12 +75,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // 1. Users Table
+        // 1. Users Table [FIX]: Added UNIQUE to email and added Role column
         String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USERS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + KEY_USER_NAME + " TEXT,"
-                + KEY_USER_EMAIL + " TEXT,"
-                + KEY_USER_PASSWORD + " TEXT" + ")";
+                + KEY_USER_EMAIL + " TEXT UNIQUE,"
+                + KEY_USER_PASSWORD + " TEXT,"
+                + KEY_USER_ROLE + " TEXT" + ")";
         db.execSQL(CREATE_USERS_TABLE);
 
         // 2. User Profiles Table
@@ -141,11 +145,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void addInitialData(SQLiteDatabase db) {
-        // --- 1. Sample Users ---
+        // --- 1. Sample Users [FIX]: Included Roles ---
         // Student (ID 1)
-        db.execSQL("INSERT INTO " + TABLE_USERS + " (" + KEY_USER_NAME + ", " + KEY_USER_EMAIL + ", " + KEY_USER_PASSWORD + ") VALUES ('Student Demo', 'student@test.com', 'password123')");
+        db.execSQL("INSERT INTO " + TABLE_USERS + " (" + KEY_USER_NAME + ", " + KEY_USER_EMAIL + ", " + KEY_USER_PASSWORD + ", " + KEY_USER_ROLE + ") VALUES ('Student Demo', 'student@test.com', 'password123', 'student')");
         // Teacher (ID 2)
-        db.execSQL("INSERT INTO " + TABLE_USERS + " (" + KEY_USER_NAME + ", " + KEY_USER_EMAIL + ", " + KEY_USER_PASSWORD + ") VALUES ('Prof. Severus', 'teacher@test.com', 'password123')");
+        db.execSQL("INSERT INTO " + TABLE_USERS + " (" + KEY_USER_NAME + ", " + KEY_USER_EMAIL + ", " + KEY_USER_PASSWORD + ", " + KEY_USER_ROLE + ") VALUES ('Prof. Severus', 'teacher@test.com', 'password123', 'teacher')");
 
         // --- 2. Sample Rooms ---
         String sqlRoom = "INSERT INTO " + TABLE_ROOMS + " (" + KEY_ROOM_NAME + ", " + KEY_ROOM_DESC + ", " + KEY_ROOM_AR_ID + ") VALUES (?, ?, ?)";
@@ -159,18 +163,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // --- 3. Sample Schedule (For Teacher ID 2) ---
         int teacherId = 2;
         String sqlSch = "INSERT INTO " + TABLE_SCHEDULE + " (" + KEY_SCH_USER_ID + ", " + KEY_SCH_SUBJECT + ", " + KEY_SCH_ROOM + ", " + KEY_SCH_DAY + ", " + KEY_SCH_START + ", " + KEY_SCH_END + ") VALUES (?, ?, ?, ?, ?, ?)";
-
         // Monday
         db.execSQL(sqlSch, new Object[]{teacherId, "Adv. Potions", "Room 102", "Monday", "08:00", "10:00"});
         db.execSQL(sqlSch, new Object[]{teacherId, "Defense Against Dark Arts", "Room 101", "Monday", "13:00", "15:00"});
-
         // Tuesday
         db.execSQL(sqlSch, new Object[]{teacherId, "Alchemy 101", "Room 103", "Tuesday", "09:00", "12:00"});
-
         // Wednesday
         db.execSQL(sqlSch, new Object[]{teacherId, "Adv. Potions", "Room 102", "Wednesday", "08:00", "10:00"});
         db.execSQL(sqlSch, new Object[]{teacherId, "Ethics in Magic", "Room 101", "Wednesday", "10:00", "12:00"});
-
         // Friday
         db.execSQL(sqlSch, new Object[]{teacherId, "Staff Meeting", "Faculty Room", "Friday", "16:00", "17:00"});
 
@@ -199,7 +199,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // ================== DATA ACCESS METHODS ==================
 
-    // --- SCHEDULE METHODS ---
     public List<Schedule> getUserSchedule(int userId) {
         List<Schedule> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -226,13 +225,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Schedule getNextClass(int userId) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        // [FIX] Enforced English Locale to ensure day names match database values
+        SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.ENGLISH);
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
         Date now = new Date();
         String currentDay = dayFormat.format(now);
         String currentTime = timeFormat.format(now);
 
-        // Logic: Get today's classes that start after current time
         String selection = KEY_SCH_USER_ID + "=? AND " + KEY_SCH_DAY + "=? AND " + KEY_SCH_START + " > ?";
         String[] args = new String[]{String.valueOf(userId), currentDay, currentTime};
 
@@ -254,7 +253,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (s != null) return s;
 
-        // Fallback: Return any next scheduled class if nothing is left for today
         Cursor cursorAll = db.query(TABLE_SCHEDULE, null, KEY_SCH_USER_ID + "=?",
                 new String[]{String.valueOf(userId)}, null, null, KEY_SCH_DAY + " ASC, " + KEY_SCH_START + " ASC", "1");
 
@@ -275,7 +273,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return s;
     }
 
-    // --- EVENT METHODS ---
     public List<Event> getAllEvents() {
         List<Event> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -295,7 +292,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
-    // --- USER / PROFILE METHODS ---
     public int getUserId(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_USERS, new String[]{KEY_ID},
@@ -320,6 +316,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return name;
     }
 
+    // [FIX] New Method to get Role
+    public String getUserRole(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_USERS, new String[]{KEY_USER_ROLE},
+                KEY_USER_EMAIL + "=?", new String[]{email}, null, null, null);
+        String role = "client"; // default
+        if (cursor != null && cursor.moveToFirst()) {
+            String dbRole = cursor.getString(0);
+            if(dbRole != null && !dbRole.isEmpty()){
+                role = dbRole;
+            }
+        }
+        if (cursor != null) cursor.close();
+        return role;
+    }
+
     public boolean checkUser(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_USERS, new String[]{KEY_ID},
@@ -330,12 +342,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return exists;
     }
 
-    public boolean registerUser(String username, String email, String password) {
+    // [FIX] Updated to accept Role
+    public boolean registerUser(String username, String email, String password, String role) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_USER_NAME, username);
         values.put(KEY_USER_EMAIL, email);
         values.put(KEY_USER_PASSWORD, password);
+        values.put(KEY_USER_ROLE, role); // Insert role
         return db.insert(TABLE_USERS, null, values) != -1;
     }
 
@@ -354,14 +368,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.update(TABLE_USERS, values, KEY_USER_EMAIL + "=?", new String[]{email}) > 0;
     }
 
-    // [RESTORED] Missing Method: getUserProfile
     public Cursor getUserProfile(int userId) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.query(TABLE_PROFILES, null,
                 KEY_PROFILE_USER_ID + "=?", new String[]{String.valueOf(userId)}, null, null, null);
     }
 
-    // [RESTORED] Missing Method: saveUserProfile
     public boolean saveUserProfile(int userId, String course, String year, String section, String phone) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -371,7 +383,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_PROFILE_SECTION, section);
         values.put(KEY_PROFILE_PHONE, phone);
 
-        // Check if exists
         Cursor cursor = db.query(TABLE_PROFILES, new String[]{KEY_ID},
                 KEY_PROFILE_USER_ID + "=?", new String[]{String.valueOf(userId)}, null, null, null);
 
@@ -386,7 +397,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    // [RESTORED] Missing Method: updateUser
     public boolean updateUser(String currentEmail, String newName, String newEmail) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();

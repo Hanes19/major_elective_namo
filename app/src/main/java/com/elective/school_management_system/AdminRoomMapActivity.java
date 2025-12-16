@@ -28,9 +28,9 @@ public class AdminRoomMapActivity extends AppCompatActivity implements OnMapRead
     private LinearLayout navDashboard, navMap, navUpdates;
     private GoogleMap mMap;
 
-    // Center of the Campus
-    private static final double SCHOOL_LAT = 14.5995;
-    private static final double SCHOOL_LNG = 120.9842;
+    // School Coordinates (TS Building, Hagkol, Valencia City)
+    private static final double SCHOOL_LAT = 7.9230;
+    private static final double SCHOOL_LNG = 125.0953;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +45,6 @@ public class AdminRoomMapActivity extends AppCompatActivity implements OnMapRead
     private void initViews() {
         btnBack = findViewById(R.id.btnBack);
         tabList = findViewById(R.id.tabList);
-
-        // Bottom Navigation
         navDashboard = findViewById(R.id.navDashboard);
         navMap = findViewById(R.id.navMap);
         navUpdates = findViewById(R.id.navUpdates);
@@ -63,7 +61,6 @@ public class AdminRoomMapActivity extends AppCompatActivity implements OnMapRead
     private void setupListeners() {
         btnBack.setOnClickListener(v -> finish());
 
-        // Switch to List View
         tabList.setOnClickListener(v -> {
             Intent intent = new Intent(AdminRoomMapActivity.this, AdminManageRoomsActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -71,7 +68,6 @@ public class AdminRoomMapActivity extends AppCompatActivity implements OnMapRead
             finish();
         });
 
-        // Bottom Navigation Logic
         navDashboard.setOnClickListener(v -> {
             Intent intent = new Intent(AdminRoomMapActivity.this, AdminDashboardActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -79,9 +75,7 @@ public class AdminRoomMapActivity extends AppCompatActivity implements OnMapRead
             finish();
         });
 
-        navMap.setOnClickListener(v -> {
-            Toast.makeText(this, "You are already viewing the Map", Toast.LENGTH_SHORT).show();
-        });
+        navMap.setOnClickListener(v -> Toast.makeText(this, "You are already viewing the Map", Toast.LENGTH_SHORT).show());
 
         navUpdates.setOnClickListener(v -> {
             Intent intent = new Intent(AdminRoomMapActivity.this, AdminReportsActivity.class);
@@ -94,16 +88,13 @@ public class AdminRoomMapActivity extends AppCompatActivity implements OnMapRead
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
-        // 1. Move Camera to School
         LatLng schoolLocation = new LatLng(SCHOOL_LAT, SCHOOL_LNG);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(schoolLocation, 18f));
 
-        // 2. Add Markers Programmatically
         addRoomMarkers();
 
-        // 3. Handle Marker Clicks
         mMap.setOnInfoWindowClickListener(marker -> {
-            String roomTitle = marker.getTitle(); // e.g., "Room 101"
+            String roomTitle = marker.getTitle();
             Intent intent = new Intent(AdminRoomMapActivity.this, RoomDetailsActivity.class);
             intent.putExtra("ROOM_NAME", roomTitle);
             startActivity(intent);
@@ -111,8 +102,8 @@ public class AdminRoomMapActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void addRoomMarkers() {
-        // Mock Data - Replace with database fetch if needed
         List<Room> rooms = new ArrayList<>();
+        // Mock Data centered around new coordinates
         rooms.add(new Room(101, "101", "Ground Floor", "ar_101", SCHOOL_LAT + 0.0001, SCHOOL_LNG + 0.0001));
         rooms.add(new Room(102, "102", "Ground Floor", "ar_102", SCHOOL_LAT - 0.0001, SCHOOL_LNG - 0.0001));
         rooms.add(new Room(201, "201", "Second Floor", "ar_201", SCHOOL_LAT + 0.0002, SCHOOL_LNG - 0.0001));

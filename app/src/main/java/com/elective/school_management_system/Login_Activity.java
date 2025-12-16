@@ -104,7 +104,7 @@ public class Login_Activity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
-        // 2. CHECK FOR ADMIN CREDENTIALS
+        // 2. CHECK FOR ADMIN CREDENTIALS (HARDCODED FALLBACK)
         if (email.equals("admin") && password.equals("admin123")) {
             editor.putString("email", email);
             editor.putString("role", "admin");
@@ -112,35 +112,33 @@ public class Login_Activity extends AppCompatActivity {
             editor.apply();
 
             Toast.makeText(this, "Login Successful (Admin)", Toast.LENGTH_SHORT).show();
-
             Intent intent = new Intent(Login_Activity.this, AdminDashboardActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
-        // --- ADDED: HARDCODED TEACHER USER FOR TESTING ---
-        else if (email.equals("teacher") && password.equals("teacher123")) {
-            editor.putString("email", email);
-            editor.putString("role", "teacher");
-            editor.putBoolean("isLoggedIn", true);
-            editor.apply();
-
-            Toast.makeText(this, "Login Successful (Teacher)", Toast.LENGTH_SHORT).show();
-
-            Intent intent = new Intent(Login_Activity.this, TeacherDashboardActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        }
-        // -------------------------------------------------
-        // 3. CHECK FOR CLIENT/STUDENT CREDENTIALS
+        // 3. DATABASE CHECK
         else if (dbHelper.checkUser(email, password)) {
+            // [FIX] Retrieve role from Database
+            String role = dbHelper.getUserRole(email);
+
             editor.putString("email", email);
-            editor.putString("role", "client");
+            editor.putString("role", role);
             editor.putBoolean("isLoggedIn", true);
             editor.apply();
 
-            Toast.makeText(this, "Login Successful!", Toast.LENGTH_SHORT).show();
+            Intent intent;
+            if (role.equalsIgnoreCase("teacher")) {
+                Toast.makeText(this, "Welcome, Teacher!", Toast.LENGTH_SHORT).show();
+                intent = new Intent(Login_Activity.this, TeacherDashboardActivity.class);
+            } else if (role.equalsIgnoreCase("admin")) {
+                Toast.makeText(this, "Welcome, Admin!", Toast.LENGTH_SHORT).show();
+                intent = new Intent(Login_Activity.this, AdminDashboardActivity.class);
+            } else {
+                // Default to Student/Client
+                Toast.makeText(this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                intent = new Intent(Login_Activity.this, StudentDashboardActivity.class);
+            }
 
-            Intent intent = new Intent(Login_Activity.this, StudentDashboardActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         } else {

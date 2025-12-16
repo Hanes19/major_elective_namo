@@ -104,8 +104,14 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        // Insert into Database
-        boolean isInserted = dbHelper.registerUser(username, email, password);
+        // [FIX] Check for existing email before insertion
+        if (dbHelper.checkEmailExists(email)) {
+            etEmail.setError("Email is already registered");
+            return;
+        }
+
+        // Insert into Database with explicit "student" role
+        boolean isInserted = dbHelper.registerUser(username, email, password, "student");
 
         if (isInserted) {
             Toast.makeText(this, "Registration Successful!", Toast.LENGTH_SHORT).show();
@@ -114,7 +120,7 @@ public class RegisterActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         } else {
-            Toast.makeText(this, "Registration Failed. Email might be taken.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Registration Failed.", Toast.LENGTH_SHORT).show();
         }
     }
 }

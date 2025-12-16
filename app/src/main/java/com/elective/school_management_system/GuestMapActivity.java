@@ -24,9 +24,9 @@ public class GuestMapActivity extends AppCompatActivity implements OnMapReadyCal
     private Button btnDirections;
     private GoogleMap mMap;
 
-    // School Coordinates
-    private static final double SCHOOL_LAT = 14.5995;
-    private static final double SCHOOL_LNG = 120.9842;
+    // School Coordinates (TS Building, Hagkol, Valencia City)
+    private static final double SCHOOL_LAT = 7.9230;
+    private static final double SCHOOL_LNG = 125.0953;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,6 @@ public class GuestMapActivity extends AppCompatActivity implements OnMapReadyCal
 
         btnBack.setOnClickListener(v -> finish());
 
-        // External Navigation Only
         btnDirections.setOnClickListener(v -> {
             Uri gmmIntentUri = Uri.parse("google.navigation:q=" + SCHOOL_LAT + "," + SCHOOL_LNG);
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
@@ -66,8 +65,8 @@ public class GuestMapActivity extends AppCompatActivity implements OnMapReadyCal
 
         mMap.addMarker(new MarkerOptions()
                 .position(school)
-                .title("Main Entrance")
-                .snippet("School Access Point")
+                .title("TS Building")
+                .snippet("Main Campus Entrance")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
     }
 }
