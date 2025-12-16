@@ -55,7 +55,7 @@
         <activity android:name=".ReportIssueActivity" android:exported="false" />
         <activity android:name=".AdminRoomMapActivity" android:exported="false" />
         <activity android:name=".GuestMapActivity" android:exported="false" />
-
+        <activity android:name=".StudentScheduleActivity" android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

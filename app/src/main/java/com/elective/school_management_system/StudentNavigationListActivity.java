@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class StudentNavigationListActivity extends AppCompatActivity {
 
     // UI Components matching s_navigation_list.xml
-    private LinearLayout cardRooms, cardInstructors;
+    private LinearLayout cardRooms, cardInstructors, cardSchedule;
     private LinearLayout navHome, navNav, navProfile;
     private View btnSettings;
 
@@ -24,9 +24,10 @@ public class StudentNavigationListActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        // Main Cards
+        // Main Action Cards
         cardRooms = findViewById(R.id.card_rooms);
         cardInstructors = findViewById(R.id.card_instructors);
+        cardSchedule = findViewById(R.id.card_schedule); // Initialize New Card
 
         // Settings button (FrameLayout in XML)
         btnSettings = findViewById(R.id.img_settings);
@@ -40,15 +41,21 @@ public class StudentNavigationListActivity extends AppCompatActivity {
     private void setupListeners() {
         // --- Main Action Cards ---
 
-        // 1. All Rooms (was btnManageMap)
+        // 1. All Rooms
         cardRooms.setOnClickListener(v -> {
             Intent intent = new Intent(StudentNavigationListActivity.this, StudentRoomsListActivity.class);
             startActivity(intent);
         });
 
-        // 2. Instructors (was btnManageUsers)
+        // 2. Instructors
         cardInstructors.setOnClickListener(v -> {
             Intent intent = new Intent(StudentNavigationListActivity.this, StudentInstructorsListActivity.class);
+            startActivity(intent);
+        });
+
+        // 3. My Schedule (New Function)
+        cardSchedule.setOnClickListener(v -> {
+            Intent intent = new Intent(StudentNavigationListActivity.this, StudentScheduleActivity.class);
             startActivity(intent);
         });
 
