@@ -1,12 +1,13 @@
 package com.elective.school_management_system;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -28,6 +29,9 @@ public class TeacherDashboardActivity extends AppCompatActivity {
     private LinearLayout btnAssignedRooms, btnMySchedule;
     private LinearLayout btnNavFaculty, btnNavAdmin, btnNavClinic;
     private FrameLayout imgLogo;
+
+    // Stats Containers (NEW)
+    private LinearLayout containerEnrollmentStats, containerSectionStats;
 
     // Dynamic Data Views
     private TextView tvWelcome, tvUpcomingSubject, tvUpcomingLocation, tvUpcomingTime;
@@ -60,6 +64,7 @@ public class TeacherDashboardActivity extends AppCompatActivity {
         initViews();
         loadUserData();
         loadUpcomingClass();
+        loadDashboardStats(); // NEW: Load the extra stats
         setupListeners();
     }
 
@@ -78,6 +83,16 @@ public class TeacherDashboardActivity extends AppCompatActivity {
         btnNavAdmin = findViewById(R.id.btnNavAdmin);
         btnNavClinic = findViewById(R.id.btnNavClinic);
 
+        // --- Upcoming Class Click Listener (Added) ---
+        cardUpcoming.setOnClickListener(v -> {
+            String room = tvUpcomingLocation.getText().toString();
+            if(room != null && !room.equals("--") && !room.isEmpty()) {
+                checkCameraPermissionAndOpen(room);
+            } else {
+                Toast.makeText(this, "No upcoming class location", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         // Header & Profile
         imgLogo = findViewById(R.id.imgLogo);
         tvWelcome = findViewById(R.id.tvWelcome);
@@ -91,6 +106,10 @@ public class TeacherDashboardActivity extends AppCompatActivity {
         tabSchedule = findViewById(R.id.tabSchedule);
         tabRequests = findViewById(R.id.tabRequests);
         cardUpcoming = findViewById(R.id.cardUpcoming);
+
+        // Stats Containers (NEW)
+        containerEnrollmentStats = findViewById(R.id.containerEnrollmentStats);
+        containerSectionStats = findViewById(R.id.containerSectionStats);
     }
 
     private void loadUserData() {
@@ -113,6 +132,65 @@ public class TeacherDashboardActivity extends AppCompatActivity {
             tvUpcomingLocation.setText("--");
             tvUpcomingTime.setText("--");
         }
+    }
+
+    // --- NEW: Load Statistics for Enrollment and Sections ---
+    private void loadDashboardStats() {
+        // Clear containers first
+        containerEnrollmentStats.removeAllViews();
+        containerSectionStats.removeAllViews();
+
+        /* TODO: Replace with actual DB queries using dbHelper and userId.
+           Example:
+           Cursor c = dbHelper.getEnrollmentStats(userId);
+           while(c.moveToNext()) { addStatRow(...); }
+        */
+
+        // MOCK DATA: Enrollment Per Subject
+        addStatRow(containerEnrollmentStats, "Mathematics 101", "42 Students");
+        addStatRow(containerEnrollmentStats, "Physics 201", "35 Students");
+        addStatRow(containerEnrollmentStats, "History 101", "50 Students");
+
+        // MOCK DATA: Students Per Section
+        addStatRow(containerSectionStats, "Grade 10 - Sec A", "30 Students");
+        addStatRow(containerSectionStats, "Grade 10 - Sec B", "28 Students");
+        addStatRow(containerSectionStats, "Grade 11 - Sec A", "32 Students");
+    }
+
+    private void addStatRow(LinearLayout container, String label, String value) {
+        LinearLayout row = new LinearLayout(this);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        LinearLayout.LayoutParams rowParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        rowParams.setMargins(0, 12, 0, 12);
+        row.setLayoutParams(rowParams);
+
+        TextView tvLabel = new TextView(this);
+        tvLabel.setText(label);
+        tvLabel.setTextSize(14);
+        tvLabel.setTextColor(Color.parseColor("#E0E0E0")); // Light Grey
+        LinearLayout.LayoutParams labelParams = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
+        tvLabel.setLayoutParams(labelParams);
+
+        TextView tvValue = new TextView(this);
+        tvValue.setText(value);
+        tvValue.setTextSize(14);
+        tvValue.setTypeface(null, Typeface.BOLD);
+        tvValue.setTextColor(Color.WHITE); // White for emphasis
+
+        row.addView(tvLabel);
+        row.addView(tvValue);
+
+        // Divider
+        View divider = new View(this);
+        divider.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, 1));
+        divider.setBackgroundColor(Color.parseColor("#1AFFFFFF")); // Very subtle line
+
+        container.addView(row);
+        container.addView(divider);
     }
 
     private void setupListeners() {
@@ -147,7 +225,6 @@ public class TeacherDashboardActivity extends AppCompatActivity {
         tabRequests.setOnClickListener(v -> {
             updateTabUI(false);
             cardUpcoming.setVisibility(View.GONE);
-            // Feature placeholder
             Toast.makeText(this, "No pending requests at the moment.", Toast.LENGTH_SHORT).show();
         });
 
@@ -209,7 +286,6 @@ public class TeacherDashboardActivity extends AppCompatActivity {
 
         builder.setPositiveButton("Logout", (dialog, which) -> logoutUser());
 
-        // Added: Navigate to Edit Profile
         builder.setNeutralButton("Edit Profile", (dialog, which) -> {
             Intent intent = new Intent(TeacherDashboardActivity.this, TeacherEditProfileActivity.class);
             startActivity(intent);
@@ -235,12 +311,13 @@ public class TeacherDashboardActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadUpcomingClass(); // Refresh data in case schedule changed
+        loadUpcomingClass();
+        // loadDashboardStats(); // Uncomment if you want live refresh of stats on resume
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finishAffinity(); // Exit app
+        finishAffinity();
     }
 }

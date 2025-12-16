@@ -175,9 +175,9 @@ public class StudentDashboardActivity extends AppCompatActivity {
     private void setupBottomNav() {
         navHome.setOnClickListener(v -> viewPagerCarousel.setCurrentItem(0));
 
-        // UPDATED: Points to StudentRoomMapActivity (The Map) instead of the List
+        // UPDATED: Points to StudentNavigationListActivity (The List) instead of the Map
         navNav.setOnClickListener(v -> {
-            Intent intent = new Intent(StudentDashboardActivity.this, StudentRoomMapActivity.class);
+            Intent intent = new Intent(StudentDashboardActivity.this, StudentNavigationListActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });

@@ -93,10 +93,10 @@
                 app:layout_constraintBottom_toBottomOf="@id/logoContainer">
 
                 <ImageView
-                    android:layout_width="match_parent"
+                    android:layout_width="17dp"
                     android:layout_height="match_parent"
                     android:src="@drawable/db_settings_ic"
-                    app:tint="@android:color/white"/>
+                    app:tint="@android:color/white" />
             </FrameLayout>
 
             <!-- Search Bar -->

@@ -31,9 +31,9 @@ public class TeacherRoomsActivity extends AppCompatActivity {
         btnBack = findViewById(R.id.btnBack);
         btnSearch = findViewById(R.id.btnSearch);
 
-        // Attempt to find the button inside the included layout or by tag
-        // Ideally this should be findViewById(R.id.btnGetDirections) if the ID was added in XML
-        btnGetDirections = findViewById(R.id.bottomSheet).findViewWithTag("directions");
+        // Corrected: Find button by ID directly.
+        // The previous code used findViewWithTag("directions") which didn't exist in t_rooms.xml
+        btnGetDirections = findViewById(R.id.btnDirections_added_by_you);
     }
 
     private void setupListeners() {
