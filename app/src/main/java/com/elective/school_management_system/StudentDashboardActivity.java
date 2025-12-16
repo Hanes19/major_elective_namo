@@ -1,7 +1,9 @@
 package com.elective.school_management_system;
 
+import android.Manifest;
 import android.content.Intent;
-import android.net.Uri;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -15,6 +17,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
@@ -27,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StudentDashboardActivity extends AppCompatActivity {
+
+    private static final int CAMERA_PERMISSION_CODE = 100;
 
     // UI Components
     private ViewPager2 viewPagerCarousel;
@@ -44,19 +50,29 @@ public class StudentDashboardActivity extends AppCompatActivity {
     private Handler sliderHandler = new Handler(Looper.getMainLooper());
     private Runnable sliderRunnable;
 
-    // School Coordinates (TS Building, Hagkol, Valencia City)
-    private static final double SCHOOL_LAT = 7.9230;
-    private static final double SCHOOL_LNG = 125.0953;
+    // Temp variable to store room name while asking for permission
+    private String pendingRoomName;
+
+    // Database
+    private DatabaseHelper dbHelper;
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.s_dashboard);
 
+        dbHelper = new DatabaseHelper(this);
+        SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
+        String email = prefs.getString("email", "");
+        userId = dbHelper.getUserId(email);
+
         initViews();
         setupCarousel();
         setupBottomNav();
         setupCardListener(); // Initialize the card click listener
+
+        updateNextClassCard();
     }
 
     private void initViews() {
@@ -74,24 +90,45 @@ public class StudentDashboardActivity extends AppCompatActivity {
         btnSettings = findViewById(R.id.btnSettings);
     }
 
-    private void setupCardListener() {
-        if (cardNextClass != null) {
-            cardNextClass.setOnClickListener(v -> {
-                // Open Google Maps Navigation
-                openGoogleMaps();
-            });
+    private void updateNextClassCard() {
+        if (txtNextClassRoom == null) return;
+
+        // Fetch enrolled classes for this student
+        List<Schedule> myClasses = dbHelper.getStudentSchedule(userId);
+
+        if (!myClasses.isEmpty()) {
+            // Logic to find the actual "Next" class based on current time could go here.
+            // For now, we display the first enrolled class as the upcoming one.
+            Schedule next = myClasses.get(0);
+            txtNextClassRoom.setText(next.getRoomName() + " • " + next.getStartTime());
+        } else {
+            txtNextClassRoom.setText("No classes enrolled");
         }
     }
 
-    private void openGoogleMaps() {
-        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + SCHOOL_LAT + "," + SCHOOL_LNG);
-        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-        mapIntent.setPackage("com.google.android.apps.maps");
+    private void setupCardListener() {
+        if (cardNextClass != null) {
+            cardNextClass.setOnClickListener(v -> {
+                String roomName = "Navigation Mode"; // Default fallback
 
-        if (mapIntent.resolveActivity(getPackageManager()) != null) {
-            startActivity(mapIntent);
-        } else {
-            Toast.makeText(this, "Google Maps is not installed.", Toast.LENGTH_SHORT).show();
+                // Extract Text: "Room 103 • 08:00 AM" -> "Room 103"
+                if (txtNextClassRoom != null) {
+                    String fullText = txtNextClassRoom.getText().toString();
+                    if (fullText.contains("•")) {
+                        roomName = fullText.split("•")[0].trim();
+                    } else {
+                        roomName = fullText.trim();
+                    }
+                }
+
+                // Do not navigate if no class is found
+                if (roomName.equalsIgnoreCase("No classes enrolled")) {
+                    Toast.makeText(this, "No class location to navigate to.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                checkCameraPermissionAndOpen(roomName);
+            });
         }
     }
 
@@ -138,6 +175,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
     private void setupBottomNav() {
         navHome.setOnClickListener(v -> viewPagerCarousel.setCurrentItem(0));
 
+        // UPDATED: Points to StudentRoomMapActivity (The Map) instead of the List
         navNav.setOnClickListener(v -> {
             Intent intent = new Intent(StudentDashboardActivity.this, StudentRoomMapActivity.class);
             startActivity(intent);
@@ -162,6 +200,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         sliderHandler.postDelayed(sliderRunnable, 3000);
+        updateNextClassCard(); // Refresh data on resume
     }
 
     @Override
@@ -170,14 +209,53 @@ public class StudentDashboardActivity extends AppCompatActivity {
         sliderHandler.removeCallbacks(sliderRunnable);
     }
 
+    // --- Permissions & Camera Logic ---
+    private void checkCameraPermissionAndOpen(String roomName) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            pendingRoomName = roomName; // Save for after permission is granted
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+        } else {
+            openCamera(roomName);
+        }
+    }
+
+    private void openCamera(String roomName) {
+        Intent intent = new Intent(StudentDashboardActivity.this, StudentNavigationActivity.class);
+        intent.putExtra("ROOM_NAME", roomName);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, proceed to nav with the saved room name or default
+                String roomToOpen = (pendingRoomName != null) ? pendingRoomName : "Navigation Mode";
+                openCamera(roomToOpen);
+            } else {
+                Toast.makeText(this, "Camera permission is required to use Navigation", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    // ================== INNER CLASSES FOR CAROUSEL ==================
+
     static class CarouselItem {
         int iconRes;
-        public CarouselItem(int iconRes) { this.iconRes = iconRes; }
+
+        public CarouselItem(int iconRes) {
+            this.iconRes = iconRes;
+        }
     }
 
     static class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder> {
         private final List<CarouselItem> items;
-        public CarouselAdapter(List<CarouselItem> items) { this.items = items; }
+
+        public CarouselAdapter(List<CarouselItem> items) {
+            this.items = items;
+        }
 
         @NonNull
         @Override
@@ -193,10 +271,13 @@ public class StudentDashboardActivity extends AppCompatActivity {
         }
 
         @Override
-        public int getItemCount() { return items.size(); }
+        public int getItemCount() {
+            return items.size();
+        }
 
         static class CarouselViewHolder extends RecyclerView.ViewHolder {
             ImageView icon;
+
             public CarouselViewHolder(@NonNull View itemView) {
                 super(itemView);
                 icon = itemView.findViewById(R.id.slide_image);

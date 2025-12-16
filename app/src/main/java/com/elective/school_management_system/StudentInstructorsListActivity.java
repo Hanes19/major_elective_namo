@@ -26,6 +26,7 @@ public class StudentInstructorsListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Uses the Admin layout but we will hide admin-specific elements
         setContentView(R.layout.ad_manage_instructors);
 
         dbHelper = new DatabaseHelper(this);
@@ -34,12 +35,11 @@ public class StudentInstructorsListActivity extends AppCompatActivity {
         setupRecyclerView();
         setupListeners();
 
-        // NEW: Handle search query passed from Dashboard
+        // Handle search query passed from Dashboard
         if (getIntent().hasExtra("SEARCH_QUERY")) {
             String query = getIntent().getStringExtra("SEARCH_QUERY");
             if (etSearch != null) {
                 etSearch.setText(query);
-                // Trigger filter manually just in case TextWatcher doesn't catch the set text immediately
                 filter(query);
             }
         }
@@ -47,11 +47,19 @@ public class StudentInstructorsListActivity extends AppCompatActivity {
 
     private void initViews() {
         btnBack = findViewById(R.id.btnBack);
-        btnAddInstructor = findViewById(R.id.btnAddInstructor);
 
-        // Hide Admin Button
+        // FIX: The ID in ad_manage_instructors.xml is 'fabAdd'
+        btnAddInstructor = findViewById(R.id.fabAdd);
+
+        // Hide Admin "Add" Button
         if (btnAddInstructor != null) {
             btnAddInstructor.setVisibility(View.GONE);
+        }
+
+        // FIX: Hide the Admin Bottom Navigation Bar since this is a Student View
+        View adminNavBar = findViewById(R.id.bottomNav);
+        if (adminNavBar != null) {
+            adminNavBar.setVisibility(View.GONE);
         }
 
         etSearch = findViewById(R.id.etSearch);
@@ -59,30 +67,38 @@ public class StudentInstructorsListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        fullInstructorList = dbHelper.getAllInstructors();
-        adapter = new StudentInstructorAdapter(this, fullInstructorList);
-        recyclerView.setAdapter(adapter);
+        if (recyclerView != null) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            fullInstructorList = dbHelper.getAllInstructors();
+            adapter = new StudentInstructorAdapter(this, fullInstructorList);
+            recyclerView.setAdapter(adapter);
+        }
     }
 
     private void setupListeners() {
-        btnBack.setOnClickListener(v -> finish());
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> finish());
+        }
 
-        etSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        if (etSearch != null) {
+            etSearch.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                filter(s.toString());
-            }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    filter(s.toString());
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
+                @Override
+                public void afterTextChanged(Editable s) {}
+            });
+        }
     }
 
     private void filter(String text) {
+        if (fullInstructorList == null) return;
+
         List<Instructor> filteredList = new ArrayList<>();
         for (Instructor item : fullInstructorList) {
             if (item.getName().toLowerCase().contains(text.toLowerCase()) ||

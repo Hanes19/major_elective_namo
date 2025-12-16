@@ -1,5 +1,6 @@
 package com.elective.school_management_system;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -15,12 +16,15 @@ import java.util.List;
 
 public class AdminManageInstructorsActivity extends AppCompatActivity {
 
-    private ImageView btnBack;
+    private ImageView btnBack; // Note: In your XML this is ImageButton, but casting to ImageView is fine.
     private EditText etSearch;
     private ImageButton fabAdd;
     private RecyclerView recyclerView;
     private InstructorAdapter adapter;
     private DatabaseHelper dbHelper;
+
+    // Added Navigation Views
+    private LinearLayout navMaps, navDashboard, navUpdates;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +42,15 @@ public class AdminManageInstructorsActivity extends AppCompatActivity {
         btnBack = findViewById(R.id.btnBack);
         etSearch = findViewById(R.id.etSearch);
         fabAdd = findViewById(R.id.fabAdd);
-        // Ensure you added this ID to your XML file!
         recyclerView = findViewById(R.id.recyclerViewInstructors);
+
+        // Added initialization for Bottom Navigation
+        navMaps = findViewById(R.id.navMaps);
+        navDashboard = findViewById(R.id.navDashboard);
+        navUpdates = findViewById(R.id.navUpdates);
     }
 
     private void setupRecyclerView() {
-        // If the RecyclerView is null, it means the XML hasn't been updated yet.
         if (recyclerView != null) {
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             loadInstructors();
@@ -60,6 +67,30 @@ public class AdminManageInstructorsActivity extends AppCompatActivity {
         btnBack.setOnClickListener(v -> finish());
         fabAdd.setOnClickListener(v -> showAddInstructorDialog());
         etSearch.setOnClickListener(v -> Toast.makeText(this, "Search feature coming soon...", Toast.LENGTH_SHORT).show());
+
+        // Added Navigation Logic
+        if (navMaps != null) {
+            navMaps.setOnClickListener(v -> {
+                Intent intent = new Intent(AdminManageInstructorsActivity.this, AdminRoomMapActivity.class);
+                startActivity(intent);
+            });
+        }
+
+        if (navDashboard != null) {
+            navDashboard.setOnClickListener(v -> {
+                Intent intent = new Intent(AdminManageInstructorsActivity.this, AdminDashboardActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            });
+        }
+
+        if (navUpdates != null) {
+            navUpdates.setOnClickListener(v -> {
+                Intent intent = new Intent(AdminManageInstructorsActivity.this, AdminReportsActivity.class);
+                startActivity(intent);
+            });
+        }
     }
 
     private void showAddInstructorDialog() {

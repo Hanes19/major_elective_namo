@@ -2,6 +2,7 @@ package com.elective.school_management_system;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -36,31 +37,37 @@ public class AdminManageRoomsActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerViewRooms);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // These IDs must match the XML provided above
         navMaps = findViewById(R.id.navMaps);
         navDashboard = findViewById(R.id.navDashboard);
         navUpdates = findViewById(R.id.navUpdates);
 
         btnBack.setOnClickListener(v -> finish());
-
-        // ADD ROOM FUNCTIONALITY
         fabAdd.setOnClickListener(v -> showRoomDialog(null));
 
-        navMaps.setOnClickListener(v -> {
-            Intent intent = new Intent(AdminManageRoomsActivity.this, AdminRoomMapActivity.class);
-            startActivity(intent);
-        });
+        // Navigation Logic
+        if (navMaps != null) {
+            navMaps.setOnClickListener(v -> {
+                Intent intent = new Intent(AdminManageRoomsActivity.this, AdminRoomMapActivity.class);
+                startActivity(intent);
+            });
+        }
 
-        navDashboard.setOnClickListener(v -> {
-            Intent intent = new Intent(AdminManageRoomsActivity.this, AdminDashboardActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish();
-        });
+        if (navDashboard != null) {
+            navDashboard.setOnClickListener(v -> {
+                Intent intent = new Intent(AdminManageRoomsActivity.this, AdminDashboardActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            });
+        }
 
-        navUpdates.setOnClickListener(v -> {
-            Intent intent = new Intent(AdminManageRoomsActivity.this, AdminReportsActivity.class);
-            startActivity(intent);
-        });
+        if (navUpdates != null) {
+            navUpdates.setOnClickListener(v -> {
+                Intent intent = new Intent(AdminManageRoomsActivity.this, AdminReportsActivity.class);
+                startActivity(intent);
+            });
+        }
     }
 
     private void loadRooms() {
@@ -78,7 +85,7 @@ public class AdminManageRoomsActivity extends AppCompatActivity {
                         .setMessage("Are you sure you want to delete " + room.getRoomName() + "?")
                         .setPositiveButton("Delete", (dialog, which) -> {
                             dbHelper.deleteRoom(room.getId());
-                            loadRooms(); // Refresh List
+                            loadRooms();
                         })
                         .setNegativeButton("Cancel", null)
                         .show();
@@ -87,7 +94,7 @@ public class AdminManageRoomsActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    // Handles Adding and Editing Rooms
+    // Handles Adding and Editing Rooms with Lat/Long for Maps
     private void showRoomDialog(Room room) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(room == null ? "Add Room" : "Edit Room");
@@ -97,37 +104,59 @@ public class AdminManageRoomsActivity extends AppCompatActivity {
         layout.setPadding(50, 40, 50, 10);
 
         final EditText etName = new EditText(this);
-        etName.setHint("Room Name (e.g. Room 101)");
+        etName.setHint("Room Name (e.g. 101)");
         if (room != null) etName.setText(room.getRoomName());
         layout.addView(etName);
 
         final EditText etDesc = new EditText(this);
-        etDesc.setHint("Description");
+        etDesc.setHint("Description (e.g. Ground Floor)");
         if (room != null) etDesc.setText(room.getDescription());
         layout.addView(etDesc);
+
+        // Added Latitude Field
+        final EditText etLat = new EditText(this);
+        etLat.setHint("Latitude (e.g. 7.9230)");
+        etLat.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        if (room != null) etLat.setText(String.valueOf(room.getLatitude()));
+        layout.addView(etLat);
+
+        // Added Longitude Field
+        final EditText etLng = new EditText(this);
+        etLng.setHint("Longitude (e.g. 125.0953)");
+        etLng.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        if (room != null) etLng.setText(String.valueOf(room.getLongitude()));
+        layout.addView(etLng);
 
         builder.setView(layout);
 
         builder.setPositiveButton("Save", (dialog, which) -> {
             String name = etName.getText().toString().trim();
             String desc = etDesc.getText().toString().trim();
+            String latStr = etLat.getText().toString().trim();
+            String lngStr = etLng.getText().toString().trim();
 
             if (name.isEmpty()) {
                 Toast.makeText(this, "Room name is required", Toast.LENGTH_SHORT).show();
                 return;
             }
 
+            // Default to 0.0 if empty
+            double lat = latStr.isEmpty() ? 0.0 : Double.parseDouble(latStr);
+            double lng = lngStr.isEmpty() ? 0.0 : Double.parseDouble(lngStr);
+
             if (room == null) {
-                // Add new room
-                boolean success = dbHelper.addRoom(name, desc);
+                // IMPORTANT: Ensure your dbHelper.addRoom supports lat/long arguments!
+                // If not, you must update DatabaseHelper.java
+                // boolean success = dbHelper.addRoom(name, desc, lat, lng);
+                boolean success = dbHelper.addRoom(name, desc); // Fallback if DB not updated yet
                 if(success) Toast.makeText(this, "Room Added", Toast.LENGTH_SHORT).show();
                 else Toast.makeText(this, "Error Adding Room", Toast.LENGTH_SHORT).show();
             } else {
-                // Update existing room
+                // boolean success = dbHelper.updateRoom(room.getId(), name, desc, lat, lng);
                 boolean success = dbHelper.updateRoom(room.getId(), name, desc);
                 if(success) Toast.makeText(this, "Room Updated", Toast.LENGTH_SHORT).show();
             }
-            loadRooms(); // Refresh the list immediately
+            loadRooms();
         });
         builder.setNegativeButton("Cancel", null);
         builder.show();

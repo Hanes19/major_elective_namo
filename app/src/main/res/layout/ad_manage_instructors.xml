@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:alpha="0.3"
-        android:contentDescription="Background Map"
+        android:contentDescription="Background"
         android:scaleType="centerCrop"
         android:src="@drawable/splash_screen_bg"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -85,7 +85,7 @@
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@android:drawable/ic_menu_search"
+            android:src="@drawable/db_search_ic"
             app:tint="#80FFFFFF" />
 
         <EditText
@@ -114,7 +114,7 @@
         tools:listitem="@layout/item_student_instructor_row"/>
 
     <ImageButton
-        android:id="@+id/btnAddInstructor"
+        android:id="@+id/fabAdd"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginEnd="24dp"
@@ -145,11 +145,15 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
+            android:id="@+id/navMaps"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:alpha="0.6"
             android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
             android:orientation="vertical">
             <ImageView
                 android:layout_width="24dp"
@@ -167,10 +171,14 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/navDashboard"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
             android:orientation="vertical">
             <ImageView
                 android:layout_width="24dp"
@@ -188,11 +196,15 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/navUpdates"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:alpha="0.6"
             android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
             android:orientation="vertical">
             <ImageView
                 android:layout_width="24dp"
