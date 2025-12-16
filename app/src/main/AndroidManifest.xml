@@ -19,10 +19,7 @@
         android:theme="@style/Theme.School_Management_System"
         tools:targetApi="31">
 
-        <activity
-            android:name=".Login_Activity"
-            android:exported="false" />
-
+        <activity android:name=".Login_Activity" android:exported="false" />
         <activity android:name=".RegisterActivity" android:exported="false" />
         <activity android:name=".ForgotPasswordActivity" android:exported="false" />
         <activity android:name=".StudentDashboardActivity" android:exported="false" />
@@ -35,6 +32,9 @@
         <activity android:name=".StudentProfileActivity" android:exported="false" />
         <activity android:name=".StudentResetPasswordActivity" android:exported="false" />
         <activity android:name=".StudentNavigationListActivity" android:exported="false" />
+
+        <activity android:name=".StudentHelpSupportActivity" android:exported="false" />
+
         <activity android:name=".AdminManageInstructorsActivity" android:exported="false" />
         <activity android:name=".AdminDashboardActivity" android:exported="false" />
         <activity android:name=".NavSettingsActivity" android:exported="false" android:screenOrientation="portrait" />
