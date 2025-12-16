@@ -2,7 +2,6 @@ package com.elective.school_management_system;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,9 +9,10 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView; // Imported TextView
+import android.widget.TextView; // Added Import
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,28 +39,29 @@ public class StudentDashboardActivity extends AppCompatActivity {
     private TabLayout dotsIndicator;
     private LinearLayout navHome, navNav, navProfile;
 
-    // --- NEW: Text Views for Next Class ---
-    private TextView txtNextClassSubject, txtNextClassRoom;
+    // New Views for Clickable Card
+    private View cardNextClass;
+    private TextView txtNextClassRoom;
 
     // Settings Button
     private View btnSettings;
 
-    // Database & Carousel Data
-    private DatabaseHelper dbHelper; // Added DatabaseHelper
+    // Carousel Data
     private Handler sliderHandler = new Handler(Looper.getMainLooper());
     private Runnable sliderRunnable;
+
+    // Temp variable to store room name while asking for permission
+    private String pendingRoomName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.s_dashboard);
 
-        // Initialize Database Helper
-        dbHelper = new DatabaseHelper(this);
-
         initViews();
         setupCarousel();
         setupBottomNav();
+        setupCardListener(); // Initialize the card click listener
     }
 
     private void initViews() {
@@ -71,42 +72,36 @@ public class StudentDashboardActivity extends AppCompatActivity {
         navNav = findViewById(R.id.navNav);
         navProfile = findViewById(R.id.navProfile);
 
-        // --- NEW: Bind the TextViews for the upcoming class card ---
-        txtNextClassSubject = findViewById(R.id.txtNextClassSubject);
+        // Initialize Card Views
+        cardNextClass = findViewById(R.id.cardNextClass);
         txtNextClassRoom = findViewById(R.id.txtNextClassRoom);
 
         btnSettings = findViewById(R.id.btnSettings);
     }
 
-    // --- NEW: Method to load the next class from the database ---
-    private void loadUpcomingClass() {
-        // 1. Get current user's email from session
-        SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
-        String email = prefs.getString("email", "");
+    private void setupCardListener() {
+        if (cardNextClass != null) {
+            cardNextClass.setOnClickListener(v -> {
+                String roomName = "Navigation Mode"; // Default fallback
 
-        if (email.isEmpty()) return;
+                // Extract Text: "Room 103 • 08:00 AM" -> "Room 103"
+                if (txtNextClassRoom != null) {
+                    String fullText = txtNextClassRoom.getText().toString();
+                    if (fullText.contains("•")) {
+                        roomName = fullText.split("•")[0].trim();
+                    } else {
+                        roomName = fullText.trim();
+                    }
+                }
 
-        // 2. Get User ID
-        int userId = dbHelper.getUserId(email);
-
-        // 3. Fetch Next Class using existing logic in DatabaseHelper
-        Schedule nextClass = dbHelper.getNextClass(userId);
-
-        // 4. Update UI
-        if (nextClass != null) {
-            txtNextClassSubject.setText(nextClass.getSubject());
-            // Format: "Room 101 • 08:00"
-            String details = nextClass.getRoomName() + " • " + nextClass.getStartTime();
-            txtNextClassRoom.setText(details);
-        } else {
-            // Handle case where there are no more classes today
-            txtNextClassSubject.setText("No Upcoming Classes");
-            txtNextClassRoom.setText("You are free for now!");
+                checkCameraPermissionAndOpen(roomName);
+            });
         }
     }
 
     private void setupCarousel() {
         List<CarouselItem> items = new ArrayList<>();
+
         items.add(new CarouselItem(R.drawable.db_nav_icon));
         items.add(new CarouselItem(R.drawable.db_rooms_ic));
         items.add(new CarouselItem(R.drawable.db_instruct_ic));
@@ -128,15 +123,19 @@ public class StudentDashboardActivity extends AppCompatActivity {
         });
         viewPagerCarousel.setPageTransformer(transformer);
 
-        new TabLayoutMediator(dotsIndicator, viewPagerCarousel, (tab, position) -> {}).attach();
+        new TabLayoutMediator(dotsIndicator, viewPagerCarousel, (tab, position) -> {
+        }).attach();
 
-        sliderRunnable = () -> {
-            int nextItem = viewPagerCarousel.getCurrentItem() + 1;
-            if (nextItem >= items.size()) {
-                nextItem = 0;
+        sliderRunnable = new Runnable() {
+            @Override
+            public void run() {
+                int nextItem = viewPagerCarousel.getCurrentItem() + 1;
+                if (nextItem >= items.size()) {
+                    nextItem = 0;
+                }
+                viewPagerCarousel.setCurrentItem(nextItem);
+                sliderHandler.postDelayed(this, 3000);
             }
-            viewPagerCarousel.setCurrentItem(nextItem);
-            sliderHandler.postDelayed(sliderRunnable, 3000);
         };
     }
 
@@ -167,8 +166,6 @@ public class StudentDashboardActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         sliderHandler.postDelayed(sliderRunnable, 3000);
-        // --- NEW: Refresh class data whenever the dashboard appears ---
-        loadUpcomingClass();
     }
 
     @Override
@@ -177,18 +174,19 @@ public class StudentDashboardActivity extends AppCompatActivity {
         sliderHandler.removeCallbacks(sliderRunnable);
     }
 
-    // --- Permissions & Camera Logic (unchanged) ---
-    private void checkCameraPermissionAndOpen() {
+    // --- Permissions & Camera Logic ---
+    private void checkCameraPermissionAndOpen(String roomName) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            pendingRoomName = roomName; // Save for after permission is granted
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
         } else {
-            openCamera();
+            openCamera(roomName);
         }
     }
 
-    private void openCamera() {
+    private void openCamera(String roomName) {
         Intent intent = new Intent(StudentDashboardActivity.this, StudentNavigationActivity.class);
-        intent.putExtra("ROOM_NAME", "Navigation Mode");
+        intent.putExtra("ROOM_NAME", roomName);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
@@ -198,7 +196,9 @@ public class StudentDashboardActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == CAMERA_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openCamera();
+                // Permission granted, proceed to nav with the saved room name or default
+                String roomToOpen = (pendingRoomName != null) ? pendingRoomName : "Navigation Mode";
+                openCamera(roomToOpen);
             } else {
                 Toast.makeText(this, "Camera permission is required to use Navigation", Toast.LENGTH_SHORT).show();
             }
@@ -206,14 +206,21 @@ public class StudentDashboardActivity extends AppCompatActivity {
     }
 
     // ================== INNER CLASSES FOR CAROUSEL ==================
+
     static class CarouselItem {
         int iconRes;
-        public CarouselItem(int iconRes) { this.iconRes = iconRes; }
+
+        public CarouselItem(int iconRes) {
+            this.iconRes = iconRes;
+        }
     }
 
     static class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder> {
         private final List<CarouselItem> items;
-        public CarouselAdapter(List<CarouselItem> items) { this.items = items; }
+
+        public CarouselAdapter(List<CarouselItem> items) {
+            this.items = items;
+        }
 
         @NonNull
         @Override
@@ -229,10 +236,13 @@ public class StudentDashboardActivity extends AppCompatActivity {
         }
 
         @Override
-        public int getItemCount() { return items.size(); }
+        public int getItemCount() {
+            return items.size();
+        }
 
         static class CarouselViewHolder extends RecyclerView.ViewHolder {
             ImageView icon;
+
             public CarouselViewHolder(@NonNull View itemView) {
                 super(itemView);
                 icon = itemView.findViewById(R.id.slide_image);
