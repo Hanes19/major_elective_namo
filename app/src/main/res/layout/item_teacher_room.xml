@@ -83,7 +83,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:src="@drawable/db_nav_icon"
-            app:tint="#A9016D" />
+            app:tint="#fff" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -91,7 +91,7 @@
             android:layout_marginTop="2dp"
             android:fontFamily="@font/raleway_bold"
             android:text="GO"
-            android:textColor="#A9016D"
+            android:textColor="#fff"
             android:textSize="10sp" />
     </LinearLayout>
 
