@@ -29,6 +29,7 @@
         <activity android:name=".RoomDetailsActivity" android:exported="false" />
         <activity android:name=".StudentInstructorsListActivity" android:exported="false" />
         <activity android:name=".StudentEditProfileActivity" />
+        <activity android:name=".TeacherEditProfileActivity" />
         <activity android:name=".StudentProfileActivity" android:exported="false" />
         <activity android:name=".StudentResetPasswordActivity" android:exported="false" />
         <activity android:name=".StudentNavigationListActivity" android:exported="false" />

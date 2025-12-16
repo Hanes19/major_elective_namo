@@ -104,14 +104,15 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        // [FIX] Check for existing email before insertion
+        // Check for existing email before insertion
         if (dbHelper.checkEmailExists(email)) {
             etEmail.setError("Email is already registered");
             return;
         }
 
-        // Insert into Database with explicit "student" role
-        boolean isInserted = dbHelper.registerUser(username, email, password, "student");
+        // FIXED: Removed the 4th argument "student".
+        // DatabaseHelper automatically sets the default role to "Student".
+        boolean isInserted = dbHelper.registerUser(username, email, password);
 
         if (isInserted) {
             Toast.makeText(this, "Registration Successful!", Toast.LENGTH_SHORT).show();

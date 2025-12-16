@@ -35,16 +35,35 @@ public class GuestDashboardActivity extends AppCompatActivity {
         }
 
         if (grid != null) {
-            // Navigation features now open Google Maps
-            grid.getChildAt(0).setOnClickListener(v -> openGoogleMaps()); // Admissions
-            grid.getChildAt(1).setOnClickListener(v -> openGoogleMaps()); // Cashier
+            // Navigation features now open Google Maps or AR
 
+            // 1. Admissions -> Open AR for Guest
+            grid.getChildAt(0).setOnClickListener(v -> {
+                Intent intent = new Intent(this, TeacherARNavigationActivity.class);
+                intent.putExtra("TARGET_ROOM", "Admissions");
+                startActivity(intent);
+            });
+
+            // 2. Cashier -> Open AR for Guest
+            grid.getChildAt(1).setOnClickListener(v -> {
+                Intent intent = new Intent(this, TeacherARNavigationActivity.class);
+                intent.putExtra("TARGET_ROOM", "Cashier");
+                startActivity(intent);
+            });
+
+            // 3. Events -> GuestUpdatesActivity (Unchanged)
             grid.getChildAt(2).setOnClickListener(v -> {
                 startActivity(new Intent(this, GuestUpdatesActivity.class));
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             });
 
-            grid.getChildAt(3).setOnClickListener(v -> openGoogleMaps()); // Restrooms
+            // 4. Facilities -> List of facilities but only description
+            grid.getChildAt(3).setOnClickListener(v -> {
+                Intent intent = new Intent(this, StudentRoomsListActivity.class);
+                intent.putExtra("IS_GUEST", true);
+                intent.putExtra("SHOW_DESC_ONLY", true);
+                startActivity(intent);
+            });
         }
     }
 
@@ -52,6 +71,8 @@ public class GuestDashboardActivity extends AppCompatActivity {
         LinearLayout searchContainer = findViewById(R.id.searchContainer);
         searchContainer.setOnClickListener(v -> {
             Intent intent = new Intent(GuestDashboardActivity.this, StudentRoomsListActivity.class);
+            // Ensure search also uses Guest mode to hide student navigation
+            intent.putExtra("IS_GUEST", true);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });

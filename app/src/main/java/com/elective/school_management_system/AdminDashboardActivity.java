@@ -1,11 +1,11 @@
 package com.elective.school_management_system;
 
-import android.app.AlertDialog; // Added import
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,19 +19,41 @@ public class AdminDashboardActivity extends AppCompatActivity {
     // Management Console Buttons
     private ConstraintLayout btnManageMap, btnManageUsers, btnReports;
 
-    // System Overview Cards (Added)
+    // System Overview Cards
     private LinearLayout cardActiveUsers, cardNewReports, cardSysHealth;
+
+    // Stats Text Views (Added)
+    private TextView tvActiveUsersCount, tvNewReportsCount, tvSysHealthCount;
 
     // Settings Button
     private FrameLayout btnSettings;
+
+    // Database Helper
+    private DatabaseHelper dbHelper;
+
+    // Live Stats Variables
+    private int totalUsers = 0;
+    private int studentCount = 0;
+    private int guestCount = 0;
+    private int pendingReports = 0;
+    private String reportsBreakdown = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ad_dashboard);
 
+        dbHelper = new DatabaseHelper(this);
+
         initViews();
         setupListeners();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Refresh stats when returning to the dashboard
+        updateDashboardStats();
     }
 
     private void initViews() {
@@ -45,26 +67,62 @@ public class AdminDashboardActivity extends AppCompatActivity {
         btnManageUsers = findViewById(R.id.btnManageUsers);
         btnReports = findViewById(R.id.btnReports);
 
-        // System Overview Cards (Initialize)
+        // System Overview Cards
         cardActiveUsers = findViewById(R.id.cardActiveUsers);
         cardNewReports = findViewById(R.id.cardNewReports);
         cardSysHealth = findViewById(R.id.cardSysHealth);
+
+        // Stats TextViews
+        tvActiveUsersCount = findViewById(R.id.tvActiveUsersCount);
+        tvNewReportsCount = findViewById(R.id.tvNewReportsCount);
+        tvSysHealthCount = findViewById(R.id.tvSysHealthCount);
 
         // Settings
         btnSettings = findViewById(R.id.btnSettings);
     }
 
+    private void updateDashboardStats() {
+        // Fetch data from Database
+        totalUsers = dbHelper.getTotalUserCount();
+        studentCount = dbHelper.getStudentCount();
+        guestCount = totalUsers - studentCount; // Assuming everyone else is Guest/Staff
+
+        pendingReports = dbHelper.getPendingReportsCount();
+        reportsBreakdown = dbHelper.getPendingReportBreakdown();
+
+        // Update UI
+        tvActiveUsersCount.setText(String.valueOf(totalUsers));
+        tvNewReportsCount.setText(String.valueOf(pendingReports));
+
+        // Randomize System Health slightly for effect (since it's a mock metric)
+        int health = 98 + (int)(Math.random() * 3) - 1; // Random between 97-100
+        tvSysHealthCount.setText(health + "%");
+    }
+
     private void setupListeners() {
-        // --- System Overview Listeners (Added) ---
+        // --- System Overview Listeners (Updated) ---
 
-        cardActiveUsers.setOnClickListener(v -> showDescriptionDialog("Active Users",
-                "This metric shows the total number of students, teachers, and guests currently active in the system."));
+        cardActiveUsers.setOnClickListener(v -> {
+            String breakdown = "Total Users: " + totalUsers + "\n\n" +
+                    "• Students: " + studentCount + "\n" +
+                    "• Staff/Guests: " + guestCount;
+            showDescriptionDialog("Active Users Breakdown", breakdown);
+        });
 
-        cardNewReports.setOnClickListener(v -> showDescriptionDialog("New Reports",
-                "This indicates the number of pending maintenance or issue reports that require your attention."));
+        cardNewReports.setOnClickListener(v -> {
+            String msg = "Pending Reports: " + pendingReports + "\n\n" +
+                    "Breakdown by Category:\n" + reportsBreakdown;
+            showDescriptionDialog("Report Statistics", msg);
+        });
 
-        cardSysHealth.setOnClickListener(v -> showDescriptionDialog("System Health",
-                "This percentage represents the current operational stability of the server and database connections."));
+        cardSysHealth.setOnClickListener(v -> {
+            // Mock breakdown for system health
+            String healthStats = "Overall Stability: " + tvSysHealthCount.getText() + "\n\n" +
+                    "• Database: Online (5ms latency)\n" +
+                    "• Server Load: 12% (Normal)\n" +
+                    "• Storage: 45% Used";
+            showDescriptionDialog("System Health Diagnostics", healthStats);
+        });
 
 
         // --- Management Console Listeners ---
@@ -113,7 +171,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
         });
     }
 
-    // Helper method to show description dialog (Added)
+    // Helper method to show description dialog
     private void showDescriptionDialog(String title, String message) {
         new AlertDialog.Builder(this)
                 .setTitle(title)

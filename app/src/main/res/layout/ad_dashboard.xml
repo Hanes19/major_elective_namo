@@ -120,10 +120,11 @@
                     android:foreground="?attr/selectableItemBackground">
 
                     <TextView
+                        android:id="@+id/tvActiveUsersCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/raleway_bold"
-                        android:text="1,204"
+                        android:text="0"
                         android:textColor="#4CAF50"
                         android:textSize="20sp" />
 
@@ -152,10 +153,11 @@
                     android:foreground="?attr/selectableItemBackground">
 
                     <TextView
+                        android:id="@+id/tvNewReportsCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/raleway_bold"
-                        android:text="15"
+                        android:text="0"
                         android:textColor="#FF5252"
                         android:textSize="20sp" />
 
@@ -184,6 +186,7 @@
                     android:foreground="?attr/selectableItemBackground">
 
                     <TextView
+                        android:id="@+id/tvSysHealthCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/raleway_bold"

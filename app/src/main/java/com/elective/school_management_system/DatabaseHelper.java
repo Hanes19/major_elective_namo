@@ -14,7 +14,7 @@ import java.util.Locale;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SchoolSystem.db";
-    private static final int DATABASE_VERSION = 8; // Incremented version
+    private static final int DATABASE_VERSION = 9; // Incremented version to support Role column
 
     // --- User Table ---
     private static final String TABLE_USERS = "users";
@@ -22,6 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_USER_NAME = "username";
     private static final String KEY_USER_EMAIL = "email";
     private static final String KEY_USER_PASSWORD = "password";
+    private static final String KEY_USER_ROLE = "role"; // NEW: Role Column
 
     // --- User Profile Table ---
     private static final String TABLE_PROFILES = "user_profiles";
@@ -77,12 +78,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // 1. Users Table
+        // 1. Users Table (Updated with Role)
         String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USERS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + KEY_USER_NAME + " TEXT,"
                 + KEY_USER_EMAIL + " TEXT,"
-                + KEY_USER_PASSWORD + " TEXT" + ")";
+                + KEY_USER_PASSWORD + " TEXT,"
+                + KEY_USER_ROLE + " TEXT" + ")"; // Added Role
         db.execSQL(CREATE_USERS_TABLE);
 
         // 2. User Profiles Table
@@ -142,7 +144,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + KEY_EVT_TYPE + " TEXT" + ")";
         db.execSQL(CREATE_EVENTS_TABLE);
 
-        // 8. NEW: Create Enrollments Table
+        // 8. Enrollments Table
         String CREATE_ENROLLMENTS_TABLE = "CREATE TABLE " + TABLE_ENROLLMENTS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + KEY_ENROLL_STUDENT_ID + " INTEGER,"
@@ -156,11 +158,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void addInitialData(SQLiteDatabase db) {
-        // --- 1. Sample Users ---
+        // --- 1. Sample Users (Updated with Roles) ---
         // Student (ID 1)
-        db.execSQL("INSERT INTO " + TABLE_USERS + " (" + KEY_USER_NAME + ", " + KEY_USER_EMAIL + ", " + KEY_USER_PASSWORD + ") VALUES ('Student Demo', 'student@test.com', 'password123')");
+        db.execSQL("INSERT INTO " + TABLE_USERS + " (" + KEY_USER_NAME + ", " + KEY_USER_EMAIL + ", " + KEY_USER_PASSWORD + ", " + KEY_USER_ROLE + ") VALUES ('Student Demo', 'student@test.com', 'password123', 'Student')");
         // Teacher (ID 2)
-        db.execSQL("INSERT INTO " + TABLE_USERS + " (" + KEY_USER_NAME + ", " + KEY_USER_EMAIL + ", " + KEY_USER_PASSWORD + ") VALUES ('Prof. Severus', 'teacher@test.com', 'password123')");
+        db.execSQL("INSERT INTO " + TABLE_USERS + " (" + KEY_USER_NAME + ", " + KEY_USER_EMAIL + ", " + KEY_USER_PASSWORD + ", " + KEY_USER_ROLE + ") VALUES ('Prof. Severus', 'teacher@test.com', 'password123', 'Teacher')");
+        // Admin (ID 3)
+        db.execSQL("INSERT INTO " + TABLE_USERS + " (" + KEY_USER_NAME + ", " + KEY_USER_EMAIL + ", " + KEY_USER_PASSWORD + ", " + KEY_USER_ROLE + ") VALUES ('Admin User', 'admin@school.com', 'admin123', 'Admin')");
 
         // --- 2. Sample Rooms ---
         String sqlRoom = "INSERT INTO " + TABLE_ROOMS + " (" + KEY_ROOM_NAME + ", " + KEY_ROOM_DESC + ", " + KEY_ROOM_AR_ID + ") VALUES (?, ?, ?)";
@@ -199,14 +203,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(sqlEvt, new Object[]{"Campus Job Fair", "Join us at the Gymnasium for the annual job fair.", "2025-10-25", "General"});
         db.execSQL(sqlEvt, new Object[]{"Library Maintenance", "The library will be closed for electrical repairs.", "2025-10-26", "Emergency"});
 
-        // --- 6. NEW: Sample Enrollments (Student ID 1 enrolled in Teacher ID 2's classes) ---
-        // Assuming Schedule IDs 1 and 2 exist from above
+        // --- 6. Sample Enrollments (Student ID 1 enrolled in Teacher ID 2's classes) ---
         db.execSQL("INSERT INTO " + TABLE_ENROLLMENTS + " (" + KEY_ENROLL_STUDENT_ID + ", " + KEY_ENROLL_SCHEDULE_ID + ") VALUES (1, 1)");
         db.execSQL("INSERT INTO " + TABLE_ENROLLMENTS + " (" + KEY_ENROLL_STUDENT_ID + ", " + KEY_ENROLL_SCHEDULE_ID + ") VALUES (1, 2)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Drop all tables on upgrade to ensure schema changes are applied
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROFILES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_INSTRUCTORS);
@@ -219,6 +223,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // ================== DATA ACCESS METHODS ==================
+
+    // --- USER ROLE METHOD (FIXED) ---
+    public String getUserRole(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String role = "Student"; // Default fallback
+        Cursor cursor = db.query(TABLE_USERS, new String[]{KEY_USER_ROLE}, KEY_USER_EMAIL + "=?", new String[]{email}, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            role = cursor.getString(0);
+            if (role == null || role.isEmpty()) role = "Student";
+        }
+        if (cursor != null) cursor.close();
+        return role;
+    }
 
     // --- SCHEDULE METHODS ---
     public List<Schedule> getUserSchedule(int userId) {
@@ -246,17 +264,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Schedule getNextClass(int userId) {
         SQLiteDatabase db = this.getReadableDatabase();
-
         SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         Date now = new Date();
         String currentDay = dayFormat.format(now);
         String currentTime = timeFormat.format(now);
 
-        // Logic: Get today's classes that start after current time
         String selection = KEY_SCH_USER_ID + "=? AND " + KEY_SCH_DAY + "=? AND " + KEY_SCH_START + " > ?";
         String[] args = new String[]{String.valueOf(userId), currentDay, currentTime};
-
         Cursor cursor = db.query(TABLE_SCHEDULE, null, selection, args, null, null, KEY_SCH_START + " ASC", "1");
 
         Schedule s = null;
@@ -272,13 +287,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             );
         }
         if (cursor != null) cursor.close();
-
         if (s != null) return s;
 
-        // Fallback: Return any next scheduled class if nothing is left for today
+        // Fallback
         Cursor cursorAll = db.query(TABLE_SCHEDULE, null, KEY_SCH_USER_ID + "=?",
                 new String[]{String.valueOf(userId)}, null, null, KEY_SCH_DAY + " ASC, " + KEY_SCH_START + " ASC", "1");
-
         if (cursorAll != null) {
             if (cursorAll.moveToFirst()) {
                 s = new Schedule(
@@ -300,13 +313,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Schedule> getStudentSchedule(int studentId) {
         List<Schedule> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-
-        // Join Schedule and Enrollment tables
         String query = "SELECT s.* FROM " + TABLE_SCHEDULE + " s " +
                 "INNER JOIN " + TABLE_ENROLLMENTS + " e ON s." + KEY_ID + " = e." + KEY_ENROLL_SCHEDULE_ID +
                 " WHERE e." + KEY_ENROLL_STUDENT_ID + " = ? " +
                 "ORDER BY s." + KEY_SCH_DAY + " ASC, s." + KEY_SCH_START + " ASC";
-
         Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(studentId)});
 
         if (cursor.moveToFirst()) {
@@ -326,7 +336,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
-    // --- NEW: Teacher Analytics (Total Enrolled per Subject) ---
+    // --- Teacher Analytics ---
     public Cursor getEnrollmentCountsForTeacher(int teacherId) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT s." + KEY_SCH_SUBJECT + ", COUNT(e." + KEY_ID + ") as count " +
@@ -337,7 +347,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, new String[]{String.valueOf(teacherId)});
     }
 
-    // --- NEW: Teacher Analytics (Total Students per Section) ---
     public Cursor getStudentCountsBySection() {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT " + KEY_PROFILE_SECTION + ", COUNT(*) as count " +
@@ -347,7 +356,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, null);
     }
 
-    // --- NEW: Enrollment Helper ---
     public boolean enrollStudent(int studentId, int scheduleId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -411,12 +419,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return exists;
     }
 
+    // Updated registerUser to include default Role
     public boolean registerUser(String username, String email, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_USER_NAME, username);
         values.put(KEY_USER_EMAIL, email);
         values.put(KEY_USER_PASSWORD, password);
+        values.put(KEY_USER_ROLE, "Student"); // Default Role
         return db.insert(TABLE_USERS, null, values) != -1;
     }
 
@@ -459,7 +469,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             result = db.insert(TABLE_PROFILES, null, values);
         }
-
         if (cursor != null) cursor.close();
         return result != -1;
     }
@@ -603,11 +612,68 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    // --- DASHBOARD STATISTICS (For AdminDashboardActivity) ---
+    public int getTotalUserCount() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int count = 0;
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_USERS, null);
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+        }
+        cursor.close();
+        return count;
+    }
+
+    public int getStudentCount() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int count = 0;
+        // Count users with 'Student' role
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_USERS + " WHERE " + KEY_USER_ROLE + "='Student'", null);
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+        }
+        cursor.close();
+        return count;
+    }
+
+    public int getPendingReportsCount() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int count = 0;
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_REPORTS + " WHERE " + KEY_REP_STATUS + " = 'Pending'", null);
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+        }
+        cursor.close();
+        return count;
+    }
+
+    public String getPendingReportBreakdown() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        StringBuilder breakdown = new StringBuilder();
+        Cursor cursor = db.rawQuery("SELECT " + KEY_REP_CATEGORY + ", COUNT(*) FROM " + TABLE_REPORTS +
+                " WHERE " + KEY_REP_STATUS + " = 'Pending' GROUP BY " + KEY_REP_CATEGORY, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String cat = cursor.getString(0);
+                int count = cursor.getInt(1);
+                breakdown.append(cat).append(": ").append(count).append("\n");
+            } while (cursor.moveToNext());
+        } else {
+            breakdown.append("No pending reports.");
+        }
+        cursor.close();
+        return breakdown.toString().trim();
+    }
+
+    // --- LIST METHODS ---
     public List<AdminUserListActivity.UserItem> getAllStudents() {
         List<AdminUserListActivity.UserItem> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT u.id, u.username, u.email FROM " + TABLE_USERS + " u " +
-                "INNER JOIN " + TABLE_PROFILES + " p ON u.id = p.user_id";
+        // Assuming AdminUserListActivity.UserItem constructor takes (id, name, email, role/type)
+        // Adjust the constructor call below if UserItem differs
+        String query = "SELECT " + KEY_ID + ", " + KEY_USER_NAME + ", " + KEY_USER_EMAIL + " FROM " + TABLE_USERS +
+                " WHERE " + KEY_USER_ROLE + "='Student'";
 
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
@@ -627,9 +693,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<AdminUserListActivity.UserItem> getAllGuests() {
         List<AdminUserListActivity.UserItem> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT u.id, u.username, u.email FROM " + TABLE_USERS + " u " +
-                "LEFT JOIN " + TABLE_PROFILES + " p ON u.id = p.user_id " +
-                "WHERE p.user_id IS NULL";
+        // Guests: Users who are not Students, Teachers, or Admin
+        String query = "SELECT " + KEY_ID + ", " + KEY_USER_NAME + ", " + KEY_USER_EMAIL + " FROM " + TABLE_USERS +
+                " WHERE " + KEY_USER_ROLE + " IS NULL OR " + KEY_USER_ROLE + " NOT IN ('Student', 'Teacher', 'Admin')";
 
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {

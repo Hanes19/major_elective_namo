@@ -14,10 +14,18 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
 
     private Context context;
     private List<Room> roomList;
+    private boolean showDescOnly;
 
+    // Default constructor for existing calls
     public RoomAdapter(Context context, List<Room> roomList) {
+        this(context, roomList, false);
+    }
+
+    // Overloaded constructor for custom display modes
+    public RoomAdapter(Context context, List<Room> roomList, boolean showDescOnly) {
         this.context = context;
         this.roomList = roomList;
+        this.showDescOnly = showDescOnly;
     }
 
     public void updateList(List<Room> newList) {
@@ -35,8 +43,15 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
     @Override
     public void onBindViewHolder(@NonNull RoomViewHolder holder, int position) {
         Room room = roomList.get(position);
-        holder.tvName.setText(room.getRoomName());
+
         holder.tvDesc.setText(room.getDescription());
+
+        if (showDescOnly) {
+            holder.tvName.setVisibility(View.GONE);
+        } else {
+            holder.tvName.setVisibility(View.VISIBLE);
+            holder.tvName.setText(room.getRoomName());
+        }
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, RoomDetailsActivity.class);

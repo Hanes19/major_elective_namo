@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:background="#0A0322">
 
-
     <ImageView
         android:id="@+id/imgBackground"
         android:layout_width="0dp"
@@ -19,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <!-- Background Glow Effect (Consistent with Profile) -->
+
     <View
         android:id="@+id/glowEffect"
         android:layout_width="match_parent"
@@ -30,7 +29,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Header Section (Consistent with Profile) -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -72,7 +70,6 @@
         android:background="@drawable/glass_divider_line"
         app:layout_constraintTop_toBottomOf="@+id/header" />
 
-    <!-- Scrollable Content Area -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -85,7 +82,6 @@
             android:orientation="vertical"
             android:padding="24dp">
 
-            <!-- Summary Card -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -102,34 +98,17 @@
                     android:textColor="#B0B0C0"
                     android:textSize="14sp" />
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tvSubjectStats"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:gravity="bottom"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/raleway_bold"
-                        android:text="184"
-                        android:textColor="#FFFFFF"
-                        android:textSize="48sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginStart="12dp"
-                        android:fontFamily="@font/raleway_regular"
-                        android:text="Across 4 Subjects"
-                        android:textColor="#B0B0C0"
-                        android:textSize="14sp" />
-                </LinearLayout>
+                    android:fontFamily="@font/raleway_bold"
+                    android:text="Loading..."
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp" />
             </LinearLayout>
 
-            <!-- Section List Header -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -139,182 +118,16 @@
                 android:textColor="#FFFFFF"
                 android:textSize="18sp" />
 
-            <!-- List Item 1 -->
-            <LinearLayout
+            <TextView
+                android:id="@+id/tvSectionStats"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
                 android:background="@drawable/glass_card_dark"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="16dp">
-
-                <FrameLayout
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/btn_glass_circle">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:fontFamily="@font/raleway_bold"
-                        android:text="A"
-                        android:textColor="#FFFFFF"
-                        android:textSize="18sp" />
-                </FrameLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/raleway_bold"
-                        android:text="BSIT - 3A"
-                        android:textColor="#FFFFFF"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:fontFamily="@font/raleway_regular"
-                        android:text="Mobile Programming"
-                        android:textColor="#B0B0C0"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/raleway_bold"
-                    android:text="42 Students"
-                    android:textColor="#A9016D"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <!-- List Item 2 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/glass_card_dark"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="16dp">
-
-                <FrameLayout
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/btn_glass_circle">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:fontFamily="@font/raleway_bold"
-                        android:text="B"
-                        android:textColor="#FFFFFF"
-                        android:textSize="18sp" />
-                </FrameLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/raleway_bold"
-                        android:text="BSIT - 3B"
-                        android:textColor="#FFFFFF"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:fontFamily="@font/raleway_regular"
-                        android:text="Mobile Programming"
-                        android:textColor="#B0B0C0"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/raleway_bold"
-                    android:text="38 Students"
-                    android:textColor="#A9016D"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <!-- List Item 3 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/glass_card_dark"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="16dp">
-
-                <FrameLayout
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/btn_glass_circle">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:fontFamily="@font/raleway_bold"
-                        android:text="C"
-                        android:textColor="#FFFFFF"
-                        android:textSize="18sp" />
-                </FrameLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/raleway_bold"
-                        android:text="BSCS - 2A"
-                        android:textColor="#FFFFFF"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:fontFamily="@font/raleway_regular"
-                        android:text="Data Structures"
-                        android:textColor="#B0B0C0"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/raleway_bold"
-                    android:text="45 Students"
-                    android:textColor="#A9016D"
-                    android:textSize="14sp" />
-            </LinearLayout>
+                android:padding="16dp"
+                android:fontFamily="@font/raleway_regular"
+                android:text="Loading..."
+                android:textColor="#FFFFFF"
+                android:textSize="14sp" />
 
         </LinearLayout>
     </ScrollView>
@@ -326,7 +139,6 @@
         android:background="@drawable/glass_divider_line"
         app:layout_constraintBottom_toTopOf="@+id/bottomNav" />
 
-    <!-- Bottom Navigation (Added for Consistency) -->
     <LinearLayout
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
@@ -335,7 +147,6 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
-
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -343,13 +154,11 @@
             android:alpha="0.6"
             android:gravity="center"
             android:orientation="vertical">
-
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/db_home_ic"
                 app:tint="#FFFFFF" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -359,21 +168,17 @@
                 android:textColor="#FFFFFF"
                 android:textSize="10sp" />
         </LinearLayout>
-
-        <!-- Active State for Classes/Analytics -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
-
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/db_nav_icon"
                 app:tint="#A9016D" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -383,7 +188,6 @@
                 android:textColor="#A9016D"
                 android:textSize="10sp" />
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -391,13 +195,11 @@
             android:alpha="0.6"
             android:gravity="center"
             android:orientation="vertical">
-
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/db_profile_ic"
                 app:tint="#FFFFFF" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
