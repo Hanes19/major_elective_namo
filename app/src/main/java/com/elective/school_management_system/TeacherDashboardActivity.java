@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -30,13 +29,14 @@ public class TeacherDashboardActivity extends AppCompatActivity {
     private LinearLayout btnNavFaculty, btnNavAdmin, btnNavClinic;
     private FrameLayout imgLogo;
 
-    // Stats Containers (NEW)
+    // Stats Containers
     private LinearLayout containerEnrollmentStats, containerSectionStats;
 
     // Dynamic Data Views
     private TextView tvWelcome, tvUpcomingSubject, tvUpcomingLocation, tvUpcomingTime;
     private TextView tabSchedule, tabRequests;
     private View cardUpcoming; // To toggle visibility
+    private LinearLayout layoutRequests; // Added missing reference for the requests view
 
     private DatabaseHelper dbHelper;
     private int userId;
@@ -64,7 +64,7 @@ public class TeacherDashboardActivity extends AppCompatActivity {
         initViews();
         loadUserData();
         loadUpcomingClass();
-        loadDashboardStats(); // NEW: Load the extra stats
+        loadDashboardStats();
         setupListeners();
     }
 
@@ -83,16 +83,6 @@ public class TeacherDashboardActivity extends AppCompatActivity {
         btnNavAdmin = findViewById(R.id.btnNavAdmin);
         btnNavClinic = findViewById(R.id.btnNavClinic);
 
-        // --- Upcoming Class Click Listener (Added) ---
-        cardUpcoming.setOnClickListener(v -> {
-            String room = tvUpcomingLocation.getText().toString();
-            if(room != null && !room.equals("--") && !room.isEmpty()) {
-                checkCameraPermissionAndOpen(room);
-            } else {
-                Toast.makeText(this, "No upcoming class location", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         // Header & Profile
         imgLogo = findViewById(R.id.imgLogo);
         tvWelcome = findViewById(R.id.tvWelcome);
@@ -106,8 +96,9 @@ public class TeacherDashboardActivity extends AppCompatActivity {
         tabSchedule = findViewById(R.id.tabSchedule);
         tabRequests = findViewById(R.id.tabRequests);
         cardUpcoming = findViewById(R.id.cardUpcoming);
+        layoutRequests = findViewById(R.id.layoutRequests); // Initialize this view
 
-        // Stats Containers (NEW)
+        // Stats Containers
         containerEnrollmentStats = findViewById(R.id.containerEnrollmentStats);
         containerSectionStats = findViewById(R.id.containerSectionStats);
     }
@@ -134,17 +125,12 @@ public class TeacherDashboardActivity extends AppCompatActivity {
         }
     }
 
-    // --- NEW: Load Statistics for Enrollment and Sections ---
     private void loadDashboardStats() {
+        if(containerEnrollmentStats == null || containerSectionStats == null) return;
+
         // Clear containers first
         containerEnrollmentStats.removeAllViews();
         containerSectionStats.removeAllViews();
-
-        /* TODO: Replace with actual DB queries using dbHelper and userId.
-           Example:
-           Cursor c = dbHelper.getEnrollmentStats(userId);
-           while(c.moveToNext()) { addStatRow(...); }
-        */
 
         // MOCK DATA: Enrollment Per Subject
         addStatRow(containerEnrollmentStats, "Mathematics 101", "42 Students");
@@ -211,21 +197,34 @@ public class TeacherDashboardActivity extends AppCompatActivity {
         btnAssignedRooms.setOnClickListener(v -> startActivity(new Intent(this, TeacherAssignedRoomsActivity.class)));
         btnMySchedule.setOnClickListener(v -> startActivity(new Intent(this, TeacherScheduleActivity.class)));
 
-        // --- Quick AR Navigation (With Permission Check) ---
+        // --- Quick Nav Buttons ---
         btnNavFaculty.setOnClickListener(v -> checkCameraPermissionAndOpen("Faculty Room"));
         btnNavAdmin.setOnClickListener(v -> checkCameraPermissionAndOpen("Admin Office"));
         btnNavClinic.setOnClickListener(v -> checkCameraPermissionAndOpen("Clinic"));
 
+        // --- Upcoming Class Click Listener (Moved here to fix NullPointerException) ---
+        if(cardUpcoming != null) {
+            cardUpcoming.setOnClickListener(v -> {
+                String room = (tvUpcomingLocation != null) ? tvUpcomingLocation.getText().toString() : "";
+                if(room != null && !room.equals("--") && !room.isEmpty()) {
+                    checkCameraPermissionAndOpen(room);
+                } else {
+                    Toast.makeText(this, "No upcoming class location", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
         // --- Tabs Logic ---
         tabSchedule.setOnClickListener(v -> {
             updateTabUI(true);
-            cardUpcoming.setVisibility(View.VISIBLE);
+            if(cardUpcoming != null) cardUpcoming.setVisibility(View.VISIBLE);
+            if(layoutRequests != null) layoutRequests.setVisibility(View.GONE);
         });
 
         tabRequests.setOnClickListener(v -> {
             updateTabUI(false);
-            cardUpcoming.setVisibility(View.GONE);
-            Toast.makeText(this, "No pending requests at the moment.", Toast.LENGTH_SHORT).show();
+            if(cardUpcoming != null) cardUpcoming.setVisibility(View.GONE);
+            if(layoutRequests != null) layoutRequests.setVisibility(View.VISIBLE);
         });
 
         // --- Profile / Logout ---
@@ -312,7 +311,6 @@ public class TeacherDashboardActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         loadUpcomingClass();
-        // loadDashboardStats(); // Uncomment if you want live refresh of stats on resume
     }
 
     @Override

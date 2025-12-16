@@ -392,7 +392,7 @@
             </HorizontalScrollView>
 
             <LinearLayout
-                android:id="@+id/layoutActionButtons"
+                android:id="@+id/buttonsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
@@ -481,69 +481,53 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tvEnrollmentTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginStart="24dp"
+                android:fontFamily="@font/raleway_bold"
+                android:text="Enrollment Statistics"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buttonsContainer" />
+
             <LinearLayout
+                android:id="@+id/containerEnrollmentStats"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="24dp"
                 android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@+id/layoutActionButtons"
+                android:background="@drawable/glass_card_dark"
+                android:padding="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/tvEnrollmentTitle" />
+
+            <TextView
+                android:id="@+id/tvSectionTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginStart="24dp"
+                android:fontFamily="@font/raleway_bold"
+                android:text="Section Overview"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/containerEnrollmentStats" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="24dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/glass_card_dark"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/raleway_bold"
-                        android:text="Enrolled per Subject"
-                        android:textColor="#A9016D"
-                        android:textSize="14sp"
-                        android:letterSpacing="0.05"
-                        android:layout_marginBottom="12dp"/>
-
-                    <LinearLayout
-                        android:id="@+id/containerEnrollmentStats"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="24dp"
-                    android:background="@drawable/glass_card_dark"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/raleway_bold"
-                        android:text="Students per Section"
-                        android:textColor="#A9016D"
-                        android:textSize="14sp"
-                        android:letterSpacing="0.05"
-                        android:layout_marginBottom="12dp"/>
-
-                    <LinearLayout
-                        android:id="@+id/containerSectionStats"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                    </LinearLayout>
-                </LinearLayout>
-
-            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/containerSectionStats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="24dp"
+                android:orientation="vertical"
+                android:background="@drawable/glass_card_dark"
+                android:padding="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/tvSectionTitle" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
