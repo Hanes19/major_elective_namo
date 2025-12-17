@@ -66,7 +66,7 @@ public class StudentNavigationListActivity extends AppCompatActivity {
         // [3] ADD THE CLICK LISTENER FOR THE MAP BANNER
         if (mapBanner != null) {
             mapBanner.setOnClickListener(v -> {
-                // This command actually opens your new Map Activity
+                // Assuming you want to go to the Map Activity
                 Intent intent = new Intent(StudentNavigationListActivity.this, StudentRoomMapActivity.class);
                 startActivity(intent);
             });

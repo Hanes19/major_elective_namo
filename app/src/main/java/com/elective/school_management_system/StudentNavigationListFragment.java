@@ -16,6 +16,8 @@ public class StudentNavigationListFragment extends Fragment {
     private LinearLayout cardRooms, cardInstructors, cardSchedule;
     private View btnSettings;
 
+    private View mapBanner;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -35,7 +37,7 @@ public class StudentNavigationListFragment extends Fragment {
         cardInstructors = view.findViewById(R.id.card_instructors);
         cardSchedule = view.findViewById(R.id.card_schedule);
         btnSettings = view.findViewById(R.id.img_settings);
-
+        mapBanner = view.findViewById(R.id.map_banner);
         // Note: Bottom Navigation views are removed as they are now in StudentMainActivity
     }
 
@@ -65,5 +67,13 @@ public class StudentNavigationListFragment extends Fragment {
                 startActivity(intent);
             });
         }
+        if (mapBanner != null) {
+            mapBanner.setOnClickListener(v -> {
+                // Use requireContext() for Intents inside Fragments
+                Intent intent = new Intent(requireContext(), StudentRoomMapActivity.class);
+                startActivity(intent);
+            });
+        }
+
     }
 }
