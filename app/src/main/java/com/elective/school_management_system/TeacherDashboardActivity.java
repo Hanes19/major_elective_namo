@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -29,19 +28,19 @@ public class TeacherDashboardActivity extends AppCompatActivity {
     private LinearLayout btnNavFaculty, btnNavAdmin, btnNavClinic;
     private FrameLayout imgLogo;
 
-    // Stats Containers
-    private LinearLayout containerEnrollmentStats, containerSectionStats;
+    // NEW: Analytics Entry Point
+    private LinearLayout btnAnalytics;
 
     // Dynamic Data Views
     private TextView tvWelcome, tvUpcomingSubject, tvUpcomingLocation, tvUpcomingTime;
     private TextView tabSchedule, tabRequests;
-    private View cardUpcoming; // To toggle visibility
-    private LinearLayout layoutRequests; // Added missing reference for the requests view
+    private View cardUpcoming;
+    private LinearLayout layoutRequests;
 
     private DatabaseHelper dbHelper;
     private int userId;
     private String userEmail;
-    private String pendingRoomName; // For permission handling
+    private String pendingRoomName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +63,7 @@ public class TeacherDashboardActivity extends AppCompatActivity {
         initViews();
         loadUserData();
         loadUpcomingClass();
-        loadDashboardStats();
+        // Removed loadDashboardStats() as stats are now on a separate screen
         setupListeners();
     }
 
@@ -77,6 +76,9 @@ public class TeacherDashboardActivity extends AppCompatActivity {
         // Main Feature Buttons
         btnAssignedRooms = findViewById(R.id.btnAssignedRooms);
         btnMySchedule = findViewById(R.id.btnMySchedule);
+
+        // Initialize the new Analytics button
+        btnAnalytics = findViewById(R.id.btnAnalytics);
 
         // Quick Nav Buttons
         btnNavFaculty = findViewById(R.id.btnNavFaculty);
@@ -96,11 +98,7 @@ public class TeacherDashboardActivity extends AppCompatActivity {
         tabSchedule = findViewById(R.id.tabSchedule);
         tabRequests = findViewById(R.id.tabRequests);
         cardUpcoming = findViewById(R.id.cardUpcoming);
-        layoutRequests = findViewById(R.id.layoutRequests); // Initialize this view
-
-        // Stats Containers
-        containerEnrollmentStats = findViewById(R.id.containerEnrollmentStats);
-        containerSectionStats = findViewById(R.id.containerSectionStats);
+        layoutRequests = findViewById(R.id.layoutRequests);
     }
 
     private void loadUserData() {
@@ -125,60 +123,6 @@ public class TeacherDashboardActivity extends AppCompatActivity {
         }
     }
 
-    private void loadDashboardStats() {
-        if(containerEnrollmentStats == null || containerSectionStats == null) return;
-
-        // Clear containers first
-        containerEnrollmentStats.removeAllViews();
-        containerSectionStats.removeAllViews();
-
-        // MOCK DATA: Enrollment Per Subject
-        addStatRow(containerEnrollmentStats, "Mathematics 101", "42 Students");
-        addStatRow(containerEnrollmentStats, "Physics 201", "35 Students");
-        addStatRow(containerEnrollmentStats, "History 101", "50 Students");
-
-        // MOCK DATA: Students Per Section
-        addStatRow(containerSectionStats, "Grade 10 - Sec A", "30 Students");
-        addStatRow(containerSectionStats, "Grade 10 - Sec B", "28 Students");
-        addStatRow(containerSectionStats, "Grade 11 - Sec A", "32 Students");
-    }
-
-    private void addStatRow(LinearLayout container, String label, String value) {
-        LinearLayout row = new LinearLayout(this);
-        row.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayout.LayoutParams rowParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        rowParams.setMargins(0, 12, 0, 12);
-        row.setLayoutParams(rowParams);
-
-        TextView tvLabel = new TextView(this);
-        tvLabel.setText(label);
-        tvLabel.setTextSize(14);
-        tvLabel.setTextColor(Color.parseColor("#E0E0E0")); // Light Grey
-        LinearLayout.LayoutParams labelParams = new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
-        tvLabel.setLayoutParams(labelParams);
-
-        TextView tvValue = new TextView(this);
-        tvValue.setText(value);
-        tvValue.setTextSize(14);
-        tvValue.setTypeface(null, Typeface.BOLD);
-        tvValue.setTextColor(Color.WHITE); // White for emphasis
-
-        row.addView(tvLabel);
-        row.addView(tvValue);
-
-        // Divider
-        View divider = new View(this);
-        divider.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, 1));
-        divider.setBackgroundColor(Color.parseColor("#1AFFFFFF")); // Very subtle line
-
-        container.addView(row);
-        container.addView(divider);
-    }
-
     private void setupListeners() {
         // --- Bottom Navigation ---
         navMaps.setOnClickListener(v -> {
@@ -197,12 +141,17 @@ public class TeacherDashboardActivity extends AppCompatActivity {
         btnAssignedRooms.setOnClickListener(v -> startActivity(new Intent(this, TeacherAssignedRoomsActivity.class)));
         btnMySchedule.setOnClickListener(v -> startActivity(new Intent(this, TeacherScheduleActivity.class)));
 
+        // NEW: Open Analytics Activity
+        if (btnAnalytics != null) {
+            btnAnalytics.setOnClickListener(v -> startActivity(new Intent(this, TeacherAnalyticsActivity.class)));
+        }
+
         // --- Quick Nav Buttons ---
         btnNavFaculty.setOnClickListener(v -> checkCameraPermissionAndOpen("Faculty Room"));
         btnNavAdmin.setOnClickListener(v -> checkCameraPermissionAndOpen("Admin Office"));
         btnNavClinic.setOnClickListener(v -> checkCameraPermissionAndOpen("Clinic"));
 
-        // --- Upcoming Class Click Listener (Moved here to fix NullPointerException) ---
+        // --- Upcoming Class Click Listener ---
         if(cardUpcoming != null) {
             cardUpcoming.setOnClickListener(v -> {
                 String room = (tvUpcomingLocation != null) ? tvUpcomingLocation.getText().toString() : "";

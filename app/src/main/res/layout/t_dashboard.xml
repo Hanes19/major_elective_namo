@@ -509,53 +509,59 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvEnrollmentTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:layout_marginStart="24dp"
-                android:fontFamily="@font/raleway_bold"
-                android:text="Enrollment Statistics"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonsContainer" />
-
             <LinearLayout
-                android:id="@+id/containerEnrollmentStats"
+                android:id="@+id/btnAnalytics"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:layout_marginHorizontal="24dp"
-                android:orientation="vertical"
-                android:background="@drawable/glass_card_dark"
-                android:padding="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/tvEnrollmentTitle" />
-
-            <TextView
-                android:id="@+id/tvSectionTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginStart="24dp"
-                android:fontFamily="@font/raleway_bold"
-                android:text="Section Overview"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/containerEnrollmentStats" />
-
-            <LinearLayout
-                android:id="@+id/containerSectionStats"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:layout_marginHorizontal="24dp"
-                android:orientation="vertical"
                 android:background="@drawable/glass_card_dark"
-                android:padding="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/tvSectionTitle" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="24dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintTop_toBottomOf="@+id/buttonsContainer">
+
+                <FrameLayout
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_circle_pink"
+                    android:padding="12dp">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/list_icon"
+                        app:tint="#FFFFFF" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="16dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/raleway_bold"
+                        android:text="Class Analytics"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="View enrollment &amp; section data"
+                        android:textColor="#B0B0B0"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/rarrow_ic"
+                    app:tint="#FFFFFF" />
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
