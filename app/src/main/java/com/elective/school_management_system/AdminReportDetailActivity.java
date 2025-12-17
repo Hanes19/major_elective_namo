@@ -50,7 +50,7 @@ public class AdminReportDetailActivity extends AppCompatActivity {
         btnViewOnMap.setOnClickListener(v -> {
             if (currentReport != null) {
                 // UPDATED: Open Admin Map
-                Intent intent = new Intent(AdminReportDetailActivity.this, AdminRoomMapActivity.class);
+                Intent intent = new Intent(AdminReportDetailActivity.this, AdminMapsFragment.class);
                 intent.putExtra("TARGET_ROOM", currentReport.getRoomName());
                 startActivity(intent);
             }

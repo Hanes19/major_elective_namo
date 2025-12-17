@@ -71,7 +71,6 @@ public class AdminUserListActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        // Back Button: Reverse Animation (Go back to Dashboard)
         if (btnBack != null) {
             btnBack.setOnClickListener(v -> {
                 finish();
@@ -79,29 +78,23 @@ public class AdminUserListActivity extends AppCompatActivity {
             });
         }
 
-        // Tabs
         tabStudent.setOnClickListener(v -> selectTab("Student"));
         tabTeacher.setOnClickListener(v -> selectTab("Teacher"));
         tabGuest.setOnClickListener(v -> selectTab("Guest"));
 
-        // Search
         etSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                filterList(s.toString());
-            }
-            @Override
-            public void afterTextChanged(Editable s) {}
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) { filterList(s.toString()); }
+            @Override public void afterTextChanged(Editable s) {}
         });
 
-        // Bottom Navigation Logic
+        // FIX: Bottom Navigation now targets AdminMainActivity with specific Tab Index
 
-        // 1. Maps (Sibling Activity)
+        // 1. Maps (Tab Index 0)
         if (navMaps != null) {
             navMaps.setOnClickListener(v -> {
-                Intent intent = new Intent(this, AdminRoomMapActivity.class);
+                Intent intent = new Intent(this, AdminMainActivity.class);
+                intent.putExtra("TAB_INDEX", 0);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 finish();
@@ -109,10 +102,11 @@ public class AdminUserListActivity extends AppCompatActivity {
             });
         }
 
-        // 2. Dashboard (Parent Activity) -> Reverse Animation
+        // 2. Dashboard (Tab Index 1)
         if (navDashboard != null) {
             navDashboard.setOnClickListener(v -> {
-                Intent intent = new Intent(this, AdminDashboardActivity.class);
+                Intent intent = new Intent(this, AdminMainActivity.class);
+                intent.putExtra("TAB_INDEX", 1);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 finish();
@@ -120,11 +114,14 @@ public class AdminUserListActivity extends AppCompatActivity {
             });
         }
 
-        // 3. Updates (Sibling Activity) -> Forward Animation (Usually to the right)
+        // 3. Updates/Reports (Tab Index 2)
         if (navUpdates != null) {
             navUpdates.setOnClickListener(v -> {
-                Intent intent = new Intent(this, AdminReportsActivity.class);
+                Intent intent = new Intent(this, AdminMainActivity.class);
+                intent.putExtra("TAB_INDEX", 2);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
+                finish();
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             });
         }
@@ -166,7 +163,6 @@ public class AdminUserListActivity extends AppCompatActivity {
         tabGuest.setTextColor(grayColor);
     }
 
-    // --- Data Loading & Filtering ---
     private void loadStudents() {
         allItems.clear();
         List<UserItem> students = dbHelper.getAllStudents();
@@ -209,7 +205,6 @@ public class AdminUserListActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
-    // --- Inner Classes ---
     public static class UserItem {
         private int id;
         private String name;

@@ -24,11 +24,7 @@ public class Login_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // 1. CHECK SESSION BEFORE LOADING VIEW
-        if (checkSession()) {
-            return;
-        }
+        if (checkSession()) return;
 
         setContentView(R.layout.l_login_screen);
         dbHelper = new DatabaseHelper(this);
@@ -48,7 +44,6 @@ public class Login_Activity extends AppCompatActivity {
 
     private void setupListeners() {
         btnBack.setOnClickListener(v -> finish());
-
         btnTogglePass.setOnClickListener(v -> {
             if (isPasswordVisible) {
                 etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -66,7 +61,6 @@ public class Login_Activity extends AppCompatActivity {
         btnLogin.setOnClickListener(v -> performLogin());
     }
 
-    // --- Session Check Function ---
     private boolean checkSession() {
         SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
         boolean isLoggedIn = prefs.getBoolean("isLoggedIn", false);
@@ -75,13 +69,13 @@ public class Login_Activity extends AppCompatActivity {
         if (isLoggedIn) {
             Intent intent;
             if (role.equals("admin")) {
-                intent = new Intent(Login_Activity.this, AdminDashboardActivity.class);
+                // FIX: Navigate to AdminMainActivity instead of AdminDashboardActivity
+                intent = new Intent(Login_Activity.this, AdminMainActivity.class);
                 Toast.makeText(this, "Welcome back, Admin!", Toast.LENGTH_SHORT).show();
             } else if (role.equals("teacher")) {
                 intent = new Intent(Login_Activity.this, TeacherDashboardActivity.class);
                 Toast.makeText(this, "Welcome back, Teacher!", Toast.LENGTH_SHORT).show();
             } else {
-                // CHANGED: Now redirects to the new Fragment Container Activity
                 intent = new Intent(Login_Activity.this, StudentMainActivity.class);
             }
 
@@ -105,7 +99,6 @@ public class Login_Activity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
-        // 2. CHECK FOR ADMIN CREDENTIALS (HARDCODED FALLBACK)
         if (email.equals("admin") && password.equals("admin123")) {
             editor.putString("email", email);
             editor.putString("role", "admin");
@@ -113,13 +106,12 @@ public class Login_Activity extends AppCompatActivity {
             editor.apply();
 
             Toast.makeText(this, "Login Successful (Admin)", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(Login_Activity.this, AdminDashboardActivity.class);
+            // FIX: Navigate to AdminMainActivity
+            Intent intent = new Intent(Login_Activity.this, AdminMainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
-        // 3. DATABASE CHECK
         else if (dbHelper.checkUser(email, password)) {
-            // Retrieve role from Database
             String role = dbHelper.getUserRole(email);
 
             editor.putString("email", email);
@@ -133,10 +125,9 @@ public class Login_Activity extends AppCompatActivity {
                 intent = new Intent(Login_Activity.this, TeacherDashboardActivity.class);
             } else if (role.equalsIgnoreCase("admin")) {
                 Toast.makeText(this, "Welcome, Admin!", Toast.LENGTH_SHORT).show();
+                // FIX: Navigate to AdminMainActivity
                 intent = new Intent(Login_Activity.this, AdminMainActivity.class);
             } else {
-                // Default to Student/Client
-                // CHANGED: Now redirects to the new Fragment Container Activity
                 Toast.makeText(this, "Login Successful!", Toast.LENGTH_SHORT).show();
                 intent = new Intent(Login_Activity.this, StudentMainActivity.class);
             }

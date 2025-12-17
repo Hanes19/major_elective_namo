@@ -38,16 +38,18 @@ public class AdminReportsFragment extends Fragment {
 
         dbHelper = new DatabaseHelper(requireContext());
 
-        recyclerView = view.findViewById(R.id.recyclerViewReports);
+        // CORRECTED LINE
+        recyclerView = view.findViewById(R.id.recyclerReports);
         progressBar = view.findViewById(R.id.progressBar);
         tvEmptyState = view.findViewById(R.id.tvEmptyState);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         reportList = new ArrayList<>();
-        adapter = new ReportAdapter(getContext(), reportList, report -> {
-            // Handle click: Open detail activity
+
+        // FIX: The lambda receives an 'int' (reportId), not a 'Report' object.
+        adapter = new ReportAdapter(getContext(), reportList, reportId -> {
             Intent intent = new Intent(getContext(), AdminReportDetailActivity.class);
-            intent.putExtra("REPORT_ID", report.getId());
+            intent.putExtra("REPORT_ID", reportId); // Use reportId directly
             startActivity(intent);
         });
         recyclerView.setAdapter(adapter);
@@ -58,27 +60,26 @@ public class AdminReportsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        loadReports(); // Refresh list when returning
+        loadReports();
     }
 
     private void loadReports() {
-        progressBar.setVisibility(View.VISIBLE);
+        if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
 
-        // Fetch from DB
-        List<Report> fetched = dbHelper.getAllReports(); // Ensure this method exists in DatabaseHelper
+        List<Report> fetched = dbHelper.getAllReports();
 
         reportList.clear();
         if (fetched != null) {
             reportList.addAll(fetched);
         }
 
-        progressBar.setVisibility(View.GONE);
+        if (progressBar != null) progressBar.setVisibility(View.GONE);
 
         if (reportList.isEmpty()) {
-            tvEmptyState.setVisibility(View.VISIBLE);
+            if (tvEmptyState != null) tvEmptyState.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
         } else {
-            tvEmptyState.setVisibility(View.GONE);
+            if (tvEmptyState != null) tvEmptyState.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
         }
 
