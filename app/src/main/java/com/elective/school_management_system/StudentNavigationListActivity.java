@@ -73,7 +73,9 @@ public class StudentNavigationListActivity extends AppCompatActivity {
             Intent intent = new Intent(StudentNavigationListActivity.this, StudentDashboardActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
-            finish(); // Optional: finish this activity to remove it from stack
+            finish();
+            // Animate Left
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         });
 
         // Navigation (Current Screen)
@@ -85,7 +87,9 @@ public class StudentNavigationListActivity extends AppCompatActivity {
         navProfile.setOnClickListener(v -> {
             Intent intent = new Intent(StudentNavigationListActivity.this, StudentProfileActivity.class);
             startActivity(intent);
-            finish(); // Optional
+            finish();
+            // Animate Right
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
     }
 }
