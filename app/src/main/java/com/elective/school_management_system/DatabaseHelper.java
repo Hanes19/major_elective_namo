@@ -14,7 +14,7 @@ import java.util.Locale;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SchoolSystem.db";
-    private static final int DATABASE_VERSION = 9; // Incremented version to support Role column
+    private static final int DATABASE_VERSION = 10; // Incremented to 10 to apply new sample data
 
     // --- User Table ---
     private static final String TABLE_USERS = "users";
@@ -22,7 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_USER_NAME = "username";
     private static final String KEY_USER_EMAIL = "email";
     private static final String KEY_USER_PASSWORD = "password";
-    private static final String KEY_USER_ROLE = "role"; // NEW: Role Column
+    private static final String KEY_USER_ROLE = "role";
 
     // --- User Profile Table ---
     private static final String TABLE_PROFILES = "user_profiles";
@@ -67,7 +67,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_EVT_DATE = "date";
     private static final String KEY_EVT_TYPE = "type";
 
-    // --- NEW: Enrollment Table (Links Students to Classes) ---
+    // --- Enrollment Table (Links Students to Classes) ---
     private static final String TABLE_ENROLLMENTS = "enrollments";
     private static final String KEY_ENROLL_STUDENT_ID = "student_id";
     private static final String KEY_ENROLL_SCHEDULE_ID = "schedule_id";
@@ -78,13 +78,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // 1. Users Table (Updated with Role)
+        // 1. Users Table
         String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USERS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + KEY_USER_NAME + " TEXT,"
                 + KEY_USER_EMAIL + " TEXT,"
                 + KEY_USER_PASSWORD + " TEXT,"
-                + KEY_USER_ROLE + " TEXT" + ")"; // Added Role
+                + KEY_USER_ROLE + " TEXT" + ")";
         db.execSQL(CREATE_USERS_TABLE);
 
         // 2. User Profiles Table
@@ -158,7 +158,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void addInitialData(SQLiteDatabase db) {
-        // --- 1. Sample Users (Updated with Roles) ---
+        // --- 1. Sample Users ---
         // Student (ID 1)
         db.execSQL("INSERT INTO " + TABLE_USERS + " (" + KEY_USER_NAME + ", " + KEY_USER_EMAIL + ", " + KEY_USER_PASSWORD + ", " + KEY_USER_ROLE + ") VALUES ('Student Demo', 'student@test.com', 'password123', 'Student')");
         // Teacher (ID 2)
@@ -174,24 +174,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(sqlRoom, new Object[]{"Faculty Room", "Main Faculty Office", "faculty_room"});
         db.execSQL(sqlRoom, new Object[]{"Admin Office", "Administration & HR", "admin_office"});
         db.execSQL(sqlRoom, new Object[]{"Clinic", "School Health Center", "clinic"});
+        // Additional location for new schedule sample
+        db.execSQL(sqlRoom, new Object[]{"Gymnasium", "Sports and Recreation Center", "gymnasium"});
 
         // --- 3. Sample Schedule (For Teacher ID 2) ---
         int teacherId = 2;
         String sqlSch = "INSERT INTO " + TABLE_SCHEDULE + " (" + KEY_SCH_USER_ID + ", " + KEY_SCH_SUBJECT + ", " + KEY_SCH_ROOM + ", " + KEY_SCH_DAY + ", " + KEY_SCH_START + ", " + KEY_SCH_END + ") VALUES (?, ?, ?, ?, ?, ?)";
 
-        // Monday
+        // Existing Classes
         db.execSQL(sqlSch, new Object[]{teacherId, "Adv. Potions", "Room 102", "Monday", "08:00", "10:00"}); // ID 1
         db.execSQL(sqlSch, new Object[]{teacherId, "Defense Against Dark Arts", "Room 101", "Monday", "13:00", "15:00"}); // ID 2
-
-        // Tuesday
         db.execSQL(sqlSch, new Object[]{teacherId, "Alchemy 101", "Room 103", "Tuesday", "09:00", "12:00"}); // ID 3
-
-        // Wednesday
         db.execSQL(sqlSch, new Object[]{teacherId, "Adv. Potions", "Room 102", "Wednesday", "08:00", "10:00"}); // ID 4
         db.execSQL(sqlSch, new Object[]{teacherId, "Ethics in Magic", "Room 101", "Wednesday", "10:00", "12:00"}); // ID 5
-
-        // Friday
         db.execSQL(sqlSch, new Object[]{teacherId, "Staff Meeting", "Faculty Room", "Friday", "16:00", "17:00"}); // ID 6
+
+        // --- NEW SAMPLE CLASSES FOR STUDENT SCHEDULE ---
+        // ID 7
+        db.execSQL(sqlSch, new Object[]{teacherId, "Mobile App Development", "Room 103", "Thursday", "08:00", "11:00"});
+        // ID 8
+        db.execSQL(sqlSch, new Object[]{teacherId, "Data Structures", "Room 101", "Friday", "09:00", "10:30"});
+        // ID 9
+        db.execSQL(sqlSch, new Object[]{teacherId, "Physical Education", "Gymnasium", "Friday", "13:00", "15:00"});
+
 
         // --- 4. Sample Reports ---
         String sqlRep = "INSERT INTO " + TABLE_REPORTS + " (" + KEY_REP_ROOM + ", " + KEY_REP_DESC + ", " + KEY_REP_CATEGORY + ", " + KEY_REP_STATUS + ", " + KEY_REP_DATE + ") VALUES (?, ?, ?, ?, ?)";
@@ -203,9 +208,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(sqlEvt, new Object[]{"Campus Job Fair", "Join us at the Gymnasium for the annual job fair.", "2025-10-25", "General"});
         db.execSQL(sqlEvt, new Object[]{"Library Maintenance", "The library will be closed for electrical repairs.", "2025-10-26", "Emergency"});
 
-        // --- 6. Sample Enrollments (Student ID 1 enrolled in Teacher ID 2's classes) ---
-        db.execSQL("INSERT INTO " + TABLE_ENROLLMENTS + " (" + KEY_ENROLL_STUDENT_ID + ", " + KEY_ENROLL_SCHEDULE_ID + ") VALUES (1, 1)");
-        db.execSQL("INSERT INTO " + TABLE_ENROLLMENTS + " (" + KEY_ENROLL_STUDENT_ID + ", " + KEY_ENROLL_SCHEDULE_ID + ") VALUES (1, 2)");
+        // --- 6. Sample Enrollments ---
+        // Link Student (ID 1) to Classes
+        db.execSQL("INSERT INTO " + TABLE_ENROLLMENTS + " (" + KEY_ENROLL_STUDENT_ID + ", " + KEY_ENROLL_SCHEDULE_ID + ") VALUES (1, 1)"); // Adv Potions
+        db.execSQL("INSERT INTO " + TABLE_ENROLLMENTS + " (" + KEY_ENROLL_STUDENT_ID + ", " + KEY_ENROLL_SCHEDULE_ID + ") VALUES (1, 2)"); // Defense Arts
+
+        // --- NEW ENROLLMENTS for the new classes ---
+        db.execSQL("INSERT INTO " + TABLE_ENROLLMENTS + " (" + KEY_ENROLL_STUDENT_ID + ", " + KEY_ENROLL_SCHEDULE_ID + ") VALUES (1, 7)"); // Mobile App
+        db.execSQL("INSERT INTO " + TABLE_ENROLLMENTS + " (" + KEY_ENROLL_STUDENT_ID + ", " + KEY_ENROLL_SCHEDULE_ID + ") VALUES (1, 8)"); // Data Struct
+        db.execSQL("INSERT INTO " + TABLE_ENROLLMENTS + " (" + KEY_ENROLL_STUDENT_ID + ", " + KEY_ENROLL_SCHEDULE_ID + ") VALUES (1, 9)"); // PE
     }
 
     @Override
@@ -224,7 +235,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // ================== DATA ACCESS METHODS ==================
 
-    // --- USER ROLE METHOD (FIXED) ---
     public String getUserRole(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         String role = "Student"; // Default fallback
@@ -289,7 +299,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (cursor != null) cursor.close();
         if (s != null) return s;
 
-        // Fallback
+        // Fallback: Get first class of the week/day
         Cursor cursorAll = db.query(TABLE_SCHEDULE, null, KEY_SCH_USER_ID + "=?",
                 new String[]{String.valueOf(userId)}, null, null, KEY_SCH_DAY + " ASC, " + KEY_SCH_START + " ASC", "1");
         if (cursorAll != null) {
@@ -309,7 +319,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return s;
     }
 
-    // --- NEW: Get Student's Enrolled Schedule ---
+    // --- Get Student's Enrolled Schedule ---
     public List<Schedule> getStudentSchedule(int studentId) {
         List<Schedule> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -419,7 +429,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return exists;
     }
 
-    // Updated registerUser to include default Role
     public boolean registerUser(String username, String email, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -612,7 +621,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    // --- DASHBOARD STATISTICS (For AdminDashboardActivity) ---
+    // --- DASHBOARD STATISTICS ---
     public int getTotalUserCount() {
         SQLiteDatabase db = this.getReadableDatabase();
         int count = 0;
@@ -627,7 +636,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public int getStudentCount() {
         SQLiteDatabase db = this.getReadableDatabase();
         int count = 0;
-        // Count users with 'Student' role
         Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_USERS + " WHERE " + KEY_USER_ROLE + "='Student'", null);
         if (cursor.moveToFirst()) {
             count = cursor.getInt(0);
@@ -670,8 +678,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<AdminUserListActivity.UserItem> getAllStudents() {
         List<AdminUserListActivity.UserItem> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        // Assuming AdminUserListActivity.UserItem constructor takes (id, name, email, role/type)
-        // Adjust the constructor call below if UserItem differs
         String query = "SELECT " + KEY_ID + ", " + KEY_USER_NAME + ", " + KEY_USER_EMAIL + " FROM " + TABLE_USERS +
                 " WHERE " + KEY_USER_ROLE + "='Student'";
 
@@ -693,7 +699,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<AdminUserListActivity.UserItem> getAllGuests() {
         List<AdminUserListActivity.UserItem> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        // Guests: Users who are not Students, Teachers, or Admin
         String query = "SELECT " + KEY_ID + ", " + KEY_USER_NAME + ", " + KEY_USER_EMAIL + " FROM " + TABLE_USERS +
                 " WHERE " + KEY_USER_ROLE + " IS NULL OR " + KEY_USER_ROLE + " NOT IN ('Student', 'Teacher', 'Admin')";
 

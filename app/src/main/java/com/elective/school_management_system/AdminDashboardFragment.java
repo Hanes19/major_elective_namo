@@ -17,37 +17,24 @@ import androidx.fragment.app.Fragment;
 
 public class AdminDashboardFragment extends Fragment {
 
-    // Management Console Buttons
     private ConstraintLayout btnManageMap, btnManageUsers, btnReports;
-
-    // System Overview Cards
     private LinearLayout cardActiveUsers, cardNewReports, cardSysHealth;
-
-    // Stats Text Views
     private TextView tvActiveUsersCount, tvNewReportsCount, tvSysHealthCount;
-
-    // Settings Button
     private FrameLayout btnSettings;
-
     private DatabaseHelper dbHelper;
 
-    private int totalUsers = 0;
-    private int studentCount = 0;
-    private int guestCount = 0;
-    private int pendingReports = 0;
+    private int totalUsers = 0, studentCount = 0, guestCount = 0, pendingReports = 0;
     private String reportsBreakdown = "";
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inflate the layout (see XML below)
         return inflater.inflate(R.layout.fragment_admin_dashboard, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         dbHelper = new DatabaseHelper(requireContext());
         initViews(view);
         setupListeners();
@@ -85,21 +72,22 @@ public class AdminDashboardFragment extends Fragment {
         tvActiveUsersCount.setText(String.valueOf(totalUsers));
         tvNewReportsCount.setText(String.valueOf(pendingReports));
 
-        // Mock health stat
+        // Mock health for demo
         int health = 98 + (int)(Math.random() * 3) - 1;
         tvSysHealthCount.setText(health + "%");
     }
 
     private void setupListeners() {
-        // Management Console
+        // These buttons open dedicated Activities, NOT other tabs
         btnManageMap.setOnClickListener(v -> startActivity(new Intent(getActivity(), AdminManageRoomsActivity.class)));
         btnManageUsers.setOnClickListener(v -> startActivity(new Intent(getActivity(), AdminUserListActivity.class)));
+
+        // 'System Reports' button can technically open the dedicated Activity or switch tabs.
+        // Let's stick to the Activity for deep management:
         btnReports.setOnClickListener(v -> startActivity(new Intent(getActivity(), AdminReportsActivity.class)));
 
-        // Settings
         btnSettings.setOnClickListener(v -> startActivity(new Intent(getActivity(), NavSettingsActivity.class)));
 
-        // Cards
         cardActiveUsers.setOnClickListener(v -> {
             String breakdown = "Total Users: " + totalUsers + "\n\n• Students: " + studentCount + "\n• Staff/Guests: " + guestCount;
             showDescriptionDialog("Active Users Breakdown", breakdown);
@@ -117,6 +105,7 @@ public class AdminDashboardFragment extends Fragment {
     }
 
     private void showDescriptionDialog(String title, String message) {
+        if(getContext() == null) return;
         new AlertDialog.Builder(requireContext())
                 .setTitle(title)
                 .setMessage(message)
