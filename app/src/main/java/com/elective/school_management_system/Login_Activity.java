@@ -133,7 +133,7 @@ public class Login_Activity extends AppCompatActivity {
                 intent = new Intent(Login_Activity.this, TeacherDashboardActivity.class);
             } else if (role.equalsIgnoreCase("admin")) {
                 Toast.makeText(this, "Welcome, Admin!", Toast.LENGTH_SHORT).show();
-                intent = new Intent(Login_Activity.this, AdminDashboardActivity.class);
+                intent = new Intent(Login_Activity.this, AdminMainActivity.class);
             } else {
                 // Default to Student/Client
                 // CHANGED: Now redirects to the new Fragment Container Activity

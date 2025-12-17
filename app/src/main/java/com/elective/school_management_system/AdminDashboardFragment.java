@@ -84,7 +84,7 @@ public class AdminDashboardFragment extends Fragment {
 
         // 'System Reports' button can technically open the dedicated Activity or switch tabs.
         // Let's stick to the Activity for deep management:
-        btnReports.setOnClickListener(v -> startActivity(new Intent(getActivity(), AdminReportsActivity.class)));
+        btnReports.setOnClickListener(v -> startActivity(new Intent(getActivity(), AdminReportsFragment.class)));
 
         btnSettings.setOnClickListener(v -> startActivity(new Intent(getActivity(), NavSettingsActivity.class)));
 

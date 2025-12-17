@@ -48,14 +48,14 @@ public class AdminManageRoomsActivity extends AppCompatActivity {
         // Navigation Logic
         if (navMaps != null) {
             navMaps.setOnClickListener(v -> {
-                Intent intent = new Intent(AdminManageRoomsActivity.this, AdminRoomMapActivity.class);
+                Intent intent = new Intent(AdminManageRoomsActivity.this, AdminMapsFragment.class);
                 startActivity(intent);
             });
         }
 
         if (navDashboard != null) {
             navDashboard.setOnClickListener(v -> {
-                Intent intent = new Intent(AdminManageRoomsActivity.this, AdminDashboardActivity.class);
+                Intent intent = new Intent(AdminManageRoomsActivity.this, AdminDashboardFragment.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();
@@ -64,7 +64,7 @@ public class AdminManageRoomsActivity extends AppCompatActivity {
 
         if (navUpdates != null) {
             navUpdates.setOnClickListener(v -> {
-                Intent intent = new Intent(AdminManageRoomsActivity.this, AdminReportsActivity.class);
+                Intent intent = new Intent(AdminManageRoomsActivity.this, AdminReportsFragment.class);
                 startActivity(intent);
             });
         }

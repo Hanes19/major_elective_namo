@@ -71,14 +71,14 @@ public class AdminManageInstructorsActivity extends AppCompatActivity {
         // Added Navigation Logic
         if (navMaps != null) {
             navMaps.setOnClickListener(v -> {
-                Intent intent = new Intent(AdminManageInstructorsActivity.this, AdminRoomMapActivity.class);
+                Intent intent = new Intent(AdminManageInstructorsActivity.this, AdminMapsFragment.class);
                 startActivity(intent);
             });
         }
 
         if (navDashboard != null) {
             navDashboard.setOnClickListener(v -> {
-                Intent intent = new Intent(AdminManageInstructorsActivity.this, AdminDashboardActivity.class);
+                Intent intent = new Intent(AdminManageInstructorsActivity.this, AdminDashboardFragment.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();
@@ -87,7 +87,7 @@ public class AdminManageInstructorsActivity extends AppCompatActivity {
 
         if (navUpdates != null) {
             navUpdates.setOnClickListener(v -> {
-                Intent intent = new Intent(AdminManageInstructorsActivity.this, AdminReportsActivity.class);
+                Intent intent = new Intent(AdminManageInstructorsActivity.this, AdminReportsFragment.class);
                 startActivity(intent);
             });
         }

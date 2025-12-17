@@ -176,8 +176,11 @@ public class TeacherDashboardActivity extends AppCompatActivity {
             if(layoutRequests != null) layoutRequests.setVisibility(View.VISIBLE);
         });
 
-        // --- Profile / Logout ---
-        imgLogo.setOnClickListener(v -> showProfileDialog());
+// --- Profile ---
+        imgLogo.setOnClickListener(v -> {
+            Intent intent = new Intent(TeacherDashboardActivity.this, TeacherProfileActivity.class);
+            startActivity(intent);
+        });
     }
 
     // --- UI Helpers ---

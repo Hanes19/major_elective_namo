@@ -32,8 +32,9 @@ public class StudentRoomsListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Ensure this matches your XML file name (e.g., s_navigation_list or s_rooms_list)
-        setContentView(R.layout.s_navigation_list);
+
+
+        setContentView(R.layout.s_rooms_list);
 
         // Get Intent Extras
         isGuest = getIntent().getBooleanExtra("IS_GUEST", false);
