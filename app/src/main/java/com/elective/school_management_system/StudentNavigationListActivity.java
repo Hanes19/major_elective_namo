@@ -9,8 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class StudentNavigationListActivity extends AppCompatActivity {
 
-    // UI Components matching s_navigation_list.xml
+    // UI Components
     private LinearLayout cardRooms, cardInstructors, cardSchedule;
+    private View mapBanner; // <--- [1] ADD THIS VARIABLE
     private LinearLayout navHome, navNav, navProfile;
     private View btnSettings;
 
@@ -27,9 +28,12 @@ public class StudentNavigationListActivity extends AppCompatActivity {
         // Main Action Cards
         cardRooms = findViewById(R.id.card_rooms);
         cardInstructors = findViewById(R.id.card_instructors);
-        cardSchedule = findViewById(R.id.card_schedule); // Initialize New Card
+        cardSchedule = findViewById(R.id.card_schedule);
 
-        // Settings button (FrameLayout in XML)
+        // [2] FIND THE MAP BANNER VIEW
+        mapBanner = findViewById(R.id.map_banner);
+
+        // Settings button
         btnSettings = findViewById(R.id.img_settings);
 
         // Bottom Navigation
@@ -53,16 +57,27 @@ public class StudentNavigationListActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // 3. My Schedule (New Function)
+        // 3. My Schedule
         cardSchedule.setOnClickListener(v -> {
             Intent intent = new Intent(StudentNavigationListActivity.this, StudentScheduleActivity.class);
             startActivity(intent);
         });
 
+        // [3] ADD THE CLICK LISTENER FOR THE MAP BANNER
+        if (mapBanner != null) {
+            mapBanner.setOnClickListener(v -> {
+                // This command actually opens your new Map Activity
+                Intent intent = new Intent(StudentNavigationListActivity.this, StudentRoomMapActivity.class);
+                startActivity(intent);
+            });
+        }
+
         // Settings Button
         if (btnSettings != null) {
             btnSettings.setOnClickListener(v -> {
-                Toast.makeText(this, "Settings clicked", Toast.LENGTH_SHORT).show();
+                // Example: Intent to Settings
+                Intent intent = new Intent(StudentNavigationListActivity.this, NavSettingsActivity.class);
+                startActivity(intent);
             });
         }
 
@@ -74,13 +89,12 @@ public class StudentNavigationListActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             finish();
-            // Animate Left
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         });
 
         // Navigation (Current Screen)
         navNav.setOnClickListener(v -> {
-            // Already on Navigation List
+            // Already here, do nothing
         });
 
         // Profile
@@ -88,7 +102,6 @@ public class StudentNavigationListActivity extends AppCompatActivity {
             Intent intent = new Intent(StudentNavigationListActivity.this, StudentProfileActivity.class);
             startActivity(intent);
             finish();
-            // Animate Right
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
     }

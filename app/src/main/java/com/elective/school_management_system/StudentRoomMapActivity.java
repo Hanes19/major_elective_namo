@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,13 +30,13 @@ public class StudentRoomMapActivity extends AppCompatActivity implements OnMapRe
     private ImageButton btnBack;
     private TextView tabList;
     private Button btnNavigateSchool;
-    private LinearLayout navHome, navNavigation, navProfile;
+    // REMOVED: Bottom Navigation variables (navHome, navProfile) as they are not in the XML
 
     private GoogleMap mMap;
     private LatLng selectedDestination;
     private String selectedBuildingName;
 
-    // School Coordinates (TS Building, Hagkol, Valencia City)
+    // School Coordinates
     private static final double SCHOOL_LAT = 7.9230;
     private static final double SCHOOL_LNG = 125.0953;
 
@@ -55,8 +54,8 @@ public class StudentRoomMapActivity extends AppCompatActivity implements OnMapRe
         btnBack = findViewById(R.id.btnBack);
         tabList = findViewById(R.id.tabList);
         btnNavigateSchool = findViewById(R.id.btnNavigateSchool);
-        navHome = findViewById(R.id.navHome);
-        navProfile = findViewById(R.id.navProfile);
+
+        // REMOVED: finding navHome and navProfile
     }
 
     private void setupListeners() {
@@ -85,19 +84,7 @@ public class StudentRoomMapActivity extends AppCompatActivity implements OnMapRe
             }
         });
 
-        navHome.setOnClickListener(v -> {
-            Intent intent = new Intent(StudentRoomMapActivity.this, StudentDashboardActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish();
-        });
-
-
-
-        navProfile.setOnClickListener(v -> {
-            Intent intent = new Intent(StudentRoomMapActivity.this, StudentProfileActivity.class);
-            startActivity(intent);
-        });
+        // REMOVED: navHome and navProfile listeners to prevent Crash
     }
 
     private void setupMap() {
@@ -129,7 +116,6 @@ public class StudentRoomMapActivity extends AppCompatActivity implements OnMapRe
 
     private void addBuildingMarkers() {
         List<Room> buildings = new ArrayList<>();
-        // Updated mock markers relative to the new school location
         buildings.add(new Room(1, "TS Building", "Main Campus", "", SCHOOL_LAT, SCHOOL_LNG));
         buildings.add(new Room(2, "Annex A", "Rooms 101-105", "", SCHOOL_LAT + 0.0001, SCHOOL_LNG + 0.0001));
         buildings.add(new Room(3, "Library", "Study Area", "", SCHOOL_LAT - 0.0001, SCHOOL_LNG - 0.0001));
