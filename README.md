@@ -1,2 +1,1 @@
-# major_elective_namo
-major namo
+# ACLC AR & Maps Navigation System
