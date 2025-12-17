@@ -2,8 +2,10 @@ package com.elective.school_management_system;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +17,8 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
     // Bottom Navigation Views
     private LinearLayout navMaps, navDashboard, navUpdates;
+    private ImageView iconMaps, iconDashboard, iconUpdates;
+    private TextView textMaps, textDashboard, textUpdates;
 
     // Management Console Buttons
     private ConstraintLayout btnManageMap, btnManageUsers, btnReports;
@@ -22,7 +26,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
     // System Overview Cards
     private LinearLayout cardActiveUsers, cardNewReports, cardSysHealth;
 
-    // Stats Text Views (Added)
+    // Stats Text Views
     private TextView tvActiveUsersCount, tvNewReportsCount, tvSysHealthCount;
 
     // Settings Button
@@ -47,12 +51,12 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         initViews();
         setupListeners();
+        updateNavUI(); // Set the correct colors for this active tab
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Refresh stats when returning to the dashboard
         updateDashboardStats();
     }
 
@@ -61,6 +65,14 @@ public class AdminDashboardActivity extends AppCompatActivity {
         navMaps = findViewById(R.id.navMaps);
         navDashboard = findViewById(R.id.navDashboard);
         navUpdates = findViewById(R.id.navUpdates);
+
+        iconMaps = findViewById(R.id.iconMaps);
+        iconDashboard = findViewById(R.id.iconDashboard);
+        iconUpdates = findViewById(R.id.iconUpdates);
+
+        textMaps = findViewById(R.id.textMaps);
+        textDashboard = findViewById(R.id.textDashboard);
+        textUpdates = findViewById(R.id.textUpdates);
 
         // Management Console
         btnManageMap = findViewById(R.id.btnManageMap);
@@ -81,26 +93,78 @@ public class AdminDashboardActivity extends AppCompatActivity {
         btnSettings = findViewById(R.id.btnSettings);
     }
 
+    private void updateNavUI() {
+        // This is the Dashboard Activity, so Dashboard is Active
+        int activeColor = Color.parseColor("#A9016D");
+        int inactiveColor = Color.WHITE;
+
+        // Maps (Inactive)
+        iconMaps.setColorFilter(inactiveColor);
+        textMaps.setTextColor(inactiveColor);
+
+        // Dashboard (Active)
+        iconDashboard.setColorFilter(activeColor);
+        textDashboard.setTextColor(activeColor);
+
+        // Updates (Inactive)
+        iconUpdates.setColorFilter(inactiveColor);
+        textUpdates.setTextColor(inactiveColor);
+    }
+
     private void updateDashboardStats() {
-        // Fetch data from Database
         totalUsers = dbHelper.getTotalUserCount();
         studentCount = dbHelper.getStudentCount();
-        guestCount = totalUsers - studentCount; // Assuming everyone else is Guest/Staff
-
+        guestCount = totalUsers - studentCount;
         pendingReports = dbHelper.getPendingReportsCount();
         reportsBreakdown = dbHelper.getPendingReportBreakdown();
 
-        // Update UI
         tvActiveUsersCount.setText(String.valueOf(totalUsers));
         tvNewReportsCount.setText(String.valueOf(pendingReports));
 
-        // Randomize System Health slightly for effect (since it's a mock metric)
-        int health = 98 + (int)(Math.random() * 3) - 1; // Random between 97-100
+        int health = 98 + (int)(Math.random() * 3) - 1;
         tvSysHealthCount.setText(health + "%");
     }
 
     private void setupListeners() {
-        // --- System Overview Listeners (Updated) ---
+        // --- Bottom Navigation Listeners (With Animations) ---
+
+        navMaps.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminDashboardActivity.this, AdminRoomMapActivity.class);
+            startActivity(intent);
+            // Maps is to the LEFT of Dashboard -> Slide In Left
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        });
+
+        navDashboard.setOnClickListener(v -> {
+            // Already here
+        });
+
+        navUpdates.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminDashboardActivity.this, AdminReportsActivity.class);
+            startActivity(intent);
+            // Updates is to the RIGHT of Dashboard -> Slide In Right
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        });
+
+        // --- Management Console Listeners ---
+
+        btnManageMap.setOnClickListener(v -> {
+            startActivity(new Intent(AdminDashboardActivity.this, AdminManageRoomsActivity.class));
+        });
+
+        btnManageUsers.setOnClickListener(v -> {
+            startActivity(new Intent(AdminDashboardActivity.this, AdminUserListActivity.class));
+        });
+
+        btnReports.setOnClickListener(v -> {
+            startActivity(new Intent(AdminDashboardActivity.this, AdminReportsActivity.class));
+        });
+
+        // --- Settings & Cards ---
+
+        btnSettings.setOnClickListener(v -> {
+            startActivity(new Intent(AdminDashboardActivity.this, NavSettingsActivity.class));
+        });
 
         cardActiveUsers.setOnClickListener(v -> {
             String breakdown = "Total Users: " + totalUsers + "\n\n" +
@@ -116,62 +180,14 @@ public class AdminDashboardActivity extends AppCompatActivity {
         });
 
         cardSysHealth.setOnClickListener(v -> {
-            // Mock breakdown for system health
             String healthStats = "Overall Stability: " + tvSysHealthCount.getText() + "\n\n" +
                     "• Database: Online (5ms latency)\n" +
                     "• Server Load: 12% (Normal)\n" +
                     "• Storage: 45% Used";
             showDescriptionDialog("System Health Diagnostics", healthStats);
         });
-
-
-        // --- Management Console Listeners ---
-
-        btnManageMap.setOnClickListener(v -> {
-            // Navigate to Map Management
-            Intent intent = new Intent(AdminDashboardActivity.this, AdminManageRoomsActivity.class);
-            startActivity(intent);
-        });
-
-        btnManageUsers.setOnClickListener(v -> {
-            // Navigate to User Directory
-            Intent intent = new Intent(AdminDashboardActivity.this, AdminUserListActivity.class);
-            startActivity(intent);
-        });
-
-        btnReports.setOnClickListener(v -> {
-            // Navigate to Reports
-            Intent intent = new Intent(AdminDashboardActivity.this, AdminReportsActivity.class);
-            startActivity(intent);
-        });
-
-        // --- Settings Listener ---
-        btnSettings.setOnClickListener(v -> {
-            Intent intent = new Intent(AdminDashboardActivity.this, NavSettingsActivity.class);
-            startActivity(intent);
-        });
-
-        // --- Bottom Navigation Listeners ---
-
-        navMaps.setOnClickListener(v -> {
-            // Navigate to Map/Rooms View
-            Intent intent = new Intent(AdminDashboardActivity.this, AdminRoomMapActivity.class);
-            startActivity(intent);
-        });
-
-        navDashboard.setOnClickListener(v -> {
-            // Already on Dashboard
-            Toast.makeText(this, "You are already on the Dashboard", Toast.LENGTH_SHORT).show();
-        });
-
-        navUpdates.setOnClickListener(v -> {
-            // Navigate to Updates/Reports View
-            Intent intent = new Intent(AdminDashboardActivity.this, AdminReportsActivity.class);
-            startActivity(intent);
-        });
     }
 
-    // Helper method to show description dialog
     private void showDescriptionDialog(String title, String message) {
         new AlertDialog.Builder(this)
                 .setTitle(title)
@@ -180,10 +196,9 @@ public class AdminDashboardActivity extends AppCompatActivity {
                 .show();
     }
 
-    // Optional: Handle back button to prevent going back to login screen easily
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finishAffinity(); // Close app or manage navigation stack as needed
+        finishAffinity();
     }
 }
