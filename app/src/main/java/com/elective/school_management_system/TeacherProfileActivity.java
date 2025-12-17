@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,7 +17,7 @@ import java.util.Set;
 
 public class TeacherProfileActivity extends AppCompatActivity {
 
-    private TextView tvProfileName, tvDesignation, tvID;
+    private TextView tvProfileName, tvProfileEmail, tvID;
     private TextView tvSubjectCount, tvStudentCount;
     private LinearLayout btnChangePassword, btnUpdates, btnHelp;
     private TextView btnLogout;
@@ -60,7 +59,7 @@ public class TeacherProfileActivity extends AppCompatActivity {
 
     private void initViews() {
         tvProfileName = findViewById(R.id.tvProfileName);
-        tvDesignation = findViewById(R.id.tvDesignation);
+        tvProfileEmail = findViewById(R.id.tvProfileEmail); // Using this for Department/Designation
         tvID = findViewById(R.id.tvID);
         tvSubjectCount = findViewById(R.id.tvSubjectCount);
         tvStudentCount = findViewById(R.id.tvStudentCount);
@@ -93,13 +92,15 @@ public class TeacherProfileActivity extends AppCompatActivity {
             // Format: "Professor, IT Department"
             String deptText = (department != null && !department.isEmpty()) ? department : "Department";
             String desigText = (designation != null && !designation.isEmpty()) ? designation : "Instructor";
-            tvDesignation.setText(desigText + ", " + deptText);
+
+            // Display Designation and Department combined
+            tvProfileEmail.setText(desigText + ", " + deptText);
 
             tvID.setText("ID: " + (facultyId != null && !facultyId.isEmpty() ? facultyId : "--"));
 
             cursor.close();
         } else {
-            tvDesignation.setText("Instructor");
+            tvProfileEmail.setText("Instructor");
             tvID.setText("ID: --");
         }
     }
@@ -136,7 +137,7 @@ public class TeacherProfileActivity extends AppCompatActivity {
 
         btnLogout.setOnClickListener(v -> logoutUser());
 
-        // Menu Items (Placeholders or actual intents)
+        // Menu Items
         btnChangePassword.setOnClickListener(v -> Toast.makeText(this, "Feature coming soon", Toast.LENGTH_SHORT).show());
 
         btnUpdates.setOnClickListener(v -> {

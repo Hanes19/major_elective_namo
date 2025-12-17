@@ -136,9 +136,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/raleway_bold"
-                    android:text="Prof. Juan Tamad"
+                    android:text="Loading..."
                     android:textColor="@android:color/white"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/tvProfileEmail"
@@ -146,7 +146,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:fontFamily="@font/raleway_regular"
-                    android:text="IT Department"
+                    android:text="Instructor"
                     android:textColor="#B0B0B0"
                     android:textSize="14sp" />
 
@@ -156,7 +156,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:fontFamily="@font/raleway_light"
-                    android:text="ID: T-2023-001"
+                    android:text="ID: --"
                     android:textColor="#80FFFFFF"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -180,10 +180,12 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="16dp">
+
                 <TextView
+                    android:id="@+id/tvSubjectCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5"
+                    android:text="0"
                     android:fontFamily="@font/raleway_bold"
                     android:textSize="22sp"
                     android:textColor="#FFFFFF"/>
@@ -205,10 +207,12 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="16dp">
+
                 <TextView
+                    android:id="@+id/tvStudentCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="150"
+                    android:text="0"
                     android:fontFamily="@font/raleway_bold"
                     android:textSize="22sp"
                     android:textColor="#00E676"/>
@@ -245,6 +249,7 @@
             app:layout_constraintTop_toBottomOf="@+id/menuLabel">
 
             <LinearLayout
+                android:id="@+id/btnChangePassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/glass_card_dark"
@@ -278,6 +283,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/btnUpdates"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/glass_card_dark"
@@ -311,6 +317,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/btnHelp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/glass_card_dark"
