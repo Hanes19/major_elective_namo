@@ -56,7 +56,6 @@ public class StudentRoomMapActivity extends AppCompatActivity implements OnMapRe
         tabList = findViewById(R.id.tabList);
         btnNavigateSchool = findViewById(R.id.btnNavigateSchool);
         navHome = findViewById(R.id.navHome);
-        navNavigation = findViewById(R.id.navNavigation);
         navProfile = findViewById(R.id.navProfile);
     }
 
@@ -93,7 +92,7 @@ public class StudentRoomMapActivity extends AppCompatActivity implements OnMapRe
             finish();
         });
 
-        navNavigation.setOnClickListener(v -> Toast.makeText(this, "You are already on the Map.", Toast.LENGTH_SHORT).show());
+
 
         navProfile.setOnClickListener(v -> {
             Intent intent = new Intent(StudentRoomMapActivity.this, StudentProfileActivity.class);

@@ -81,7 +81,8 @@ public class Login_Activity extends AppCompatActivity {
                 intent = new Intent(Login_Activity.this, TeacherDashboardActivity.class);
                 Toast.makeText(this, "Welcome back, Teacher!", Toast.LENGTH_SHORT).show();
             } else {
-                intent = new Intent(Login_Activity.this, StudentDashboardActivity.class);
+                // CHANGED: Now redirects to the new Fragment Container Activity
+                intent = new Intent(Login_Activity.this, StudentMainActivity.class);
             }
 
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -118,7 +119,7 @@ public class Login_Activity extends AppCompatActivity {
         }
         // 3. DATABASE CHECK
         else if (dbHelper.checkUser(email, password)) {
-            // [FIX] Retrieve role from Database
+            // Retrieve role from Database
             String role = dbHelper.getUserRole(email);
 
             editor.putString("email", email);
@@ -135,8 +136,9 @@ public class Login_Activity extends AppCompatActivity {
                 intent = new Intent(Login_Activity.this, AdminDashboardActivity.class);
             } else {
                 // Default to Student/Client
+                // CHANGED: Now redirects to the new Fragment Container Activity
                 Toast.makeText(this, "Login Successful!", Toast.LENGTH_SHORT).show();
-                intent = new Intent(Login_Activity.this, StudentDashboardActivity.class);
+                intent = new Intent(Login_Activity.this, StudentMainActivity.class);
             }
 
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
