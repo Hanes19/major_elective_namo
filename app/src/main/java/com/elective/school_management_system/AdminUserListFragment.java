@@ -9,10 +9,13 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -277,5 +280,36 @@ public class AdminUserListFragment extends Fragment {
                 btnDelete = itemView.findViewById(R.id.btnBanUser);
             }
         }
+    }
+    private void showUserDetailDialog(UserItem item) {
+        View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.ad_user_detail_dialog, null);
+        AlertDialog dialog = new AlertDialog.Builder(requireContext(), R.style.CustomDialogTheme).setView(dialogView).create();
+
+        // Bind Views
+        TextView tvName = dialogView.findViewById(R.id.tvUserName);
+        TextView tvEmail = dialogView.findViewById(R.id.tvEmail);
+        TextView tvId = dialogView.findViewById(R.id.tvUserId);
+        TextView tvRole = dialogView.findViewById(R.id.tvUserRole);
+        ImageButton btnClose = dialogView.findViewById(R.id.btnClose);
+        Button btnLogout = dialogView.findViewById(R.id.btnBanAccount);
+
+        // Set Data
+        tvName.setText(item.getName());
+        tvEmail.setText(item.getSubtitle()); // Subtitle stores the email in your model
+        tvRole.setText(currentTab);
+        tvId.setText("ID: " + String.format("%05d", item.id));
+
+        // Handle Guest specific action
+        if (currentTab.equals("Guest")) {
+            btnLogout.setText("Force Logout");
+            btnLogout.setOnClickListener(v -> {
+                Toast.makeText(getContext(), "User " + item.getName() + " has been forced logged out.", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+                // Logic to clear user session in DB would go here
+            });
+        }
+
+        btnClose.setOnClickListener(v -> dialog.dismiss());
+        dialog.show();
     }
 }

@@ -152,6 +152,4 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@drawable/glass_divider_line"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNav" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintBottom_toBottomOf="parent" /> </androidx.constraintlayout.widget.ConstraintLayout>

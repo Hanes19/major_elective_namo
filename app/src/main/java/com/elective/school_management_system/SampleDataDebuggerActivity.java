@@ -41,14 +41,14 @@ public class SampleDataDebuggerActivity extends AppCompatActivity {
         title.setGravity(Gravity.CENTER);
         title.setPadding(0, 0, 0, 30);
         layout.addView(title);
-
-        // Buttons
+// Inside onCreate, with other buttons
         layout.addView(createButton("Add Sample Users (Student/Teacher)", v -> addSampleUsers()));
         layout.addView(createButton("Add Sample Rooms", v -> addSampleRooms()));
         layout.addView(createButton("Add Sample Instructors", v -> addSampleInstructors()));
         layout.addView(createButton("Add Sample Reports", v -> addSampleReports()));
+// Add the new line below:
+        layout.addView(createButton("Add Sample Maintenance Reports", v -> addSampleMaintenanceReports()));
         layout.addView(createButton("Add Sample Schedule & Events", v -> addSampleScheduleAndEvents()));
-
         // Spacer
         View spacer = new View(this);
         spacer.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 50));
@@ -174,6 +174,17 @@ public class SampleDataDebuggerActivity extends AppCompatActivity {
             log("DATABASE RESET: All data cleared and defaults restored.");
         } catch (Exception e) {
             log("Reset failed: " + e.getMessage());
+        }
+    }
+    private void addSampleMaintenanceReports() {
+        boolean success1 = dbHelper.addReport("Room 101", "Aircon leaking water", "Maintenance");
+        boolean success2 = dbHelper.addReport("Gymnasium", "Leaking ceiling near the entrance", "Maintenance");
+        boolean success3 = dbHelper.addReport("Faculty Room", "Broken window latch", "Maintenance");
+
+        if (success1 || success2 || success3) {
+            log("Added Sample Maintenance Reports for Room 101, Gym, and Faculty Room");
+        } else {
+            log("Error adding sample maintenance reports.");
         }
     }
 }

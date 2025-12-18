@@ -79,16 +79,23 @@ public class AdminDashboardFragment extends Fragment {
 
     private void setupListeners() {
         // Navigate to Maps (Tab Index 0)
-        btnManageMap.setOnClickListener(v -> navigateToTab(0));
-
-        // Opens an Activity (This is already correct as long as it's in the Manifest)
-        btnManageUsers.setOnClickListener(v -> {
-            Intent intent = new Intent(requireActivity(), AdminManageUsersActivity.class);
+        btnManageMap.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AdminManageRoomsActivity.class);
             startActivity(intent);
         });
 
+        // Opens an Activity (This is already correct as long as it's in the Manifest)
+        btnManageUsers.setOnClickListener(v -> {
+            startActivity(new Intent(requireActivity(), AdminManageUsersActivity.class));
+        });
+
         // Navigate to Reports/Updates (Tab Index 2)
-        btnReports.setOnClickListener(v -> navigateToTab(2));
+        btnReports.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), AdminMainActivity.class);
+            intent.putExtra("TAB_INDEX", 2);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
 
         // Opens Settings Activity
         btnSettings.setOnClickListener(v -> startActivity(new Intent(getActivity(), NavSettingsActivity.class)));
@@ -129,4 +136,6 @@ public class AdminDashboardFragment extends Fragment {
                 .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
                 .show();
     }
+
+
 }

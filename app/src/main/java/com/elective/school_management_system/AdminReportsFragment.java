@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,6 +27,7 @@ public class AdminReportsFragment extends Fragment {
     private DatabaseHelper dbHelper;
     private ProgressBar progressBar;
     private TextView tvEmptyState;
+    private Spinner spinnerFilter; // Added filter view
 
     @Nullable
     @Override
@@ -38,21 +41,31 @@ public class AdminReportsFragment extends Fragment {
 
         dbHelper = new DatabaseHelper(requireContext());
 
-        // CORRECTED LINE
         recyclerView = view.findViewById(R.id.recyclerReports);
         progressBar = view.findViewById(R.id.progressBar);
         tvEmptyState = view.findViewById(R.id.tvEmptyState);
+        spinnerFilter = view.findViewById(R.id.spinnerStatusFilter); // Initialize Spinner
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         reportList = new ArrayList<>();
 
-        // FIX: The lambda receives an 'int' (reportId), not a 'Report' object.
-        adapter = new ReportAdapter(getContext(), reportList, reportId -> {
+        adapter = new ReportAdapter(requireContext(), reportList, reportId -> {
             Intent intent = new Intent(getContext(), AdminReportDetailActivity.class);
-            intent.putExtra("REPORT_ID", reportId); // Use reportId directly
+            intent.putExtra("REPORT_ID", reportId);
             startActivity(intent);
         });
         recyclerView.setAdapter(adapter);
+
+        // Listener for the Status Filter
+        spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                loadReports();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
 
         loadReports();
     }
@@ -66,15 +79,27 @@ public class AdminReportsFragment extends Fragment {
     private void loadReports() {
         if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
 
-        List<Report> fetched = dbHelper.getAllReports();
+        // Fetch all reports from the database
+        List<Report> allFetched = dbHelper.getAllReports();
+        String selectedStatus = spinnerFilter.getSelectedItem().toString();
 
         reportList.clear();
-        if (fetched != null) {
-            reportList.addAll(fetched);
+        if (allFetched != null) {
+            for (Report r : allFetched) {
+                // Logic: Only show Maintenance category and match the status
+                boolean isMaintenance = r.getCategory().equalsIgnoreCase("Maintenance");
+                boolean matchesStatus = selectedStatus.equalsIgnoreCase("All") ||
+                        r.getStatus().equalsIgnoreCase(selectedStatus);
+
+                if (isMaintenance && matchesStatus) {
+                    reportList.add(r);
+                }
+            }
         }
 
         if (progressBar != null) progressBar.setVisibility(View.GONE);
 
+        // Handle Empty State Visibility
         if (reportList.isEmpty()) {
             if (tvEmptyState != null) tvEmptyState.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
