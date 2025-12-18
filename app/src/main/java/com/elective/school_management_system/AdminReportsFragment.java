@@ -88,7 +88,9 @@ public class AdminReportsFragment extends Fragment {
             for (Report r : allFetched) {
                 // Logic: Only show Maintenance category and match the status
                 boolean isMaintenance = r.getCategory().equalsIgnoreCase("Maintenance");
-                boolean matchesStatus = selectedStatus.equalsIgnoreCase("All") ||
+
+                // FIXED: Changed "All" to "All Reports" to match strings.xml
+                boolean matchesStatus = selectedStatus.equalsIgnoreCase("All Reports") ||
                         r.getStatus().equalsIgnoreCase(selectedStatus);
 
                 if (isMaintenance && matchesStatus) {
