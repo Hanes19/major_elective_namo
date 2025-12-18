@@ -14,7 +14,7 @@ import java.util.Locale;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SchoolSystem.db";
-    private static final int DATABASE_VERSION = 10; // Incremented to 10 to apply new sample data
+    private static final int DATABASE_VERSION = 10;
 
     // --- User Table ---
     private static final String TABLE_USERS = "users";
@@ -674,9 +674,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return breakdown.toString().trim();
     }
 
-    // --- LIST METHODS ---
-    public List<AdminUserListActivity.UserItem> getAllStudents() {
-        List<AdminUserListActivity.UserItem> list = new ArrayList<>();
+    // --- LIST METHODS (Updated to use AdminUserListFragment.UserItem) ---
+    public List<AdminUserListFragment.UserItem> getAllStudents() {
+        List<AdminUserListFragment.UserItem> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT " + KEY_ID + ", " + KEY_USER_NAME + ", " + KEY_USER_EMAIL + " FROM " + TABLE_USERS +
                 " WHERE " + KEY_USER_ROLE + "='Student'";
@@ -684,7 +684,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
             do {
-                list.add(new AdminUserListActivity.UserItem(
+                list.add(new AdminUserListFragment.UserItem(
                         cursor.getInt(0),
                         cursor.getString(1),
                         cursor.getString(2),
@@ -696,8 +696,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
-    public List<AdminUserListActivity.UserItem> getAllGuests() {
-        List<AdminUserListActivity.UserItem> list = new ArrayList<>();
+    public List<AdminUserListFragment.UserItem> getAllGuests() {
+        List<AdminUserListFragment.UserItem> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT " + KEY_ID + ", " + KEY_USER_NAME + ", " + KEY_USER_EMAIL + " FROM " + TABLE_USERS +
                 " WHERE " + KEY_USER_ROLE + " IS NULL OR " + KEY_USER_ROLE + " NOT IN ('Student', 'Teacher', 'Admin')";
@@ -705,7 +705,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
             do {
-                list.add(new AdminUserListActivity.UserItem(
+                list.add(new AdminUserListFragment.UserItem(
                         cursor.getInt(0),
                         cursor.getString(1),
                         cursor.getString(2),

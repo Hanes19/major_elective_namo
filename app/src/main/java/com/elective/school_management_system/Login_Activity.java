@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ public class Login_Activity extends AppCompatActivity {
     private DatabaseHelper dbHelper;
     private boolean isPasswordVisible = false;
 
+    private Button btnDebugData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,7 @@ public class Login_Activity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         tvForgotPass = findViewById(R.id.tvForgotPass);
         tvSignUp = findViewById(R.id.tvSignUp);
+        btnDebugData = findViewById(R.id.btnDebugData);
     }
 
     private void setupListeners() {
@@ -54,6 +57,11 @@ public class Login_Activity extends AppCompatActivity {
             }
             etPassword.setSelection(etPassword.getText().length());
             isPasswordVisible = !isPasswordVisible;
+        });
+
+        btnDebugData.setOnClickListener(v -> {
+            Intent intent = new Intent(Login_Activity.this, SampleDataDebuggerActivity.class);
+            startActivity(intent);
         });
 
         tvForgotPass.setOnClickListener(v -> startActivity(new Intent(Login_Activity.this, ForgotPasswordActivity.class)));

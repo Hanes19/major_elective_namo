@@ -78,19 +78,20 @@ public class AdminDashboardFragment extends Fragment {
     }
 
     private void setupListeners() {
-        // These buttons open dedicated Activities, NOT other tabs
-        btnManageMap.setOnClickListener(v -> startActivity(new Intent(getActivity(), AdminManageRoomsActivity.class)));
-        btnManageUsers.setOnClickListener(v -> startActivity(new Intent(getActivity(), AdminUserListActivity.class)));
+        // These buttons open dedicated Activities
+        btnManageMap.setOnClickListener(v -> startActivity(new Intent(getActivity(), AdminMapsFragment.class)));
+        btnManageUsers.setOnClickListener(v -> {
+            Intent intent = new Intent(requireActivity(), AdminManageUsersActivity.class);
+            startActivity(intent);
+        });
 
-        // 'System Reports' button can technically open the dedicated Activity or switch tabs.
-        // Let's stick to the Activity for deep management:
         btnReports.setOnClickListener(v -> startActivity(new Intent(getActivity(), AdminReportsFragment.class)));
 
         btnSettings.setOnClickListener(v -> startActivity(new Intent(getActivity(), NavSettingsActivity.class)));
 
+        // [MODIFIED] Active Users card now opens the User List Activity
         cardActiveUsers.setOnClickListener(v -> {
-            String breakdown = "Total Users: " + totalUsers + "\n\n• Students: " + studentCount + "\n• Staff/Guests: " + guestCount;
-            showDescriptionDialog("Active Users Breakdown", breakdown);
+            startActivity(new Intent(getActivity(), AdminUserListFragment.class));
         });
 
         cardNewReports.setOnClickListener(v -> {

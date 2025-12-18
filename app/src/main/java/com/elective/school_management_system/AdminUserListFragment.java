@@ -13,15 +13,18 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminUserListActivity extends AppCompatActivity {
+public class AdminUserListFragment extends Fragment {
 
     // Views
     private TextView tabStudent, tabTeacher, tabGuest;
@@ -38,34 +41,43 @@ public class AdminUserListActivity extends AppCompatActivity {
     private List<UserItem> allItems = new ArrayList<>();
     private String currentTab = "Student";
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.ad_user_list_student);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Inflate the layout originally used by the Activity
+        return inflater.inflate(R.layout.ad_user_list_student, container, false);
+    }
 
-        dbHelper = new DatabaseHelper(this);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        initViews();
+        // Initialize DatabaseHelper with the Fragment's context
+        dbHelper = new DatabaseHelper(requireContext());
+
+        initViews(view);
         setupListeners();
         setupRecyclerView();
+
+        // Load default tab
         selectTab("Student");
     }
 
-    private void initViews() {
-        tabStudent = findViewById(R.id.tabStudent);
-        tabTeacher = findViewById(R.id.tabTeacher);
-        tabGuest = findViewById(R.id.tabGuest);
-        etSearch = findViewById(R.id.etSearch);
-        recyclerViewUsers = findViewById(R.id.recyclerViewUsers);
-        btnBack = findViewById(R.id.btnBack);
+    private void initViews(View view) {
+        tabStudent = view.findViewById(R.id.tabStudent);
+        tabTeacher = view.findViewById(R.id.tabTeacher);
+        tabGuest = view.findViewById(R.id.tabGuest);
+        etSearch = view.findViewById(R.id.etSearch);
+        recyclerViewUsers = view.findViewById(R.id.recyclerViewUsers);
+        btnBack = view.findViewById(R.id.btnBack);
 
-        navMaps = findViewById(R.id.navMaps);
-        navDashboard = findViewById(R.id.navDashboard);
-        navUpdates = findViewById(R.id.navUpdates);
+        navMaps = view.findViewById(R.id.navMaps);
+        navDashboard = view.findViewById(R.id.navDashboard);
+        navUpdates = view.findViewById(R.id.navUpdates);
     }
 
     private void setupRecyclerView() {
-        recyclerViewUsers.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewUsers.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new AdminUserAdapter(new ArrayList<>());
         recyclerViewUsers.setAdapter(adapter);
     }
@@ -73,8 +85,8 @@ public class AdminUserListActivity extends AppCompatActivity {
     private void setupListeners() {
         if (btnBack != null) {
             btnBack.setOnClickListener(v -> {
-                finish();
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                // Navigate back using the Activity's back stack
+                requireActivity().onBackPressed();
             });
         }
 
@@ -88,50 +100,38 @@ public class AdminUserListActivity extends AppCompatActivity {
             @Override public void afterTextChanged(Editable s) {}
         });
 
-        // FIX: Bottom Navigation now targets AdminMainActivity with specific Tab Index
+        // Bottom Navigation Logic
+        // Using Intents ensures we correctly switch tabs in AdminMainActivity even if this fragment
+        // is nested or in a different container.
 
         // 1. Maps (Tab Index 0)
         if (navMaps != null) {
-            navMaps.setOnClickListener(v -> {
-                Intent intent = new Intent(this, AdminMainActivity.class);
-                intent.putExtra("TAB_INDEX", 0);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-                finish();
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-            });
+            navMaps.setOnClickListener(v -> navigateToMainTab(0));
         }
 
         // 2. Dashboard (Tab Index 1)
         if (navDashboard != null) {
-            navDashboard.setOnClickListener(v -> {
-                Intent intent = new Intent(this, AdminMainActivity.class);
-                intent.putExtra("TAB_INDEX", 1);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-                finish();
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-            });
+            navDashboard.setOnClickListener(v -> navigateToMainTab(1));
         }
 
         // 3. Updates/Reports (Tab Index 2)
         if (navUpdates != null) {
-            navUpdates.setOnClickListener(v -> {
-                Intent intent = new Intent(this, AdminMainActivity.class);
-                intent.putExtra("TAB_INDEX", 2);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-                finish();
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-            });
+            navUpdates.setOnClickListener(v -> navigateToMainTab(2));
         }
+    }
+
+    private void navigateToMainTab(int tabIndex) {
+        Intent intent = new Intent(requireContext(), AdminMainActivity.class);
+        intent.putExtra("TAB_INDEX", tabIndex);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
     }
 
     private void selectTab(String tabName) {
         currentTab = tabName;
         resetTabStyles();
 
-        Drawable activeDrawable = ContextCompat.getDrawable(this, R.drawable.glass_tab_active);
+        Drawable activeDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.glass_tab_active);
         int whiteColor = Color.WHITE;
 
         switch (tabName) {
@@ -175,6 +175,7 @@ public class AdminUserListActivity extends AppCompatActivity {
         List<Instructor> instructors = dbHelper.getAllInstructors();
         if (instructors != null) {
             for (Instructor inst : instructors) {
+                // Ensure Instructor getters match your model
                 allItems.add(new UserItem(inst.getId(), inst.getName(), inst.getDepartment(), "Teacher"));
             }
         }
@@ -199,12 +200,7 @@ public class AdminUserListActivity extends AppCompatActivity {
         adapter.updateList(filtered);
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-    }
-
+    // Static Inner Class for UserItem Model
     public static class UserItem {
         private int id;
         private String name;
@@ -221,6 +217,7 @@ public class AdminUserListActivity extends AppCompatActivity {
         public String getSubtitle() { return subtitle; }
     }
 
+    // RecyclerView Adapter
     public class AdminUserAdapter extends RecyclerView.Adapter<AdminUserAdapter.UserViewHolder> {
         private List<UserItem> userList;
 

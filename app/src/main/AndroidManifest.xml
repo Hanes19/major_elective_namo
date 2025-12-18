@@ -39,8 +39,9 @@
 
         <activity android:name=".AdminMainActivity" android:exported="false" /> <activity android:name=".AdminManageInstructorsActivity" android:exported="false" />
         <activity android:name=".AdminManageRoomsActivity" android:exported="false" />
-        <activity android:name=".AdminUserListActivity" android:exported="false" />
+        <activity android:name=".AdminManageUsersActivity" android:exported="false" />
         <activity android:name=".AdminReportDetailActivity" android:exported="false" />
+
 
 
         <activity android:name=".TeacherDashboardActivity" android:exported="false" />
@@ -56,6 +57,7 @@
         <activity android:name=".NavSettingsActivity" android:exported="false" android:screenOrientation="portrait" />
         <activity android:name=".ReportIssueActivity" android:exported="false" />
         <activity android:name=".TeacherProfileActivity" />
+        <activity android:name=".SampleDataDebuggerActivity" android:exported="false" />
 
         <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
