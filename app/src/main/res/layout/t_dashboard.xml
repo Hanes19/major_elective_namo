@@ -332,7 +332,7 @@
                 android:id="@+id/quickNavScroll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="50dp"
                 android:clipToPadding="false"
                 android:paddingHorizontal="24dp"
                 android:scrollbars="none"
@@ -352,18 +352,20 @@
                         android:gravity="center"
                         android:orientation="vertical"
                         android:padding="20dp">
+
                         <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:src="@drawable/db_profile_ic"
                             app:tint="#FFFFFF" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:fontFamily="@font/raleway_medium"
-                            android:text="Faculty\nRoom"
                             android:gravity="center"
+                            android:text="Faculty\nRoom"
                             android:textColor="#E0E0E0"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -377,18 +379,20 @@
                         android:gravity="center"
                         android:orientation="vertical"
                         android:padding="20dp">
+
                         <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:src="@drawable/db_settings_ic"
                             app:tint="#FFFFFF" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:fontFamily="@font/raleway_medium"
-                            android:text="HR /\nAdmin"
                             android:gravity="center"
+                            android:text="HR /\nAdmin"
                             android:textColor="#E0E0E0"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -401,18 +405,20 @@
                         android:gravity="center"
                         android:orientation="vertical"
                         android:padding="20dp">
+
                         <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:src="@drawable/add"
                             app:tint="#FFFFFF" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:fontFamily="@font/raleway_medium"
-                            android:text="Clinic\nCenter"
                             android:gravity="center"
+                            android:text="Clinic\nCenter"
                             android:textColor="#E0E0E0"
                             android:textSize="12sp" />
                     </LinearLayout>
