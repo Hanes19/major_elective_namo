@@ -114,10 +114,10 @@ public class StudentDashboardFragment extends Fragment {
 
     private void setupCarousel() {
         List<StudentDashboardActivity.CarouselItem> items = new ArrayList<>();
-        items.add(new StudentDashboardActivity.CarouselItem(R.drawable.db_nav_icon));
-        items.add(new StudentDashboardActivity.CarouselItem(R.drawable.db_rooms_ic));
-        items.add(new StudentDashboardActivity.CarouselItem(R.drawable.db_instruct_ic));
-        items.add(new StudentDashboardActivity.CarouselItem(R.drawable.db_profile_ic));
+        items.add(new StudentDashboardActivity.CarouselItem(R.drawable.banner1));
+        items.add(new StudentDashboardActivity.CarouselItem(R.drawable.banner2));
+        items.add(new StudentDashboardActivity.CarouselItem(R.drawable.banner3));
+        items.add(new StudentDashboardActivity.CarouselItem(R.drawable.banner4));
 
         StudentDashboardActivity.CarouselAdapter adapter = new StudentDashboardActivity.CarouselAdapter(items);
         viewPagerCarousel.setAdapter(adapter);
