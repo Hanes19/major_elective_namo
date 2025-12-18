@@ -78,20 +78,26 @@ public class AdminDashboardFragment extends Fragment {
     }
 
     private void setupListeners() {
-        // These buttons open dedicated Activities
-        btnManageMap.setOnClickListener(v -> startActivity(new Intent(getActivity(), AdminMapsFragment.class)));
+        // Navigate to Maps (Tab Index 0)
+        btnManageMap.setOnClickListener(v -> navigateToTab(0));
+
+        // Opens an Activity (This is already correct as long as it's in the Manifest)
         btnManageUsers.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), AdminManageUsersActivity.class);
             startActivity(intent);
         });
 
-        btnReports.setOnClickListener(v -> startActivity(new Intent(getActivity(), AdminReportsFragment.class)));
+        // Navigate to Reports/Updates (Tab Index 2)
+        btnReports.setOnClickListener(v -> navigateToTab(2));
 
+        // Opens Settings Activity
         btnSettings.setOnClickListener(v -> startActivity(new Intent(getActivity(), NavSettingsActivity.class)));
 
-        // [MODIFIED] Active Users card now opens the User List Activity
+        // Navigates to the User Tab (using the Manage Users Activity or a Tab index)
         cardActiveUsers.setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), AdminUserListFragment.class));
+            // Option A: If users are a tab, use navigateToTab(index);
+            // Option B: If you want the ManageUsersActivity:
+            startActivity(new Intent(getActivity(), AdminManageUsersActivity.class));
         });
 
         cardNewReports.setOnClickListener(v -> {
@@ -104,6 +110,16 @@ public class AdminDashboardFragment extends Fragment {
             showDescriptionDialog("System Health Diagnostics", healthStats);
         });
     }
+
+    // Helper method to switch tabs in the main activity
+    private void navigateToTab(int tabIndex) {
+        Intent intent = new Intent(requireContext(), AdminMainActivity.class);
+        intent.putExtra("TAB_INDEX", tabIndex);
+        // These flags ensure we don't create a new instance of the Activity, but reuse the existing one
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+    }
+
 
     private void showDescriptionDialog(String title, String message) {
         if(getContext() == null) return;

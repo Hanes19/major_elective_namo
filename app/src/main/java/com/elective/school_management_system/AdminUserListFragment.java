@@ -218,6 +218,8 @@ public class AdminUserListFragment extends Fragment {
     }
 
     // RecyclerView Adapter
+    // Inside AdminUserListFragment.java
+
     public class AdminUserAdapter extends RecyclerView.Adapter<AdminUserAdapter.UserViewHolder> {
         private List<UserItem> userList;
 
@@ -233,6 +235,8 @@ public class AdminUserListFragment extends Fragment {
         @NonNull
         @Override
         public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            // Since all three layouts (student, teacher, guest) are currently identical,
+            // inflating this one is fine for now.
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_user_row_student, parent, false);
             return new UserViewHolder(view);
@@ -241,19 +245,36 @@ public class AdminUserListFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
             UserItem item = userList.get(position);
+
+            // FIX: Ensure these match the IDs assigned in the ViewHolder
             holder.tvName.setText(item.getName());
             holder.tvSubtitle.setText(item.getSubtitle());
+
+            // Optional: Set up listeners for the buttons
+            holder.btnEdit.setOnClickListener(v -> {
+                // Handle edit logic here
+            });
+
+            holder.btnDelete.setOnClickListener(v -> {
+                // Handle delete/ban logic here
+            });
         }
 
         @Override
         public int getItemCount() { return userList.size(); }
 
         class UserViewHolder extends RecyclerView.ViewHolder {
-            TextView tvName, tvSubtitle;
+            TextView tvName, tvSubtitle, tvStatus;
+            ImageButton btnEdit, btnDelete;
+
             public UserViewHolder(@NonNull View itemView) {
                 super(itemView);
-                tvName = itemView.findViewById(R.id.tvName);
-                tvSubtitle = itemView.findViewById(R.id.tvEmail);
+                // FIX: Use the correct IDs from your XML layouts
+                tvName = itemView.findViewById(R.id.tvUserName);
+                tvSubtitle = itemView.findViewById(R.id.tvUserID);
+                tvStatus = itemView.findViewById(R.id.tvStatus);
+                btnEdit = itemView.findViewById(R.id.btnEditUser);
+                btnDelete = itemView.findViewById(R.id.btnBanUser);
             }
         }
     }

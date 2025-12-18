@@ -8,7 +8,7 @@ public class AdminManageUsersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // This layout contains a FrameLayout with id 'fragment_container'
-        setContentView(R.layout.ad_user_list_student);
+        setContentView(R.layout.activity_admin_manage_users);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
