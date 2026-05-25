@@ -58,6 +58,12 @@
         <activity android:name=".ReportIssueActivity" android:exported="false" />
         <activity android:name=".TeacherProfileActivity" />
         <activity android:name=".SampleDataDebuggerActivity" android:exported="false" />
+        <activity android:name=".GuestDashboardActivity" android:exported="false" />
+
+        <activity android:name=".GuestTutorialActivity" android:exported="false" android:screenOrientation="portrait" />
+
+        <activity android:name=".GuestUpdatesActivity" android:exported="false" />
+
 
         <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>

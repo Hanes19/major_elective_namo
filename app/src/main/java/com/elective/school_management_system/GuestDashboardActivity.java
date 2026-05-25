@@ -21,6 +21,7 @@ public class GuestDashboardActivity extends AppCompatActivity {
 
         setupGridListeners();
         setupSearchListener();
+        setupTutorialListener(); // Added listener for the new banner
     }
 
     private void setupGridListeners() {
@@ -81,6 +82,18 @@ public class GuestDashboardActivity extends AppCompatActivity {
         if (mapBanner != null) {
             mapBanner.setOnClickListener(v -> {
                 Intent intent = new Intent(GuestDashboardActivity.this, GuestMapActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            });
+        }
+    }
+
+    // NEW METHOD: Handles the Enroll Tutorial Banner click
+    private void setupTutorialListener() {
+        View tutorialBanner = findViewById(R.id.enrollTutorialBanner);
+        if (tutorialBanner != null) {
+            tutorialBanner.setOnClickListener(v -> {
+                Intent intent = new Intent(GuestDashboardActivity.this, GuestTutorialActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             });
